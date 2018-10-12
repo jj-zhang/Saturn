@@ -57,7 +57,7 @@ Sneakerhead who is looking to get all the latest shoe releases and wants to be f
 The user can set multiple notifications to be reminded of releases, and they can see all releases they are following in a nice calendar form, or a list form. They are also able to search by company/location/date to find the specific release they are looking for.  
 
 
-#### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
+#### Product usage/problems solved
 
 
 S@turn aggregates all the release date information that users need in one easy to access, convenient place. Users would want to choose our product because it organizes and displays only relevant information pertaining to event/release dates that they need to see.  This product goes beyond the simple scheduling apps and calendars that users currently rely on by simplifying the process of searching for and juggling several changing release dates by independently tracking the drop dates for various forms of media/products even as those dates shift around throughout the calendar year. Furthermore, S@turn allows users’ to discover new events/media/products that they might be interested in based on trending topics. Users will never  accidentally miss out on concert tickets, movie releases and product sales. Discovering new content before it release as soon as possible.
