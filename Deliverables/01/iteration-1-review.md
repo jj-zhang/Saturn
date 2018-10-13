@@ -20,11 +20,6 @@
 - Didn’t initially have a common Google Drive for the project (pre-repo) this led to highly fragmented project documentation which made collaboration difficult (creation of this allowed for everyone to return to the same page).
 
 #### Planned changes
-
-List any process-related changes you are planning to make (if there are any)
-
- * Ordered from most to least important.
- * Explain why you are making a change.
 - More digital communication (use Slack more!) so we don’t need to meet in person as often
  - Everyone's schedule is not the same - online is easier to origanize 
  - Digital communication provides documentation (from chat)
