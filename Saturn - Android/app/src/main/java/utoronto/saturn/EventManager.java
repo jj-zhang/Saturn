@@ -1,4 +1,4 @@
-package utoronto.saturn.feature;
+package utoronto.saturn;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
-package utoronto.saturn.feature;
+package utoronto.saturn;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class TestExistence {
-    private static final String PATH = "utoronto.saturn.feature.";
+    private static final String PATH = "utoronto.saturn.";
 
     private void assertClassExists(String path) {
         try {

@@ -1,4 +1,4 @@
-package utoronto.saturn.feature;
+package utoronto.saturn;
 
 import org.junit.Assert;
 import org.junit.Test;
