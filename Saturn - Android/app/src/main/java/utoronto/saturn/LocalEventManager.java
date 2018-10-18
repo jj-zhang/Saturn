@@ -1,5 +1,6 @@
 package utoronto.saturn;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -18,6 +19,11 @@ public class LocalEventManager implements EventManager {
         Requests an updated version of this Event from database
      */
     public void updateEvent(Event event) {
+        if(isEventIn(event.getID())) {
+            eventList.remove(event.getID());
+        }
+
+        // get info from database
     }
 
     /*
@@ -31,14 +37,14 @@ public class LocalEventManager implements EventManager {
         Gets event that matches id from list or database
      */
     public Event getEvent(String ID) {
-        return null;
+        return eventList.get(ID);
     }
 
     /*
         Returns List of all Local Events
      */
     public List<Event> getAllEvents() {
-        return null;
+        return new ArrayList<Event>(eventList.values());
     }
 
     /*
@@ -66,7 +72,12 @@ public class LocalEventManager implements EventManager {
         }
     }
 
+    /*
+        Turns a local event into a global one
+     */
     public void convertToGlobal(String ID) {
+        Event eventToAdd = eventList.get(ID);
 
+        // Add to database
     }
 }
