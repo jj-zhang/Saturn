@@ -1,15 +1,50 @@
 package utoronto.saturn.feature;
 
-import java.util.List;
+import java.net.URL;
 
-interface Event {
-    void updateEvent(Event event);
+class Event {
+    private String ID;
+    private String name;
+    private String desc;
+    private double rating;
+    private double userRating;
+    private URL imageURL;
 
-    Event getEvent(String id);
+    Event(String ID, String name, String desc, double rating, double userRating, URL imageURL) {
+        this.ID = ID;
+        this.name = name;
+        this.desc = desc;
+        this.rating = rating;
+        this.userRating = userRating;
+        this.imageURL = imageURL;
+    }
 
-    List<Event> getAllEvents();
+    public String getID() {
+        return ID;
+    }
 
-    boolean addEvent(String id);
+    public String getName() {
+        return name;
+    }
 
-    boolean removeEvent(String id);
+    public String getDescription() {
+        return desc;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public double getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(double newRating) {
+        this.userRating = newRating;
+        // Call to database to update this rating
+    }
+
+    public URL getImageURL() {
+        return imageURL;
+    }
 }

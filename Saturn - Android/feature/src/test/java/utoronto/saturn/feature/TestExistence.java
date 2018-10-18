@@ -15,12 +15,17 @@ public class TestExistence {
     }
 
     @Test
-    public void checkEventExists() {
-        assertClassExists(PATH + "Event");
+    public void checkEventManagerExists() {
+        assertClassExists(PATH + "EventManager");
     }
 
     @Test
-    public void checkLocalEventExists() {
-        assertClassExists(PATH + "LocalEvent");
+    public void checkLocalEventManagerExists() {
+        assertClassExists(PATH + "LocalEventManager");
+    }
+
+    @Test
+    public void checkEventExists() {
+        assertClassExists(PATH + "Event");
     }
 }

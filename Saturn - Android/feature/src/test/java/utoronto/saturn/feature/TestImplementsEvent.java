@@ -4,47 +4,47 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class TestImplementsEvent {
-    private static final Event LE = new LocalEvent();
+    private static final Event LE = new Event(null, null, null, 0, 0, null);
+    private static final LocalEventManager LEM = new LocalEventManager();
 
-    private void assertImplementsEvent(Object obj) {
-        assert(obj instanceof Event) : "Class does not implement Event!";
+    private static void assertImplements(Object instObj, Class<?> obj) {
+        try {
+            Class<?> test = Class.forName(instObj.getClass().getCanonicalName());
+        } catch(ClassNotFoundException e) {
+            Assert.fail(instObj.getClass().getSimpleName() + " does not implement " + obj.getSimpleName() + "!");
+        }
     }
 
-    private void assertImplementsEventMethods(Object obj, Class[] cArgs, String method) {
+    private static void assertImplementsMethod(Object obj, Class[] cArgs, String method) {
         try {
             obj.getClass().getMethod(method, cArgs);
         } catch(NoSuchMethodException e) {
-            Assert.fail(obj.getClass() + " does not implement " + method + "!");
+            Assert.fail(obj.getClass().getSimpleName() + " does not implement " + method + "!");
         }
     }
 
     @Test
-    public void checkLocalEventImplementsEvent() {
-        assertImplementsEvent(LE);
+    public void testLocalEventManagerImplementsEventManager() {
+        assertImplements(LEM, EventManager.class);
     }
 
     @Test
-    public void checkLocalEventImplementsGetEventMethod() {
-        assertImplementsEventMethods(LE, new Class[]{String.class}, "getEvent");
+    public void testLocalEventManagerImplementsUpdateEventMethod() {
+        assertImplementsMethod(LEM, new Class[]{Event.class}, "updateEvent");
     }
 
     @Test
-    public void checkLocalEventImplementsUpdateEventMethod() {
-        assertImplementsEventMethods(LE, new Class[]{Event.class}, "updateEvent");
+    public void testLocalEventManagerImplementsIsEventInMethod() {
+        assertImplementsMethod(LEM, new Class[]{String.class}, "isEventIn");
     }
 
     @Test
-    public void checkLocalEventImplementsGetAllEventMethod() {
-        assertImplementsEventMethods(LE, null, "getAllEvents");
+    public void testLocalEventManagerImplementsGetEventMethod() {
+        assertImplementsMethod(LEM, new Class[]{String.class}, "getEvent");
     }
 
     @Test
-    public void checkLocalEventImplementsAddEventMethod() {
-        assertImplementsEventMethods(LE, new Class[]{String.class}, "addEvent");
-    }
-
-    @Test
-    public void checkLocalEventImplementsRemoveEventMethod() {
-        assertImplementsEventMethods(LE, new Class[]{String.class}, "removeEvent");
+    public void testLocalEventManagerImplementsGetAllEventMethod() {
+        assertImplementsMethod(LEM, null, "getAllEvents");
     }
 }
