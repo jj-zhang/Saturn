@@ -28,4 +28,9 @@ public class TestExistence {
     public void checkEventExists() {
         assertClassExists(PATH + "Event");
     }
+
+    @Test
+    public void checkGlobalEventExists() {
+        assertClassExists(PATH + "GlobalEventManager");
+    }
 }
