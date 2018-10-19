@@ -7,7 +7,7 @@ public class TestImplementsEvent {
     private static final Event LE = new Event(null, null, null, 0, 0, null, 0);
     private static final LocalEventManager LEM = new LocalEventManager();
 
-    private static void assertImplements(Object instObj, Class<?> obj) {
+    private static void assertImplementsOrExtends(Object instObj, Class<?> obj) {
         try {
             Class<?> test = Class.forName(instObj.getClass().getCanonicalName());
         } catch(ClassNotFoundException e) {
@@ -24,27 +24,7 @@ public class TestImplementsEvent {
     }
 
     @Test
-    public void testLocalEventManagerImplementsEventManager() {
-        assertImplements(LEM, EventManager.class);
-    }
-
-    @Test
-    public void testLocalEventManagerImplementsUpdateEventMethod() {
-        assertImplementsMethod(LEM, new Class[]{Event.class}, "updateEvent");
-    }
-
-    @Test
-    public void testLocalEventManagerImplementsIsEventInMethod() {
-        assertImplementsMethod(LEM, new Class[]{String.class}, "isEventIn");
-    }
-
-    @Test
-    public void testLocalEventManagerImplementsGetEventMethod() {
-        assertImplementsMethod(LEM, new Class[]{String.class}, "getEvent");
-    }
-
-    @Test
-    public void testLocalEventManagerImplementsGetAllEventMethod() {
-        assertImplementsMethod(LEM, null, "getAllEvents");
+    public void testLocalEventManagerExtendsEventManager() {
+        assertImplementsOrExtends(LEM, EventManager.class);
     }
 }
