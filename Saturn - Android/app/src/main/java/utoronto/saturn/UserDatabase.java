@@ -75,18 +75,53 @@ public class UserDatabase {
     }
 
     public void joinGlobalEvent() {
+        //INSERT INTO table(column1, column2, …)
+        //VALUES
+        // (value1, value2, …);
     }
 
-    public void removeLocalEvent() {
+    public void removeLocalEvent(String eventName) {
+    }
+
+    // Todo (rmartin): Should eventually have an option of no userID here
+    public void removeLocalEvent(String userId, String eventName) {
+
+        String delete =
+                "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            log.severe("Had an SQL exception while creating a statement");
+            e.printStackTrace();
+        }
+
+        try {
+            statement.execute(delete);
+        } catch (SQLException e) {
+            log.severe("Had an SQL exception while executing a delete statement");
+            e.printStackTrace();
+        }
     }
 
     public void addLocalEvent() {
+        //INSERT INTO table(column1, column2, …)
+        //VALUES
+        // (value1, value2, …);
     }
 
     public void modifyAttribute() {
+        // DELETE THEN
+        //INSERT INTO table(column1, column2, …)
+        //VALUES
+        // (value1, value2, …);
     }
 
     public void openAccount() {
+        //INSERT INTO table(column1, column2, …)
+        //VALUES
+        // (value1, value2, …);
     }
 
     public ResultSet getAttribute(String attribute) {
