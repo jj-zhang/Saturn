@@ -2,7 +2,7 @@ package utoronto.saturn;
 
 import java.net.URL;
 
-class Event {
+public class Event {
     private String ID;
     private String name;
     private String desc;
