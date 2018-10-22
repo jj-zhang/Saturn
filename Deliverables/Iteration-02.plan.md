@@ -12,21 +12,21 @@ Frontend: Ellen, Ray
 
 #### Events
 
-Describe meetings (and other events) you are planning to have:
+Meeting 1: October 22 (In Person)
+Meeting 2: October 29 (In Person)
+Potential Meeting 3: November 2 (Prior to Submission of D2)
 
- * When and where? In-person or online?
- * What's the purpose of each meeting?
- * Other events could be coding sessions, code reviews, quick weekly sync' meeting online, etc.
+Code Reviews are ongoing as PR's are submitted. General communication also freely flows in our group chat.
 
 #### Artifacts
 
 List/describe the artifacts you will produce in order to organize your team.       
 
- * Artifacts can be To-do lists, Task boards, schedule(s), etc.
- * We want to understand:
-   * How do you keep track of what needs to get done?
-   * How do you prioritize tasks?
-   * How do tasks get assigned to team members?
+-Github Issues and Project Board Ongoing
+-Tasks are assigned on an ongoing basis, we decide priority tasks in meetings.
+-Priority tasks are generally distibuted across members based on amount of work we estimate.
+
+-Video is needed and will be produced next week (Week of the 29th)
 
 #### Git / GitHub workflow
 
