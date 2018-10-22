@@ -6,8 +6,9 @@
  * End date: October 29
 
 #### Roles & responsibilities
-
-Describe the different roles on the team and the responsibilities associated with each role.
+Backend / Scraping: Tim, Tiffany
+Backend / QA: Reece, Khori
+Frontend: Ellen, Ray
 
 #### Events
 
