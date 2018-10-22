@@ -30,15 +30,11 @@ List/describe the artifacts you will produce in order to organize your team.
 
 #### Git / GitHub workflow
 
-Describe your Git / GitHub workflow.     
-Essentially, we want to understand how your team members share a codebase and avoid conflicts. You must incorporate 'Pull Requests' into your process. 
+Our workflow consists largely of several development branches and master. When people want to merge changes into master they rebase onto it and then make a pull request. As master evolves rebases are required by all members of the team in order to stay up to date with master.
 
- * Be concise, yet precise.      
-For example, "we use pull-requests" is not a precise statement since it leaves too many open questions - Pull-requests from where to where? Who reviews the pull-requests? Who is responsible for merging them? etc.
- * If applicable, specify any naming conventions or standards you decide to adopt.
- * Don't forget to **explain why** you chose this workflow.
+Once a pull request is submitted it *usually* needs at least one review (unless it is a hotfix) for code style etc. once changes have been made the request can be merged into master. We also intend to incorporate some autotesting which will also be a barrier for merging code once we have more substantial functionality implemented.
 
-
+This workflow is good for a number of reasons; frequent rebases encourage everyone to keep their code synced up and discourages big changes, it also leads to a *generally* cleaner and more linear master than otherwise. It was also the policy at some team members employers in the past.
 
 ## Product
 
