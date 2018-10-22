@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class GlobalEventManager extends EventManager {
     public GlobalEventManager() {
-        super.eventList = new HashMap<String, Event>();
+        super();
     }
 
     public List<Event> getPopular(){

@@ -9,10 +9,10 @@ class EventManager {
     /*
         List containing all Local Events in the format ID:Event.
      */
-    private Map<String, Event> eventList;
+    private Map<String, Event> eventMap;
 
     public EventManager() {
-        this.eventList = new HashMap<String, Event>();
+        this.eventMap = new HashMap<String, Event>();
     }
 
     /*
