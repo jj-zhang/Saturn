@@ -18,9 +18,7 @@ Potential Meeting 3: November 2 (Prior to Submission of D2)
 
 Code Reviews are ongoing as PR's are submitted. General communication also freely flows in our group chat.
 
-#### Artifacts
-
-List/describe the artifacts you will produce in order to organize your team.       
+#### Artifacts     
 
 -Github Issues and Project Board Ongoing
 -Tasks are assigned on an ongoing basis, we decide priority tasks in meetings.
@@ -40,15 +38,19 @@ This workflow is good for a number of reasons; frequent rebases encourage everyo
 
 #### Goals and tasks
 
- * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
- * Order the items from most to least important.
- * Feel free (but not obligated) to specify some/all tasks as user stories.
+- 1) Reach MVP - largely broken down into current issues
+- 2) UI coming along - largely broken down into current issues
+- 3) Database working and being fed by scrapers - ongoing
+- 4) Significant increase in number of tests - largely broken down into current issues
 
 #### Artifacts
 
-List/describe the artifacts you will produce in order to present your project idea.
-
- * Artifacts can be text, code, images, videos, interactive mock-ups and/or any other useful artifact you can think of.
- * Make sure to explain the purpose of each artifact (i.e. Why is it on your to-do list? Why is it useful for your team?)
- * Be concise, yet precise.         
-   For example: "Build the website" is not precise at all, but "Build a static home page and upload it somewhere, so that it is publicly accessible" is much clearer.
+- Video -> to be produced by Reece
+-- Concise video to explain the purpose of the application, also a Deliverable 2 Requirement
+- Logo -> Produced by Ray
+-- Some basic branding
+- ReadMe -> TBD
+-- Concise text descriptiojn of the application
+- MVP == Interactive Mockup -> All
+- Screenshots
+-- Visuals so we can display our interfaces etc.
