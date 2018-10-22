@@ -1,17 +1,9 @@
-# YOUR PRODUCT/TEAM NAME
+# S@turn
 
- > _Note:_ This document is meant to be written during (or shortly after) your initial planning meeting.     
- > It does not really make sense for you to edit this document much (if at all) while working on the project - Instead, at the end of the planning phase, you can refer back to this document and decide which parts of your plan you are happy with and which parts you would like to change.
+## Iteration 2
 
-
-## Iteration XX
-
- * Start date: FILL IN THE DATE WHEN YOU HAD YOUR FIRST TEAM PLANNING MEETING
- * End date: FILL IN THE DATE WHEN YOU ARE PLANNING TO HAVE YOUR REVIEW MEETING
-
-## Process
-
-(Optional:) Quick introduction
+ * Start date: October 22
+ * End date: October 29
 
 #### Roles & responsibilities
 
