@@ -14,4 +14,19 @@
         completions."
     </string>
     <string name="prompt_username">Username </string>
+
+
+    <!-- Strings related to main navigation menu -->
+    <string name="menu_home">Home</string>
+    <string name="menu_browse">Browse</string>
+    <string name="menu_following">Following</string>
+    <string name="menu_mine">Mine</string>
+
+    <!-- Strings related to home screen -->
+    <string name="home_events_coming_up">Your Events Coming Up</string>
+    <string name="home_suggestions">Suggestions</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mine_calendar">Calendar</string>
 </resources>
