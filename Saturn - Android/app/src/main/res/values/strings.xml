@@ -2,9 +2,10 @@
 <resources>
 
     <!-- Strings related to login -->
+    <string name="app_name">=S@turn"</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Sign in </string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -30,3 +31,4 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mine_calendar">Calendar</string>
 </resources>
+
