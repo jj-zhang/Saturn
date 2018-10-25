@@ -13,8 +13,8 @@ public class dbConnection {
             System.out.println(e.getMessage());
         }
 
-        String url = "jdbc:postgresql://tjlevpcn:SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu@tantor.db.elephantsql.com:5432/tjlevpcn";
-        String username = "tantor.db.elephantsql.com";
+        String url = "jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn";
+        String username = "tjlevpcn";
         String password = "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu";
 
         try {
