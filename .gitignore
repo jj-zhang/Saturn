@@ -22,6 +22,8 @@ tmp/
 *.swp
 *~.nib
 local.properties
+"Saturn - Android/local.properties"
+
 .settings/
 .loadpath
 
