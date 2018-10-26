@@ -1,4 +1,4 @@
 package utoronto.saturn;
 
-public class TestEvent {
+public class TestUser {
 }
