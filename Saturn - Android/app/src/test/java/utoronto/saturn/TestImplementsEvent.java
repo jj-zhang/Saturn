@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class TestImplementsEvent {
-    private static final Event LE = new Event(null, null, null, 0, 0, null, 0);
+    private static final Event LE = new Event("h", "h", "h", 0, 0, null, 0);
     private static final LocalEventManager LEM = new LocalEventManager();
 
     private static void assertImplementsOrExtends(Object instObj, Class<?> obj) {
