@@ -27,10 +27,10 @@ public class UserDatabase {
 
     // Public API
     public void leaveGlobalEvent(String eventName) {
-        leaveGlobalEvent(user.getId(), eventName);
+        leaveGlobalEvent(user.getEmail(), eventName);
     }
 
-    public void leaveGlobalEvent(int userId, String eventName) {
+    public void leaveGlobalEvent(String userId, String eventName) {
 
         String delete =
                 "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
@@ -74,11 +74,11 @@ public class UserDatabase {
     }
 
     public void removeLocalEvent(String eventName) {
-        removeLocalEvent(user.getId(), eventName);
+        removeLocalEvent(user.getEmail(), eventName);
     }
 
 
-    public void removeLocalEvent(int userId, String eventName) {
+    public void removeLocalEvent(String userId, String eventName) {
 
         String delete =
                 "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
@@ -144,10 +144,10 @@ public class UserDatabase {
     }
 
     public ResultSet getAttribute(String attribute) {
-        return getAttribute(user.getId(), attribute);
+        return getAttribute(user.getEmail(), attribute);
     }
 
-    public ResultSet getAttribute(int userID, String attribute) {
+    public ResultSet getAttribute(String userID, String attribute) {
 
         ResultSet resultSet = null;
 
