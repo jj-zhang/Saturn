@@ -12,7 +12,6 @@ public class User {
     private String email;
     private String lastName;
     private String firstName;
-    private int id;
     private List<User> followedCreatorList;
     private List<Event> events;
     private Set<Event> localEvents;
@@ -33,11 +32,10 @@ public class User {
 
         this.firstName = firstName;
         this.lastName = lastName;
+        // ID
         this.email = email;
         this.followedCreatorList = new ArrayList<User>();
         this.events = new ArrayList<Event>();
-        this.id = currentID;
-        currentID++;
     }
 
     private void addToFollowedCreators(User creator) {
@@ -83,9 +81,5 @@ public class User {
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public int getId() {
-        return id;
     }
 }
