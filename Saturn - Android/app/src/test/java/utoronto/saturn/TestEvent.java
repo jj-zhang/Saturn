@@ -13,7 +13,7 @@ public class TestEvent {
     private static final double rating = 1;
     private static final double userRating = 2;
     private static final long releaseDate = System.currentTimeMillis();
-    private static final Event correctEvent = new Event(id, name, desc, rating, userRating, null, releaseDate);
+    private static final Event correctEvent = new Event(id, name,  null, releaseDate);
 
     @Test
     public void testIDIsCorrect() {
@@ -24,7 +24,7 @@ public class TestEvent {
     public void testIDIsEmpty() {
         String id = "";
 
-        assertThatThrownBy(() -> new Event(id, "a", "a", 0, 0, null, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Event(id, "a", null, 0)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -36,33 +36,33 @@ public class TestEvent {
     public void testNameIsEmpty() {
         String name = "";
 
-        assertThatThrownBy(() -> new Event("a", name, "a", 0, 0, null, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Event("a", name,  null, 0)).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Test
-    public void testDescIsCorrect() {
-        assertThat(correctEvent.getDescription()).isEqualTo(desc);
-    }
+//    @Test
+//    public void testDescIsCorrect() {
+//        assertThat(correctEvent.getDescription()).isEqualTo(desc);
+//    }
+//
+//    @Test
+//    public void testRatingIsCorrect() {
+//        assertThat(correctEvent.getRating()).isEqualTo(rating);
+//    }
+//
+//    @Test
+//    public void testRatingIsNegative() {
+//        assertThatThrownBy(() -> new Event("a", "a", "a", -2, 0, null, 0)).isInstanceOf(IllegalArgumentException.class);
+//    }
 
-    @Test
-    public void testRatingIsCorrect() {
-        assertThat(correctEvent.getRating()).isEqualTo(rating);
-    }
-
-    @Test
-    public void testRatingIsNegative() {
-        assertThatThrownBy(() -> new Event("a", "a", "a", -2, 0, null, 0)).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    public void testUserRatingIsCorrect() {
-        assertThat(correctEvent.getUserRating()).isEqualTo(userRating);
-    }
-
-    @Test
-    public void testUserRatingIsNegative() {
-        assertThatThrownBy(() -> new Event("a", "a", "a", 0, -2, null, 0)).isInstanceOf(IllegalArgumentException.class);
-    }
+//    @Test
+//    public void testUserRatingIsCorrect() {
+//        assertThat(correctEvent.getUserRating()).isEqualTo(userRating);
+//    }
+//
+//    @Test
+//    public void testUserRatingIsNegative() {
+//        assertThatThrownBy(() -> new Event("a", "a", "a", 0, -2, null, 0)).isInstanceOf(IllegalArgumentException.class);
+   //}
 
     @Test
     public void testReleaseDateIsCorrect() {
@@ -71,7 +71,7 @@ public class TestEvent {
 
     @Test
     public void testReleaseDateIsNegative() {
-        assertThatThrownBy(() -> new Event("a", "a", "a", 0, 0, null, -2)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Event("a", "a",  null, -2)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

@@ -7,18 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import utoronto.saturn.*;
 
 import java.util.List;
 
+import utoronto.saturn.Event;
 import utoronto.saturn.app.R;
 
 public class EventItemFullAdapter extends
         RecyclerView.Adapter<EventItemFullAdapter.ViewHolder>{
-    //private List<Event> mEvents;
+    private List<Event> mEvents;
 
-    public EventItemFullAdapter() {
-        //mEvents = events;
+    public EventItemFullAdapter(List<Event> events) {
+        mEvents = events;
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -56,23 +56,33 @@ public class EventItemFullAdapter extends
 
     // Involves populating data into the item through holder
     @Override
-    public void onBindViewHolder(EventItemFullAdapter.ViewHolder viewHolder, int position) {
-        // TODO: FILL THIS IN WITH REAL DATA ONCE EVENT CLASS IS AVAILABLE
+    public void onBindViewHolder(@NonNull EventItemFullAdapter.ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        //Object event = mEvents.get(position);
+        if (mEvents == null || mEvents.size() == 0) {
+            TextView dateTextView = viewHolder.dateTextView;
+            dateTextView.setText("");
+            TextView eventNameTextView = viewHolder.eventNameTextView;
+            eventNameTextView.setText(R.string.event_noevents_message);
+            TextView locationTextView = viewHolder.locationTextView;
+            locationTextView.setText("");
+        }
+        else {
+            Event event = mEvents.get(position);
 
-        // Set item views based on your views and data model
-        TextView dateTextView = viewHolder.dateTextView;
-        dateTextView.setText("Oct 10");
-        TextView eventNameTextView = viewHolder.eventNameTextView;
-        eventNameTextView.setText("Gorillaz The Now Now Tour");
-        TextView locationTextView = viewHolder.locationTextView;
-        locationTextView.setText("Scotiabank Arena");
+            // Set item views based on your views and data model
+            TextView dateTextView = viewHolder.dateTextView;
+            dateTextView.setText(String.valueOf(event.getReleaseDate()));
+            TextView eventNameTextView = viewHolder.eventNameTextView;
+            eventNameTextView.setText(event.getName());
+            TextView locationTextView = viewHolder.locationTextView;
+           // locationTextView.setText(event.getDescription());
+        }
     }
 
     // Returns the total count of items in the list
     @Override
     public int getItemCount() {
-        return 2;
+        if (mEvents == null || mEvents.size() == 0) return 1;
+        return mEvents.size();
     }
 }

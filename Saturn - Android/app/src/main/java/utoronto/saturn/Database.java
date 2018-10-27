@@ -5,56 +5,40 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
-
+import java.sql.*;
 import utoronto.saturn.UserDatabase;
 
 public class Database {
-    protected Object userName;
-    protected Object password;
-    protected String dbms;
-    protected String serverName;
-    protected String portNumber;
-    protected String dbName;
+    protected String userName;
+    protected String password;
+    protected String url;
     // Setup for logging
     protected Logger log = Logger.getLogger(UserDatabase.class.getName());
     protected Connection connection;
 
-    public Database(Object password, String dbms, String dbName, String portNumber, Object userName, String serverName) {
+    public Database(String password, String userName, String url)  throws SQLException{
         this.password = password;
-        this.dbms = dbms;
-        this.dbName = dbName;
-        this.portNumber = portNumber;
         this.userName = userName;
-        this.serverName = serverName;
+        this.url = url;
         try {
-            connection = this.getConnection();
-        } catch (SQLException e) {
+            Class.forName("org.postgresql.Driver");
+            getConnection();
+
+        }
+        catch (java.lang.ClassNotFoundException e) {
             log.severe("Had an SQL Exception while trying to connect to the database");
             e.printStackTrace();
         }
+
     }
 
-    // CODE FROM: https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
-    // ACCESSED: OCTOBER 21 2018
+
     protected Connection getConnection() throws SQLException {
 
-        Connection connection = null;
-        Properties connectionProps = new Properties();
-        connectionProps.put("user", this.userName);
-        connectionProps.put("password", this.password);
+        Connection connection = DriverManager.getConnection(url, userName, password);
 
-        // Todo (rmartin): modify for our database
-        if (this.dbms.equals("mysql")) {
-            connection =
-                    DriverManager.getConnection(
-                            "jdbc:" + this.dbms + "://" + this.serverName + ":" + this.portNumber + "/",
-                            connectionProps);
-        } else if (this.dbms.equals("derby")) {
-            connection =
-                    DriverManager.getConnection(
-                            "jdbc:" + this.dbms + ":" + this.dbName + ";create=true", connectionProps);
-        }
-        log.fine("Connected to database");
+        this.connection = connection;
+
         return connection;
     }
 }
