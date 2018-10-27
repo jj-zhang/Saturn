@@ -8,9 +8,11 @@ import utoronto.saturn.Event;
 
 public class User {
 
+    private static int currentID = 0;
     private String email;
     private String lastName;
     private String firstName;
+    private int id;
     private List<User> followedCreatorList;
     private List<Event> events;
     private Set<Event> localEvents;
@@ -19,14 +21,23 @@ public class User {
     private Set<Event> attendingEvents;
 
     public User(String firstName, String lastName, String email) {
+
+        // Zero Lengths
         if (firstName.length() == 0 || lastName.length() == 0 || email.length() == 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("You passed an Argument of length 0!");
         }
+        // No @ in email
+        if (!email.contains("@")){
+            throw new IllegalArgumentException("Emails must contain @!");
+        }
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.followedCreatorList = new ArrayList<User>();
         this.events = new ArrayList<Event>();
+        this.id = currentID;
+        currentID++;
     }
 
     private void addToFollowedCreators(User creator) {
@@ -72,5 +83,9 @@ public class User {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -1,6 +1,9 @@
-import java.sql.*;
-import java.util.Properties;
-import java.util.logging.Level;
+package utoronto.saturn;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Logger;
 
 public class UserDatabase {
@@ -15,45 +18,19 @@ public class UserDatabase {
     // Setup for logging
     private Logger log = Logger.getLogger(UserDatabase.class.getName());
     private Connection connection;
-    // Todo (rmartin): Need a user here that we can get attributes for
+    private User user;
 
-    public UserDatabase() {
-        // Todo (rmartin): Modify for our database
+    public UserDatabase(User user) {
         super();
-    }
-
-    public UserDatabase(
-            Object userName,
-            Object password,
-            String dbms,
-            String serverName,
-            String portNumber,
-            String dbName) {
-        this.userName = userName;
-        this.password = password;
-        this.dbms = dbms;
-        this.serverName = serverName;
-        this.portNumber = portNumber;
-        this.dbName = dbName;
-
-        log.setLevel(Level.FINE);
-
-        // Setup Connection to our database
-        try {
-            connection = this.getConnection();
-        } catch (SQLException e) {
-            log.severe("Had an SQL Exception while trying to connect to the database");
-            e.printStackTrace();
-        }
+        this.user = user;
     }
 
     // Public API
-
     public void leaveGlobalEvent(String eventName) {
+        leaveGlobalEvent(user.getId(), eventName);
     }
 
-    // Todo (rmartin): Should eventually have an option of no userID here
-    public void leaveGlobalEvent(String userId, String eventName) {
+    public void leaveGlobalEvent(int userId, String eventName) {
 
         String delete =
                 "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
@@ -75,16 +52,33 @@ public class UserDatabase {
     }
 
     public void joinGlobalEvent() {
-        //INSERT INTO table(column1, column2, …)
-        //VALUES
-        // (value1, value2, …);
+
+        // TODO (rmartin) Add the correct columns when we have a decided schema
+        String insert =
+                "INSERT INTO user(*COLUMNS*) VALUES (*VALUES*)";
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            log.severe("Had an SQL exception while creating a statement");
+            e.printStackTrace();
+        }
+
+        try {
+            statement.execute(insert);
+        } catch (SQLException e) {
+            log.severe("Had an SQL exception while executing a insert statement");
+            e.printStackTrace();
+        }
     }
 
     public void removeLocalEvent(String eventName) {
+        removeLocalEvent(user.getId(), eventName);
     }
 
-    // Todo (rmartin): Should eventually have an option of no userID here
-    public void removeLocalEvent(String userId, String eventName) {
+
+    public void removeLocalEvent(int userId, String eventName) {
 
         String delete =
                 "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
@@ -106,31 +100,54 @@ public class UserDatabase {
     }
 
     public void addLocalEvent() {
-        //INSERT INTO table(column1, column2, …)
-        //VALUES
-        // (value1, value2, …);
-    }
 
-    public void modifyAttribute() {
-        // DELETE THEN
-        //INSERT INTO table(column1, column2, …)
-        //VALUES
-        // (value1, value2, …);
+        // TODO (rmartin) Add the correct columns when we have a decided schema
+        String insert =
+                "INSERT INTO user(*COLUMNS*) VALUES (*VALUES*)";
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            log.severe("Had an SQL exception while creating a statement");
+            e.printStackTrace();
+        }
+
+        try {
+            statement.execute(insert);
+        } catch (SQLException e) {
+            log.severe("Had an SQL exception while executing a insert statement");
+            e.printStackTrace();
+        }
     }
 
     public void openAccount() {
-        //INSERT INTO table(column1, column2, …)
-        //VALUES
-        // (value1, value2, …);
+
+        // TODO (rmartin) Add the correct columns when we have a decided schema
+        String insert =
+                "INSERT INTO user(*COLUMNS*) VALUES (*VALUES*)";
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            log.severe("Had an SQL exception while creating a statement");
+            e.printStackTrace();
+        }
+
+        try {
+            statement.execute(insert);
+        } catch (SQLException e) {
+            log.severe("Had an SQL exception while executing a insert statement");
+            e.printStackTrace();
+        }
     }
 
     public ResultSet getAttribute(String attribute) {
-        // Todo (rmartin): Implement when we have a user obj to use
-        return null;
+        return getAttribute(user.getId(), attribute);
     }
 
-    // Todo (rmartin): Should eventually have an option of no userID here
-    public ResultSet getAttribute(String userID, String attribute) {
+    public ResultSet getAttribute(int userID, String attribute) {
 
         ResultSet resultSet = null;
 
@@ -153,31 +170,5 @@ public class UserDatabase {
         }
 
         return resultSet;
-    }
-
-    // Private Code
-
-    // CODE FROM: https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html
-    // ACCESSED: OCTOBER 21 2018
-    private Connection getConnection() throws SQLException {
-
-        Connection connection = null;
-        Properties connectionProps = new Properties();
-        connectionProps.put("user", this.userName);
-        connectionProps.put("password", this.password);
-
-        // Todo (rmartin): modify for our database
-        if (this.dbms.equals("mysql")) {
-            connection =
-                    DriverManager.getConnection(
-                            "jdbc:" + this.dbms + "://" + this.serverName + ":" + this.portNumber + "/",
-                            connectionProps);
-        } else if (this.dbms.equals("derby")) {
-            connection =
-                    DriverManager.getConnection(
-                            "jdbc:" + this.dbms + ":" + this.dbName + ";create=true", connectionProps);
-        }
-        log.fine("Connected to database");
-        return connection;
     }
 }
