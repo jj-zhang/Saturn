@@ -12,6 +12,18 @@ public class Event {
     private long releaseDate;
 
     Event(String ID, String name, String desc, double rating, double userRating, URL imageURL, long releaseDate) {
+        if(ID.replaceAll(" ", "").length() == 0) {
+            throw new IllegalArgumentException("ID is empty!");
+        } else if(name.replaceAll(" ", "").length() == 0) {
+            throw new IllegalArgumentException("Name is empty!");
+        } else if(rating < -1) { // -1 == unrated
+            throw new IllegalArgumentException("Rating is a negative number!");
+        } else if(userRating < -1) {
+            throw new IllegalArgumentException("UserRating is a negative number!");
+        } else if(releaseDate < -1) {
+            throw new IllegalArgumentException("Release date is a negative number!");
+        }
+
         this.ID = ID;
         this.name = name;
         this.desc = desc;
@@ -47,7 +59,11 @@ public class Event {
     }
 
     public URL getImageURL() {
-        return imageURL;
+        return this.imageURL;
+    }
+
+    public long getReleaseDate() {
+        return this.releaseDate;
     }
 
     /*
@@ -65,7 +81,7 @@ public class Event {
             return 0;
         } else {
             // Add a func to turn this into readable time at some point...
-            return System.currentTimeMillis() - this.releaseDate;
+            return this.releaseDate - System.currentTimeMillis();
         }
     }
 }
