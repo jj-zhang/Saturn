@@ -30,7 +30,7 @@ public class UserDatabase {
         leaveGlobalEvent(user.getEmail(), eventName);
     }
 
-    public void leaveGlobalEvent(String userId, String eventName) {
+    private void leaveGlobalEvent(String userId, String eventName) {
 
         String delete =
                 "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
@@ -44,6 +44,7 @@ public class UserDatabase {
         }
 
         try {
+            assert statement != null;
             statement.execute(delete);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a delete statement");
@@ -66,6 +67,7 @@ public class UserDatabase {
         }
 
         try {
+            assert statement != null;
             statement.execute(insert);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a insert statement");
@@ -78,7 +80,7 @@ public class UserDatabase {
     }
 
 
-    public void removeLocalEvent(String userId, String eventName) {
+    private void removeLocalEvent(String userId, String eventName) {
 
         String delete =
                 "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
@@ -92,6 +94,7 @@ public class UserDatabase {
         }
 
         try {
+            assert statement != null;
             statement.execute(delete);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a delete statement");
@@ -114,6 +117,7 @@ public class UserDatabase {
         }
 
         try {
+            assert statement != null;
             statement.execute(insert);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a insert statement");
@@ -136,6 +140,7 @@ public class UserDatabase {
         }
 
         try {
+            assert statement != null;
             statement.execute(insert);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a insert statement");
@@ -147,7 +152,7 @@ public class UserDatabase {
         return getAttribute(user.getEmail(), attribute);
     }
 
-    public ResultSet getAttribute(String userID, String attribute) {
+    private ResultSet getAttribute(String userID, String attribute) {
 
         ResultSet resultSet = null;
 
