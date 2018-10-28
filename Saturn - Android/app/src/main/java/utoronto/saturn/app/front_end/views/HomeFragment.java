@@ -59,11 +59,11 @@ public class HomeFragment extends Fragment {
 
         // Set up recycler views
         RecyclerView rvEventsComingUp = view.findViewById(R.id.rv_events_coming_up);
-        EventItemFullAdapter adapter = new EventItemFullAdapter();
+        EventItemFullAdapter adapter = new EventItemFullAdapter(null);
         rvEventsComingUp.setAdapter(adapter);
         rvEventsComingUp.setLayoutManager(new LinearLayoutManager(this.getContext()));
         RecyclerView rvSuggestions = view.findViewById(R.id.rv_suggestions);
-        adapter = new EventItemFullAdapter();
+        adapter = new EventItemFullAdapter(null);
         rvSuggestions.setAdapter(adapter);
         rvSuggestions.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
