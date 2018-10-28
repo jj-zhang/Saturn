@@ -39,6 +39,8 @@ public class Event {
         return this.releaseDate;
     }
 
+    public String getDescription(){ return "Desc";}
+
     /*
         Checks if event is released
      */

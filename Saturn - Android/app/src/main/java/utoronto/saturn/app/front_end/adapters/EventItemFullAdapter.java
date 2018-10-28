@@ -75,7 +75,11 @@ public class EventItemFullAdapter extends
             TextView eventNameTextView = viewHolder.eventNameTextView;
             eventNameTextView.setText(event.getName());
             TextView locationTextView = viewHolder.locationTextView;
+
            // locationTextView.setText(event.getDescription());
+
+            locationTextView.setText(event.getDescription());
+
         }
     }
 

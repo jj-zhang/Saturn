@@ -2,6 +2,7 @@ package utoronto.saturn;
 
 //paste this into a file called Postgres.java
 import java.sql.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 public class dbConnection {
 
     public static void main(String[] args) throws ParseException {
+
         try {
             Class.forName("org.postgresql.Driver");
         }
@@ -22,6 +24,7 @@ public class dbConnection {
 
         try {
             Connection db = DriverManager.getConnection(url, username, password);
+
             //delete(db, 4);
            //add(db, "FoodWar", "anime", "sampleurl", "2019-03-12");
             Statement st = db.createStatement();
@@ -100,6 +103,7 @@ public class dbConnection {
         try {
             Statement st = db.createStatement();
             ResultSet rs = st.executeQuery("ALTER TABLE users ADD eventId INT");
+
         }
         catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
