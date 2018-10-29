@@ -1,0 +1,21 @@
+Max three minutes
+
+Introduction (30-45 seconds)
+Give the audience some context
+Tell the audience what they are about to watch
+-S@urn is an app/web extension that allows users to browse, search, and be reminded of upcoming media/product releases and events they are excited for.
+-For users who constantly forget the release dates or are awaiting the release dates of various forms of media. S@urn allows users to pin media to remind and update their anticipated releases rather than visiting multiple websites to get their fill of whether or not it has been released yet.
+
+
+Demo (1½ - 2 minutes)
+Demonstrate your product
+Present it from the user’s perspective, and guide the audience through the most common user flow.
+-Use Ellen's Mockup and demostrate login, add event, look at events
+
+
+Final discussion (30-45 seconds)
+Summarize what we saw
+-Users can create accounts and login to our app, browse different events to their liking and add events to their 'favorite' list
+
+Briefly discuss what you’re planning to do next
+-Next we're going to implement the countdown which will notify the user when the event release date is coming up, and add even more events and categories to our database.
