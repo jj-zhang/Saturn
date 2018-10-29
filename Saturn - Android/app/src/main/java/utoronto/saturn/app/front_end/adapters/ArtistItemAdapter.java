@@ -66,7 +66,7 @@ public class ArtistItemAdapter extends
 
             // Set item views based on your views and data model
             TextView artistNameTextView = viewHolder.artistNameTextView;
-            artistNameTextView.setText(artist.getFirstName() + artist.getLastName());
+            artistNameTextView.setText(artist.getUsername());
             artistNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
         }
     }

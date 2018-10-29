@@ -7,34 +7,40 @@ import static org.assertj.core.api.Assertions.*;
 public class TestUser {
 
     @Test
-    public void TestEmptyFirstName(){
-        Throwable thrown = catchThrowable(() -> {new User("", "","");});
-        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    public void TestEmptyLastName(){
-        Throwable thrown = catchThrowable(() -> {new User("a", "","");});
+    public void TestEmptyUsername(){
+        Throwable thrown = catchThrowable(() -> {new User("", "m@gic@user.ca", "abc");});
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void TestEmptyEmail(){
-        Throwable thrown = catchThrowable(() -> {new User("a", "a","");});
+        Throwable thrown = catchThrowable(() -> {new User("magic", "", "abc");});
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
+    public void TestEmptyPassword(){
+        Throwable thrown = catchThrowable(() -> {new User("magic", "a@a", "");});
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void TestPasswordTooShort(){
+        // TODO: Actually do this
+        assertThat(true);
+    }
+
+    @Test
     public void TestEmailWithoutAt(){
-        Throwable thrown = catchThrowable(() -> {new User("a", "a","a");});
+        Throwable thrown = catchThrowable(() -> {new User("magic", "aa", "aef");});
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(expected = IllegalStateException.class)
     public void TestDuplicateFollow () {
-        User A = new User("a","a", "a@a");
-        A.addToFollowedCreators(new User("b", "b", "b@b"));
-        A.addToFollowedCreators(new User("c", "c", "c@c"));
-        A.addToFollowedCreators(new User("b", "b", "b@b"));
+        User A = new User("magic", "a@a","aef");
+        A.addToFollowedCreators(new User("magic", "b@b", "abc"));
+        A.addToFollowedCreators(new User("magic", "c@c", "cde"));
+        A.addToFollowedCreators(new User("magic", "b@b", "abc"));
     }
 }

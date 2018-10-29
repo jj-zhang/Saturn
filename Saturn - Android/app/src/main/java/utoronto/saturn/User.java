@@ -2,16 +2,16 @@ package utoronto.saturn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import utoronto.saturn.Event;
 
 public class User {
 
-    private static int currentID = 0;
+    private String username;
     private String email;
-    private String lastName;
-    private String firstName;
+    private String password;
     private List<User> followedCreatorList;
     private List<Event> events;
     private Set<Event> localEvents;
@@ -19,26 +19,31 @@ public class User {
     private Set<Event> interestedEvents;
     private Set<Event> attendingEvents;
 
-    public User(String firstName, String lastName, String email) {
+    public User(String username, String email, String password) {
 
         // Zero Lengths
-        if (firstName.length() == 0 || lastName.length() == 0 || email.length() == 0) {
+        if (username.length() == 0 || email.length() == 0 || password.length() == 0) {
             throw new IllegalArgumentException("You passed an Argument of length 0!");
         }
         // No @ in email
-        if (!email.contains("@")){
+        if (!email.contains("@")) {
             throw new IllegalArgumentException("Emails must contain @!");
         }
 
-        this.firstName = firstName;
-        this.lastName = lastName;
         // ID
+        this.username = username;
         this.email = email;
+        this.password = password;
         this.followedCreatorList = new ArrayList<User>();
         this.events = new ArrayList<Event>();
     }
 
-    private void addToFollowedCreators(User creator) {
+    public void addToFollowedCreators(User creator) {
+        // Already Following Creator
+        if (followedCreatorList.contains(creator)) {
+            throw new IllegalStateException("Already following that creator!");
+        }
+
         this.followedCreatorList.add(creator);
     }
 
@@ -55,31 +60,49 @@ public class User {
     }
 
     // Returns name in format first:last
-    public String getName() {
-        return this.firstName + ":" + this.lastName;
+    public String getPassword() {
+        return this.password;
+    }
+
+    public String getUsername() {
+        return this.username;
     }
 
     public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(String email) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(followedCreatorList, user.followedCreatorList) &&
+                Objects.equals(events, user.events) &&
+                Objects.equals(localEvents, user.localEvents) &&
+                Objects.equals(globalEvents, user.globalEvents) &&
+                Objects.equals(interestedEvents, user.interestedEvents) &&
+                Objects.equals(attendingEvents, user.attendingEvents);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(username, email, password, followedCreatorList, events, localEvents, globalEvents, interestedEvents, attendingEvents);
+    }
+
+    private void setUsername(String username) {
+        this.username = username;
+    }
+
+    private void setEmail(String email) {
         this.email = email;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
+    void setPassword(String password) {
+        this.password = password;
     }
 }
