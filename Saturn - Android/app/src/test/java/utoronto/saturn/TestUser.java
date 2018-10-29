@@ -26,8 +26,8 @@ public class TestUser {
 
     @Test
     public void TestPasswordTooShort(){
-        // TODO: Actually do this
-        assertThat(true);
+        Throwable thrown = catchThrowable(() -> {new User("magic", "a@a", "abc");});
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
