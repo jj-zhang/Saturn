@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
-public class UserDatabase {
+public class UserDatabase extends Database {
 
     private Object userName;
     private Object password;
@@ -20,8 +20,8 @@ public class UserDatabase {
     private Connection connection;
     private User user;
 
-    public UserDatabase(User user) {
-        super();
+    public UserDatabase(User user, String password, String userName, String url) throws SQLException {
+        super(password, userName, url);
         this.user = user;
     }
 
@@ -51,11 +51,10 @@ public class UserDatabase {
         }
     }
 
-    public void joinGlobalEvent() {
+    public void joinGlobalEvent(int id) {
 
-        // TODO (rmartin) Add the correct columns when we have a decided schema
         String insert =
-                "INSERT INTO user(*COLUMNS*) VALUES (*VALUES*)";
+                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + id + "', '" + user.getUsername() + "')";
         Statement statement = null;
 
         try {
@@ -99,11 +98,10 @@ public class UserDatabase {
         }
     }
 
-    public void addLocalEvent() {
+    public void addLocalEvent(int id) {
 
-        // TODO (rmartin) Add the correct columns when we have a decided schema
         String insert =
-                "INSERT INTO user(*COLUMNS*) VALUES (*VALUES*)";
+                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + id + "', '" + user.getUsername()  + "')";
         Statement statement = null;
 
         try {
@@ -123,9 +121,8 @@ public class UserDatabase {
 
     public void openAccount() {
 
-        // TODO (rmartin) Add the correct columns when we have a decided schema
         String insert =
-                "INSERT INTO user(*COLUMNS*) VALUES (*VALUES*)";
+                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + null + "', '" + user.getUsername()  + "')";
         Statement statement = null;
 
         try {
