@@ -8,7 +8,7 @@ public class Event {
     private URL imageURL;
     private long releaseDate;
 
-    Event(String ID, String name, URL imageURL, long releaseDate) {
+    public Event(String ID, String name, String desc, double rating, double userRating, URL imageURL, long releaseDate) {
         if(ID.replaceAll(" ", "").length() == 0) {
             throw new IllegalArgumentException("ID is empty!");
         } else if(name.replaceAll(" ", "").length() == 0) {
