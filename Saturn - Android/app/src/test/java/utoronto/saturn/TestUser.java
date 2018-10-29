@@ -8,13 +8,13 @@ public class TestUser {
 
     @Test
     public void TestEmptyUsername(){
-        Throwable thrown = catchThrowable(() -> {new User("", "m@gic@user.ca", "abc");});
+        Throwable thrown = catchThrowable(() -> {new User("", "m@gic@user.ca", "abcabcabc");});
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void TestEmptyEmail(){
-        Throwable thrown = catchThrowable(() -> {new User("magic", "", "abc");});
+        Throwable thrown = catchThrowable(() -> {new User("magic", "", "abcabcabc");});
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -26,21 +26,21 @@ public class TestUser {
 
     @Test
     public void TestPasswordTooShort(){
-        // TODO: Actually do this
-        assertThat(true);
+        Throwable thrown = catchThrowable(() -> {new User("magic", "a@a", "abc");});
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void TestEmailWithoutAt(){
-        Throwable thrown = catchThrowable(() -> {new User("magic", "aa", "aef");});
+        Throwable thrown = catchThrowable(() -> {new User("magic", "aa", "aefaefaef");});
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(expected = IllegalStateException.class)
     public void TestDuplicateFollow () {
-        User A = new User("magic", "a@a","aef");
-        A.addToFollowedCreators(new User("magic", "b@b", "abc"));
-        A.addToFollowedCreators(new User("magic", "c@c", "cde"));
-        A.addToFollowedCreators(new User("magic", "b@b", "abc"));
+        User A = new User("magic", "a@a","aefaefaef");
+        A.addToFollowedCreators(new User("magic", "b@b", "abcabcabc"));
+        A.addToFollowedCreators(new User("magic", "c@c", "cdecdecde"));
+        A.addToFollowedCreators(new User("magic", "b@b", "abcabcabc"));
     }
 }
