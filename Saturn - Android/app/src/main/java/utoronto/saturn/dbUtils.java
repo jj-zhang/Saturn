@@ -1,17 +1,24 @@
 package utoronto.saturn;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 
 public class dbUtils {
 
+    private final static ArrayList<String> tables = new ArrayList<String>(Arrays.asList("events", "users"));
+    private final static ArrayList<String> eventsValues = new ArrayList<String>(Arrays.asList("id", "creator", "name", "description", "date", "type", "url", "*"));
+    private final static ArrayList<String> usersValues = new ArrayList<String>(Arrays.asList("email", "username", "password", "eventid", "*"));
     private final static String driver = "org.postgresql.Driver";
     private final static String url = "jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn";
     private final static String username = "tjlevpcn";
@@ -60,7 +67,7 @@ public class dbUtils {
      *
      * @return True if connected, else false
      */
-    private static boolean tryConnect() {
+    public static boolean tryConnect() {
         // Runs if any request fails and in main
         if(!isConnected()) {
             testForJar();
@@ -78,9 +85,13 @@ public class dbUtils {
      * @param SQLValue Row in column in database
      * @return Return whether the query successfully executed
      */
-    public static boolean deleteRow(String table, String SQLIdentifier, String SQLValue){
+    public static boolean deleteRow(String table, String SQLIdentifier, String SQLValue) throws IllegalArgumentException {
         if(!tryConnect()) {
             return false;
+        }
+
+        if(!tables.contains(table)) {
+            throw new IllegalArgumentException("Table is not valid!");
         }
 
         try {
@@ -197,7 +208,117 @@ public class dbUtils {
         return false;
     }
 
+    /**
+     * Return the query after selecting a column
+     *
+     * @param table Table to select from
+     * @param column Column to select
+     * @return Query of selection
+     * @throws IllegalArgumentException If values are not valid
+     */
+    private static ResultSet selectColumn(String table, String column) throws IllegalArgumentException {
+        if(!tryConnect()) {
+            return null;
+        }
+
+        if(!tables.contains(table)) {
+            throw new IllegalArgumentException("Table is not valid!");
+        } else if ((table.equals("events") && !eventsValues.contains(column)) || (table.equals("userss") && !usersValues.contains(column))) {
+            throw new IllegalArgumentException("Column is not valid!");
+        }
+
+        try {
+            return SQLStatement.executeQuery("SELECT " + column + " FROM " + table);
+        }
+        catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
+            SQLConnection = null;
+        }
+        return null;
+    }
+
+    /**
+     * Return the query after selecting a column
+     *
+     * @param table Table to select from
+     * @param column Column to select from
+     * @param value Value to select in the column
+     * @return Query of selection
+     * @throws IllegalArgumentException If values are not valid
+     */
+    public static ResultSet selectRow(String table, String column, String value) throws IllegalArgumentException {
+        if(!tryConnect()) {
+            return null;
+        }
+
+        if(!tables.contains(table)) {
+            throw new IllegalArgumentException("Table is not valid!");
+        } else if ((table.equals("events") && !eventsValues.contains(column)) || (table.equals("users") && !usersValues.contains(column))) {
+            throw new IllegalArgumentException("Column is not valid!");
+        } else if (value.contains(" ")) {
+            throw new IllegalArgumentException("Value is trying to exploit SQL query!");
+        }
+
+        try {
+            return SQLStatement.executeQuery("SELECT " + column + " FROM " + table + " WHERE " + column + "=" + value);
+        }
+        catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
+            SQLConnection = null;
+        }
+        return null;
+    }
+
+    /**
+     * Prints out the entirety of the table
+     *
+     * @param table Table to print
+     * @param rows Number of rows to print
+     */
+    private static boolean printTable(String table, int rows) throws IllegalArgumentException {
+        if(!tryConnect()) {
+            return false;
+        }
+
+        if(!tables.contains(table)) {
+            throw new IllegalArgumentException("Table is not valid!");
+        }
+
+        // Cycle through everything from select column
+        ResultSet set = selectColumn(table, "*");
+        if(set == null)
+            return false;
+
+        ResultSetMetaData metaSet;
+
+        try {
+            metaSet = set.getMetaData();
+
+            ArrayList<String> columns = new ArrayList<>();
+
+            for(int column = 1; column <= metaSet.getColumnCount(); column++) {
+                columns.add(metaSet.getColumnLabel(column));
+            }
+
+            String rowString;
+            while(set.next() && rows != 0) {
+                rowString = "";
+                for(int i = 0; i < columns.size(); i++) {
+                    rowString += columns.get(i) + ": " + set.getString(columns.get(i)) + ", ";
+                }
+
+                System.out.println(rowString.substring(0, rowString.length() - 2));
+                rows -= 1;
+            }
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
     public static void main(String a[]) {
-        System.out.println(addRow("a@a.ca", "a", "a", 1));
+        printTable("events", 5);
     }
 }
