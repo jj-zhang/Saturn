@@ -1,6 +1,13 @@
 package utoronto.saturn;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class dbUtils {
@@ -69,21 +76,22 @@ public class dbUtils {
      * @param table Table in database
      * @param SQLIdentifier Column in database
      * @param SQLValue Row in column in database
-     * @return Return the result of the query
+     * @return Return whether the query successfully executed
      */
-    public static ResultSet deleteRow(String table, String SQLIdentifier, String SQLValue){
+    public static boolean deleteRow(String table, String SQLIdentifier, String SQLValue){
         if(!tryConnect()) {
-            return null;
+            return false;
         }
 
         try {
-            return SQLStatement.executeQuery("DELETE FROM " + table + " WHERE " + SQLIdentifier + "=" + SQLValue);
+            SQLStatement.executeQuery("DELETE FROM " + table + " WHERE " + SQLIdentifier + "=" + SQLValue);
+            return true;
         }
         catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
             SQLConnection = null;
         }
-        return null;
+        return false;
     }
 
     /**
@@ -93,22 +101,23 @@ public class dbUtils {
      * @param username User's username
      * @param password User's password
      * @param eventid A user event's ID
-     * @return Return the result of the query
+     * @return Return whether the query successfully executed
      */
-    public static ResultSet addRow(String email, String username, String password, int eventid){
+    public static boolean addRow(String email, String username, String password, int eventid){
         if(!tryConnect()) {
-            return null;
+            return false;
         }
 
         try {
-            return SQLStatement.executeQuery("INSERT INTO users " + usersColumn +
-                    " VALUES ('" + email + "','" + username + "', " + password + ", '" + eventid + "')");
+            SQLStatement.executeQuery("INSERT INTO users " + usersColumn +
+                    " VALUES ('" + email + "','" + username + "', '" + password + "', '" + eventid + "')");
+            return true;
         }
         catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
             SQLConnection = null;
         }
-        return null;
+        return false;
     }
 
     /**
@@ -119,22 +128,26 @@ public class dbUtils {
      * @param description Description of event
      * @param type Type of event ie. Anime
      * @param url Image url
-     * @return the result of the query
+     * @return Return whether the query successfully executed
      */
-    public static ResultSet addRow(String creator, String name, String description, String date, String type, String url){
+    public static boolean addRow(String creator, String name, String description, String date, String type, String url) throws ParseException {
         if(!tryConnect()) {
-            return null;
+            return false;
         }
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date properDate = dateFormat.parse(date);
+
         try {
-            return SQLStatement.executeQuery("INSERT INTO events " + eventsColumn +
-                    " VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', " + description + "', '" + date + "', '" + type + "', '" + url + "')");
+            SQLStatement.executeQuery("INSERT INTO events " + eventsColumn +
+                    " VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + description + "', '" + properDate + "', '" + type + "', '" + url + "')");
+            return true;
         }
         catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
             SQLConnection = null;
         }
-        return null;
+        return false;
     }
 
     /**
@@ -143,21 +156,22 @@ public class dbUtils {
      * @param table Table to add column to
      * @param valueName Name of column
      * @param valueType Type of column
-     * @return the result of the query
+     * @return Return whether the query successfully executed
      */
-    private static ResultSet addColumn(String table, String valueName, String valueType){
+    private static boolean addColumn(String table, String valueName, String valueType){
         if(!tryConnect()) {
-            return null;
+            return false;
         }
 
         try {
-            return SQLStatement.executeQuery("ALTER TABLE " + table + " ADD " + valueName + " " + valueType);
+            SQLStatement.executeQuery("ALTER TABLE " + table + " ADD " + valueName + " " + valueType);
+            return true;
         }
         catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
             SQLConnection = null;
         }
-        return null;
+        return false;
     }
 
     /**
@@ -165,20 +179,25 @@ public class dbUtils {
      *
      * @param table Table to add column to
      * @param valueName Name of column
-     * @return the result of the query
+     * @return Return whether the query successfully executed
      */
-    private static ResultSet removeColumn(String table, String valueName){
+    private static boolean removeColumn(String table, String valueName){
         if(!tryConnect()) {
-            return null;
+            return false;
         }
 
         try {
-            return SQLStatement.executeQuery("ALTER TABLE " + table + " DROP " + valueName);
+            SQLStatement.executeQuery("ALTER TABLE " + table + " DROP " + valueName);
+            return true;
         }
         catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
             SQLConnection = null;
         }
-        return null;
+        return false;
+    }
+
+    public static void main(String a[]) {
+        System.out.println(addRow("a@a.ca", "a", "a", 1));
     }
 }
