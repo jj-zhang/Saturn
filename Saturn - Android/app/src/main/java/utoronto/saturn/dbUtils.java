@@ -209,6 +209,84 @@ public class dbUtils {
         return false;
     }
 
+    private static String queryColumn(String table, String column) throws IllegalArgumentException {
+        if (table.equals("events")) {
+            if (!eventsValues.contains(column)) {
+                throw new IllegalArgumentException("Column " + column + " is not valid!");
+            }
+        } else if (table.equals("users")) {
+            if (!usersValues.contains(column)) {
+                throw new IllegalArgumentException("Column " + column + " is not valid!");
+            }
+        }
+
+        return column;
+    }
+
+    private static String queryColumns(String table, List<String> columns) throws IllegalArgumentException {
+        String columnQuery = "";
+
+        for(String column : columns) {
+            columnQuery += queryColumn(table, column) + ", ";
+        }
+
+        return columnQuery.substring(0, columnQuery.length() - 2);
+    }
+
+    private static String queryRow(String column, String row) throws IllegalArgumentException {
+        if(row.contains(" ")) {
+            throw new IllegalArgumentException(row + " is trying to exploit SQL query!");
+        }
+
+        return column + "=" + row;
+    }
+
+    /**
+     * Automates the querying and error-checking of multiple row queries over a single column
+     *
+     * @param column
+     * @param rows
+     * @return Query of rows
+     * @throws IllegalArgumentException
+     */
+    private static String queryRows(String column, List<String> rows) throws IllegalArgumentException {
+        for(String row : rows)
+            if(row.contains(" "))
+                throw new IllegalArgumentException(row + " is trying to exploit SQL query!");
+
+        String rowQuery = "";
+
+        for(String row : rows)
+            rowQuery += column + "=" + row + " OR ";
+
+        return rowQuery.substring(0, rowQuery.length() - 4);
+    }
+
+    /**
+     * Automates the querying and error-checking of multiple column and row queries
+     * Queries column index and row index
+     * Ie. ["A", "B"], ["C", "D"] = "A=C", "B=D"
+     *
+     * @param columns
+     * @param rows
+     * @return Query of rows
+     * @throws IllegalArgumentException
+     */
+    private static String queryRows(List<String> columns, List<String> rows) throws IllegalArgumentException {
+
+        if(columns.size() != rows.size()) {
+            throw new IllegalArgumentException("Column List is not the same size of Row list");
+        }
+
+        String rowQuery = "";
+
+        for(int i = 0; i < columns.size(); i++) {
+            rowQuery += queryRow(columns.get(i), rows.get(i)) + " OR ";
+        }
+
+        return rowQuery.substring(0, rowQuery.length() - 4);
+    }
+
     /**
      * Return the query after selecting a column
      *
@@ -224,8 +302,8 @@ public class dbUtils {
 
         if(!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
-        } else if ((table.equals("events") && !eventsValues.contains(column)) || (table.equals("users") && !usersValues.contains(column))) {
-            throw new IllegalArgumentException("Column is not valid!");
+        } else {
+            queryColumn(table, column);
         }
 
         try {
@@ -251,28 +329,16 @@ public class dbUtils {
             return null;
         }
 
+        String columnQuery;
+
         if(!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
-        } else if (table.equals("events")) {
-            for (String column : columns) {
-                if (!eventsValues.contains(column)) {
-                    throw new IllegalArgumentException("Column " + column + " is not valid!");
-                }
-            }
-        } else if (table.equals("users")) {
-            for (String column : columns) {
-                if (!usersValues.contains(column)) {
-                    throw new IllegalArgumentException("Column " + column + " is not valid!");
-                }
-            }
+        } else {
+            columnQuery = queryColumns(table, columns);
         }
 
         try {
-            String query = "SELECT ";
-            for(String column : columns) {
-                query += column + ", ";
-            }
-            query = query.substring(0, query.length() - 2) + " FROM " + table;
+            String query = "SELECT " + columnQuery + " FROM " + table;
             return SQLStatement.executeQuery(query);
         }
         catch (java.sql.SQLException e) {
@@ -287,25 +353,25 @@ public class dbUtils {
      *
      * @param table Table to select from
      * @param column Column to select from
-     * @param value Value to select in the column
+     * @param row Value to select in the column
      * @return Query of selection
      * @throws IllegalArgumentException If values are not valid
      */
-    public static ResultSet selectRow(String table, String column, String value) throws IllegalArgumentException {
+    public static ResultSet selectRow(String table, String column, String row) throws IllegalArgumentException {
         if(!tryConnect()) {
             return null;
         }
 
+        String rowQuery;
+
         if(!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
-        } else if ((table.equals("events") && !eventsValues.contains(column)) || (table.equals("users") && !usersValues.contains(column))) {
-            throw new IllegalArgumentException("Column is not valid!");
-        } else if (value.contains(" ")) {
-            throw new IllegalArgumentException("Value is trying to exploit SQL query!");
+        } else {
+            rowQuery = queryRow(column, row);
         }
 
         try {
-            return SQLStatement.executeQuery("SELECT " + column + " FROM " + table + " WHERE " + column + "=" + value);
+            return SQLStatement.executeQuery("SELECT " + column + " FROM " + table + " WHERE " + rowQuery);
         }
         catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
@@ -319,32 +385,23 @@ public class dbUtils {
             return null;
         }
 
+        String columnQuery;
+
         if(!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
-        } else if (table.equals("events")) {
-            for (String column : columns) {
-                if (!eventsValues.contains(column)) {
-                    throw new IllegalArgumentException("Column " + column + " is not valid!");
-                }
-            }
-        } else if (table.equals("users")) {
-            for (String column : columns) {
-                if (!usersValues.contains(column)) {
-                    throw new IllegalArgumentException("Column " + column + " is not valid!");
-                }
-            }
         } else if (value.contains(" ")) {
             throw new IllegalArgumentException("Value is trying to exploit SQL query!");
+        } else {
+            columnQuery = queryColumns(table, columns);
         }
 
         try {
-            String query = "SELECT ";
+            String query = "SELECT " + columnQuery + " FROM " + table + " WHERE ";
             String laterQuery = "";
-            for(String column : columns) {
-                query += column + ", ";
+            for(String column : columns) { // TODO: DEAL WITH THIS
                 laterQuery += column + "=" + value;
             }
-            query = query.substring(0, query.length() - 2) + " FROM " + table + " WHERE " + laterQuery;
+            query += laterQuery;
             return SQLStatement.executeQuery(query);
         }
         catch (java.sql.SQLException e) {
@@ -354,26 +411,23 @@ public class dbUtils {
         return null;
     }
 
-    public static ResultSet selectRows(String table, String column, List<String> values) throws IllegalArgumentException {
+    public static ResultSet selectRows(String table, String column, List<String> rows) throws IllegalArgumentException {
         if(!tryConnect()) {
             return null;
         }
+
+        String rowQuery;
 
         if(!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if ((table.equals("events") && !eventsValues.contains(column)) || (table.equals("users") && !usersValues.contains(column))) {
             throw new IllegalArgumentException("Column is not valid!");
         } else
-            for(String value : values)
-                if(value.contains(" "))
-                    throw new IllegalArgumentException("Value is trying to exploit SQL query!");
+            rowQuery = queryRows(column, rows);
 
         try {
-            String query = "SELECT " + column + " FROM " + table + " WHERE ";
-                for(String value : values)
-                    query += column + "=" + value + " OR ";
-
-            return SQLStatement.executeQuery(query.substring(0, query.length() - 4));
+            String query = "SELECT " + column + " FROM " + table + " WHERE " + rowQuery;
+            return SQLStatement.executeQuery(query);
         }
         catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
@@ -382,39 +436,22 @@ public class dbUtils {
         return null;
     }
 
-    public static ResultSet selectRows(String table, List<String> columns, List<String> values) throws IllegalArgumentException {
+    public static ResultSet selectRows(String table, List<String> columns, List<String> rows) throws IllegalArgumentException {
         if(!tryConnect()) {
             return null;
         }
 
+        String columnQuery, rowQuery;
+
         if(!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
-        } else if (table.equals("events")) {
-            for (String column : columns) {
-                if (!eventsValues.contains(column)) {
-                    throw new IllegalArgumentException("Column " + column + " is not valid!");
-                }
-            }
-        } else if (table.equals("users")) {
-            for (String column : columns) {
-                if (!usersValues.contains(column)) {
-                    throw new IllegalArgumentException("Column " + column + " is not valid!");
-                }
-            }
-        } else
-            for(String value : values)
-                if(value.contains(" "))
-                    throw new IllegalArgumentException("Value is trying to exploit SQL query!");
+        } else {
+            columnQuery = queryColumns(table, columns);
+            rowQuery = queryRows(columns, rows);
+        }
 
         try {
-            String query = "SELECT ";
-            String laterQuery = "";
-            for(String column : columns) {
-                query += column + ", ";
-                for(String value : values)
-                    laterQuery += column + "=" + value + " OR ";
-            }
-            query = query.substring(0, query.length() - 2) + " FROM " + table + " WHERE " + laterQuery.substring(0, laterQuery.length() - 4);
+            String query = "SELECT " + columnQuery + " FROM " + table + " WHERE " + rowQuery;
             return SQLStatement.executeQuery(query);
         }
         catch (java.sql.SQLException e) {
