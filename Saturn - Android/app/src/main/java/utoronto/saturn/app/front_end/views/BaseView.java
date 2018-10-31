@@ -24,7 +24,7 @@ public class BaseView extends AppCompatActivity {
     }
 
     // Referenced from https://awsrh.blogspot.com/2017/10/custom-pop-up-window-with-android-studio.html
-    public void ShowPopup(View v) {
+    public void eventPopUp(View v) {
         // v.getParent();
         System.out.println("clicked pop up");
         myDialog.setContentView(R.layout.event_description_popup);
@@ -49,6 +49,26 @@ public class BaseView extends AppCompatActivity {
         });
 
         updateTextBoxes();
+
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+    }
+
+    public void artistPopUp(View v) {
+        // v.getParent();
+        System.out.println("clicked pop up");
+        myDialog.setContentView(R.layout.artist_description_popup);
+        TextView close_popup = (TextView) myDialog.findViewById(R.id.close_artist_popup);
+        close_popup.setText("X");
+
+        close_popup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Closes the pop up if the user clicks the X
+                myDialog.dismiss();
+            }
+        });
+        
 
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
