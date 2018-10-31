@@ -79,14 +79,14 @@ public class dbUtils {
     }
 
     /**
-     * Deletes a row from table with SQLIdentifier equal to SQLValue
+     * Deletes a row from table with SQLIdentifier equal to row
      *
      * @param table Table in database
-     * @param SQLIdentifier Column in database
-     * @param SQLValue Row in column in database
+     * @param column Column in database
+     * @param row Row in column in database
      * @return Return whether the query successfully executed
      */
-    public static boolean deleteRow(String table, String SQLIdentifier, String SQLValue) throws IllegalArgumentException {
+    public static boolean deleteRow(String table, String column, String row) throws IllegalArgumentException {
         if(!tryConnect()) {
             return false;
         }
@@ -96,7 +96,7 @@ public class dbUtils {
         }
 
         try {
-            SQLStatement.executeQuery("DELETE FROM " + table + " WHERE " + SQLIdentifier + "=" + SQLValue);
+            SQLStatement.executeQuery("DELETE FROM " + table + " WHERE " + column + "=" + row);
             return true;
         }
         catch (java.sql.SQLException e) {
@@ -511,6 +511,7 @@ public class dbUtils {
     }
 
     public static void main(String a[]) {
+        deleteRow("events", "id", "4001");
         printTable("events", 5);
     }
 }
