@@ -3,14 +3,20 @@ Max three minutes
 Introduction (30-45 seconds)
 Give the audience some context
 Tell the audience what they are about to watch
--S@urn is an app that allows users to browse, search, and be reminded of upcoming media/product releases and events they are excited for.
--For users who constantly forget the release dates or are awaiting the release dates of various forms of media. S@urn allows users to pin media to remind and update their anticipated releases rather than visiting multiple websites to get their fill of whether or not it has been released yet.
+Have you ever missed the premiere of a show you've been waiting to watch and got really frustrated because your friend spoiled you on the next day? Have you ever been annoyed because you have to go on a thousand different websites in order to keep track of release dates of the things you are looking forward to? Or do you just want a simple, and easy to use app to browse and look for events and releases  that might pique your interest? 
+Introducing S@turn, the perfect app to keep you up to date on your favourite forms of media! 
+
+S@urn is an app that allows users to browse, search, and be reminded of upcoming media/product releases and events they are excited for.
+It is perfect for people who constantly forget the release dates or are awaiting the release dates of various forms of media. S@urn allows users to pin media to remind and update their anticipated releases rather than visiting multiple websites to get their fill of whether or not it has been released yet. 
 
 
 Demo (1½ - 2 minutes)
 Demonstrate your product
 Present it from the user’s perspective, and guide the audience through the most common user flow.
 -Use Ellen's Mockup and demostrate login, add event, look at events
+Now, for a demonstration of the current product: 
+First, open up the app. We are going to log in as an already existing user so that we don't need to fuss with the sign up shenanigans. And now, here we are in our app's home page. You can see that, on the home tab, there is a list the closest upcoming events that the user have already signed up for. There is also a list of suggested events that the user might be interested in, as well as a list of events that are popular right now. Clicking on an event shows some additional information about the event, as well as a button the user can click to add the event to their calendar. Let's go back to our home page, and click on the browse tab. Here you can see a few different categories of events. Clicking on a category gives you a list of events that belong in the category, so the user can browse and see if anything is of their liking. Let's go to the Following tab next. This tab lists all the artists that the user is currently following so that they don't miss any events by their favourite people. Clicking on the artist will show a short description of the artist, as well as events that the artist is involved in, if there are any available. And last up, we have the Mine tab, which contains the user's calendar, listing out all the events the user have signed up for. 
+
 
 
 Final discussion (30-45 seconds)
@@ -19,3 +25,6 @@ Summarize what we saw
 
 Briefly discuss what you’re planning to do next
 -Next we're going to implement the countdown which will notify the user when the event release date is coming up, and add even more events and categories to our database.
+
+So there it is, you've just seen a sneak peek of what Saturn is able to offer you. Users can create accounts in order to log into our app, browse different events to their liking, and add events to their "favourite" list. 
+Next up, we are going to implement the notifications and reminders the app will send to the users when their event's release date is coming up, integrate our front end Android app with our backend databases fully, and make scrapers for different websites in order to find more events to add to our database. As you can see, the UI also needs a lot of polishing up, and we still have a long way to go in actually being able to add events to the calendar, and being able to send a reminder to the user. Hope you've enjoyed a first look at Saturn. 
