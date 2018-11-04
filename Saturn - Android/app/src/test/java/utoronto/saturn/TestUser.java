@@ -5,6 +5,9 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.*;
 
 public class TestUser {
+    
+    // TestUSerExists
+    // Test Email Exists
 
     @Test
     public void TestEmptyUsername(){
