@@ -8,6 +8,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 import static org.junit.Assert.assertEquals;
@@ -75,18 +76,30 @@ public class TestDatabase{
     @Test()
     public void testCreateEvent() throws SQLException, MalformedURLException, ParseException {
         Statement st = db.connection.createStatement();
-        Event e = db.createEvent(1);
+        Event e = db.createEvent(6001);
 
-        assertEquals("YuruCamp", e.getName());
+        assertEquals("Yuru Camp", e.getName());
         URL u = new URL("https://myanimelist.cdn-dena.com/images/anime/4/89877.jpg");
 
         assertEquals(u, e.getImageURL());
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-        Date parseDate = f.parse("2019-01-23");
+        Date parseDate = f.parse("2018-01-04");
         long milliseconds = parseDate.getTime();
         //Event newEvent = new Event(Integer.toString(1), "YuruCamp", u,milliseconds);
 
         assertEquals(milliseconds, e.getReleaseDate());
+
+    }
+
+    @Test()
+    public void testGetPopular() throws SQLException, MalformedURLException, ParseException {
+        List<Event>  list = db.getPopular();
+        list = db.getSuggested();
+        for(Event e : list){
+            System.out.print(e.getName());
+        }
+
+        assertEquals(0, 0);
 
     }
 }

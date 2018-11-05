@@ -5,6 +5,7 @@ public class GlobalEventManager extends EventManager {
     public GlobalEventManager() {
         super();
     }
+
     public List<Event> getPopular(){
         //from database
         return null;
