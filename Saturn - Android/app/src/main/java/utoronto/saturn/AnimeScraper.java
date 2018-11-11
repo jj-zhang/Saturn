@@ -15,10 +15,10 @@ import java.util.Locale;
 
 
 public class AnimeScraper extends Scraper{
-    String url;
-    String desc;
-    String dir;
-    String date;
+    private String url;
+    private String desc;
+    private String dir;
+    private String date;
 
     @Override
     int scrape(String title) throws IOException, ParseException{
@@ -27,6 +27,7 @@ public class AnimeScraper extends Scraper{
             return 1;
 
         parseFeedBack();
+        dbUtils.addRow(dir, title, desc, date, "anime", url, true);
         return 0;
     }
 
