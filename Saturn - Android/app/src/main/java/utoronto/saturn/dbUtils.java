@@ -1,6 +1,5 @@
 package utoronto.saturn;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -115,7 +114,7 @@ public class dbUtils {
      * @param eventid A user event's ID
      * @return Return whether the query successfully executed
      */
-    public static boolean addRow(String email, String username, String password, int eventid){
+    public static boolean addRowUser(String email, String username, String password, int eventid){
         if(!tryConnect()) {
             return false;
         }
@@ -142,7 +141,7 @@ public class dbUtils {
      * @param url Image url
      * @return Return whether the query successfully executed
      */
-    public static boolean addRow(String creator, String name, String description, String date, String type, String url, boolean isglobal) throws ParseException {
+    public static boolean addRowCreator(String creator, String name, String description, String date, String type, String url, boolean isglobal) throws ParseException {
         if(!tryConnect()) {
             return false;
         }
@@ -314,7 +313,7 @@ public class dbUtils {
         return null;
     }
 
-    public static ResultSet selectRow(String table, List<String> columns, String value) throws IllegalArgumentException {
+    public static ResultSet selectRows(String table, List<String> columns, String value) throws IllegalArgumentException {
         if(!tryConnect()) {
             return null;
         }
