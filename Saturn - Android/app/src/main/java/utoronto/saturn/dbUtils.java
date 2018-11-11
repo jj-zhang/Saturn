@@ -114,7 +114,7 @@ public class dbUtils {
      * @param eventid A user event's ID
      * @return Return whether the query successfully executed
      */
-    public static boolean addRow(String email, String username, String password, int eventid){
+    public static boolean addRowUser(String email, String username, String password, int eventid){
         if(!tryConnect()) {
             return false;
         }
