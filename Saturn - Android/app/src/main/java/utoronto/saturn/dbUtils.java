@@ -1,6 +1,5 @@
 package utoronto.saturn;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -115,7 +114,7 @@ public class dbUtils {
      * @param eventid A user event's ID
      * @return Return whether the query successfully executed
      */
-    public static boolean addRowCreator(String email, String username, String password, int eventid){
+    public static boolean addRow(String email, String username, String password, int eventid){
         if(!tryConnect()) {
             return false;
         }
