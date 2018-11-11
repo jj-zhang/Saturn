@@ -313,7 +313,7 @@ public class dbUtils {
         return null;
     }
 
-    public static ResultSet selectRow(String table, List<String> columns, String value) throws IllegalArgumentException {
+    public static ResultSet selectRows(String table, List<String> columns, String value) throws IllegalArgumentException {
         if(!tryConnect()) {
             return null;
         }
