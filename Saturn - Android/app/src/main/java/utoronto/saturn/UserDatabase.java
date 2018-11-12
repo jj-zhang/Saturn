@@ -30,7 +30,7 @@ public class UserDatabase extends Database {
         leaveGlobalEvent(user.getEmail(), eventName);
     }
 
-    public void leaveGlobalEvent(String userId, String eventName) {
+    private void leaveGlobalEvent(String userId, String eventName) {
 
         String delete =
                 "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
@@ -44,7 +44,8 @@ public class UserDatabase extends Database {
         }
 
         try {
-            statement.execute(delete);
+            assert statement != null;
+            statement.executeUpdate(delete);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a delete statement");
             e.printStackTrace();
@@ -65,7 +66,8 @@ public class UserDatabase extends Database {
         }
 
         try {
-            statement.execute(insert);
+            assert statement != null;
+            statement.executeUpdate(insert);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a insert statement");
             e.printStackTrace();
@@ -77,7 +79,7 @@ public class UserDatabase extends Database {
     }
 
 
-    public void removeLocalEvent(String userId, String eventName) {
+    private void removeLocalEvent(String userId, String eventName) {
 
         String delete =
                 "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
@@ -91,7 +93,8 @@ public class UserDatabase extends Database {
         }
 
         try {
-            statement.execute(delete);
+            assert statement != null;
+            statement.executeUpdate(delete);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a delete statement");
             e.printStackTrace();
@@ -101,7 +104,7 @@ public class UserDatabase extends Database {
     public void addLocalEvent(int id) {
 
         String insert =
-                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + id + "', '" + user.getUsername()  + "')";
+                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + id + "', '" + user.getUsername() + "')";
         Statement statement = null;
 
         try {
@@ -112,6 +115,7 @@ public class UserDatabase extends Database {
         }
 
         try {
+            assert statement != null;
             statement.execute(insert);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a insert statement");
@@ -122,7 +126,7 @@ public class UserDatabase extends Database {
     public void openAccount() {
 
         String insert =
-                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + null + "', '" + user.getUsername()  + "')";
+                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + null + "', '" + user.getUsername() + "')";
         Statement statement = null;
 
         try {
@@ -133,7 +137,8 @@ public class UserDatabase extends Database {
         }
 
         try {
-            statement.execute(insert);
+            assert statement != null;
+            statement.executeUpdate(insert);
         } catch (SQLException e) {
             log.severe("Had an SQL exception while executing a insert statement");
             e.printStackTrace();
@@ -144,7 +149,7 @@ public class UserDatabase extends Database {
         return getAttribute(user.getEmail(), attribute);
     }
 
-    public ResultSet getAttribute(String userID, String attribute) {
+    private ResultSet getAttribute(String userID, String attribute) {
 
         ResultSet resultSet = null;
 
