@@ -6,6 +6,7 @@ import org.junit.Test;
 public class TestImplementsEvent {
     private static final Event LE = new Event("h", "h", null, 0);
     private static final LocalEventManager LEM = new LocalEventManager();
+    private static final GlobalEventManager GEM = new GlobalEventManager();
 
     private static void assertImplementsOrExtends(Object instObj, Class<?> obj) {
         try {
@@ -26,5 +27,10 @@ public class TestImplementsEvent {
     @Test
     public void testLocalEventManagerExtendsEventManager() {
         assertImplementsOrExtends(LEM, EventManager.class);
+    }
+
+    @Test
+    public void testGlobalEventManagerExtendsEventManager() {
+        assertImplementsOrExtends(GEM, EventManager.class);
     }
 }
