@@ -95,7 +95,7 @@ public class DatabaseUtilities {
         }
 
         try {
-            SQLStatement.executeQuery("DELETE FROM " + table + " WHERE " + SQLIdentifier + "=" + SQLValue);
+            SQLStatement.executeUpdate("DELETE FROM " + table + " WHERE " + SQLIdentifier + "=" + SQLValue);
             return true;
         }
         catch (java.sql.SQLException e) {
@@ -120,7 +120,7 @@ public class DatabaseUtilities {
         }
 
         try {
-            SQLStatement.executeQuery("INSERT INTO users " + usersColumn +
+            SQLStatement.executeUpdate("INSERT INTO users " + usersColumn +
                     " VALUES ('" + email + "','" + username + "', '" + password + "', '" + eventid + "')");
             return true;
         }
@@ -150,7 +150,7 @@ public class DatabaseUtilities {
         Date properDate = dateFormat.parse(date);
 
         try {
-            SQLStatement.executeQuery("INSERT INTO events " + eventsColumn +
+            SQLStatement.executeUpdate("INSERT INTO events " + eventsColumn +
                     " VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + description + "', '" + properDate + "', '" + type + "', '" + url + "', '" + isglobal + "')");
             return true;
         }
@@ -175,7 +175,7 @@ public class DatabaseUtilities {
         }
 
         try {
-            SQLStatement.executeQuery("ALTER TABLE " + table + " ADD " + valueName + " " + valueType);
+            SQLStatement.executeUpdate("ALTER TABLE " + table + " ADD " + valueName + " " + valueType);
             return true;
         }
         catch (java.sql.SQLException e) {
@@ -198,7 +198,7 @@ public class DatabaseUtilities {
         }
 
         try {
-            SQLStatement.executeQuery("ALTER TABLE " + table + " DROP " + valueName);
+            SQLStatement.executeUpdate("ALTER TABLE " + table + " DROP " + valueName);
             return true;
         }
         catch (java.sql.SQLException e) {

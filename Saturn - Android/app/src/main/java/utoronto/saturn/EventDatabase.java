@@ -14,21 +14,21 @@ import java.util.logging.Logger;
 
 public class EventDatabase extends Database {
 
-    public EventDatabase(String password, String userName, String url)  throws SQLException{
+    EventDatabase(String password, String userName, String url)  throws SQLException{
         super(password,  userName, url);
         log.setLevel(Level.FINE);
     }
 
-    public void addEvent(String name, String genre, String url, String date, boolean isGlobal) throws SQLException{
+    void addEvent(String name, String genre, String url, String date, boolean isGlobal) throws SQLException{
         String bool = "FALSE";
        if(isGlobal)
            bool = "TRUE";
         Statement st = super.connection.createStatement();
-        st.executeQuery("INSERT INTO events (id, name, type, isGlobal, url, date)" +
+        st.executeUpdate("INSERT INTO events (id, name, type, isGlobal, url, date)" +
                 " VALUES (DEFAULT, '" + name + "','" + genre + "','" + bool + "', '" + url +"', '" + date + "')");
     }
 
-    public void deleteEvent(int id) throws SQLException{
+    void deleteEvent(int id) throws SQLException{
         Statement st = super.connection.createStatement();
         st.executeQuery("DELETE FROM events WHERE id=" + id);
     }
@@ -50,7 +50,7 @@ public class EventDatabase extends Database {
 
     }
 
-    public Event createEvent(int id) throws SQLException, ParseException, MalformedURLException {
+    Event createEvent(int id) throws SQLException, ParseException, MalformedURLException {
         Statement st = super.connection.createStatement();
         ResultSet rs = st.executeQuery("SELECT name, url, date FROM events WHERE id = " + id);
         ResultSetMetaData rsmd = rs.getMetaData();
