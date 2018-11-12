@@ -1,4 +1,5 @@
 package utoronto.saturn;
+
 import org.junit.Test;
 import org.junit.*;
 import org.postgresql.util.PSQLException;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestDatabase{
+public class TestDatabase {
 
     EventDatabase db;
 
@@ -23,7 +24,7 @@ public class TestDatabase{
     }
 
     @Test
-    public void testColumnsUsers() throws SQLException{
+    public void testColumnsUsers() throws SQLException {
         Statement st = db.connection.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM users");
         ResultSetMetaData rsmd = rs.getMetaData();
@@ -34,7 +35,7 @@ public class TestDatabase{
     }
 
     @Test
-    public void testColumnsEvents() throws SQLException{
+    public void testColumnsEvents() throws SQLException {
         Statement st = db.connection.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM events");
         ResultSetMetaData rsmd = rs.getMetaData();
@@ -45,7 +46,7 @@ public class TestDatabase{
     }
 
     @Test()
-    public void testAddEvent() throws SQLException{
+    public void testAddEvent() throws SQLException {
         db.addEvent("Yuri On Ice", "anime", "Sampleurl", "2019-02-04", true);
 
         Statement st = db.connection.createStatement();
@@ -55,12 +56,18 @@ public class TestDatabase{
         assertEquals(1, rs.getInt(1));
 
         st.executeUpdate("DELETE FROM events WHERE name = 'Yuri On Ice'");
+
+        rs = st.executeQuery("SELECT COUNT(*) FROM events WHERE name = 'Yuri On Ice'");
+
+        rs.next();
+        assertEquals(0, rs.getInt(1));
+
         rs.close();
         st.close();
     }
 
     @Test(expected = SQLException.class)
-    public void testDeleteEvent() throws SQLException{
+    public void testDeleteEvent() throws SQLException {
         //db.addEvent("Yuri On Ice", "anime", "Sampleurl", "2019-02-04", true);
         Statement st = db.connection.createStatement();
         ResultSet rs = st.executeQuery("SELECT id FROM events WHERE name = 'Yuri On Ice'");
