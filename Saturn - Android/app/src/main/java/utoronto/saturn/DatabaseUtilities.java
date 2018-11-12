@@ -141,7 +141,7 @@ public class DatabaseUtilities {
      * @param url Image url
      * @return Return whether the query successfully executed
      */
-    public static boolean addRowCreator(String creator, String name, String description, String date, String type, String url, boolean isglobal) throws ParseException {
+    public static boolean addRowEvent(String creator, String name, String description, String date, String type, String url, boolean isglobal) throws ParseException {
         if(!tryConnect()) {
             return false;
         }
