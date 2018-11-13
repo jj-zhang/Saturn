@@ -68,7 +68,7 @@ public class BaseView extends AppCompatActivity {
                 myDialog.dismiss();
             }
         });
-        
+
 
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
