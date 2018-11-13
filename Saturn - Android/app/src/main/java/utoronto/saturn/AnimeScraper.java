@@ -68,7 +68,7 @@ public class AnimeScraper extends Scraper {
             }
             for(int j = 0; j < cols.size(); j++){
                 if(in2.equals("date")) {
-                    System.out.printf("%s \n", cols.get(j).text());
+                    //System.out.printf("%s \n", cols.get(j).text());
                     SimpleDateFormat parser=new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
                     Date longDate = parser.parse(cols.get(j).text());
                     String date = new SimpleDateFormat("yyyy-MM-dd").format(longDate);
@@ -80,5 +80,9 @@ public class AnimeScraper extends Scraper {
                 in2 = "";
             }
         }
+    }
+    public static void main(String[] args) throws Exception {
+        AnimeScraper anime = new AnimeScraper();
+        anime.scrape("One Piece");
     }
 }
