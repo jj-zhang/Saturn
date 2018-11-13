@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class DatabaseUtilities {
+public class DatabaseUtilities extends Database{
 
     private final static ArrayList<String> tables = new ArrayList<String>(Arrays.asList("events", "users"));
     private final static ArrayList<String> eventsValues = new ArrayList<String>(Arrays.asList("id", "creator", "name", "description", "date", "type", "url", "isglobal", "*"));
@@ -28,6 +28,10 @@ public class DatabaseUtilities {
     private static Connection SQLConnection;
     private static Statement SQLStatement;
 
+
+    public DatabaseUtilities() throws SQLException {
+        super();
+    }
     /**
      * Check if sql library exists
      */

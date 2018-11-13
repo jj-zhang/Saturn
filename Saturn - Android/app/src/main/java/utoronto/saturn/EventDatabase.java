@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 
 public class EventDatabase extends Database {
 
-    EventDatabase(String password, String userName, String url) throws SQLException {
-        super(password, userName, url);
+    EventDatabase() throws SQLException {
+        super();
         log.setLevel(Level.FINE);
     }
 

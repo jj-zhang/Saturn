@@ -20,8 +20,8 @@ public class UserDatabase extends Database {
     private Connection connection;
     private User user;
 
-    public UserDatabase(User user, String password, String userName, String url) throws SQLException {
-        super(password, userName, url);
+    public UserDatabase(User user) throws SQLException {
+        super();
         this.user = user;
     }
 
