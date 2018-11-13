@@ -22,6 +22,7 @@
                 android:value=".front_end.views.SearchResultActivity" />
         </activity>
         <activity android:name=".front_end.views.LoginActivity"></activity>
+        <activity android:name=".front_end.views.SignupActivity"></activity>
         <activity android:name=".front_end.views.SearchResultActivity">
             <intent-filter>
             <action android:name="android.intent.action.SEARCH" />

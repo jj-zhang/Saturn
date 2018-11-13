@@ -7,7 +7,7 @@
     android:orientation="vertical"
 
     android:background="@drawable/background_colour"
-    tools:context=".front_end.views.LoginActivity">
+    tools:context=".front_end.views.SignupActivity">
 
     <!-- Login progress -->
 
@@ -66,7 +66,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/login_activity_button"
+            android:id="@+id/signup_activity_button"
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
