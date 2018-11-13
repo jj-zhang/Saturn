@@ -15,6 +15,16 @@ public class TestExistence {
     }
 
     @Test
+    public void checkEventExists() {
+        assertClassExists(PATH + "Event");
+    }
+
+    @Test
+    public void checkUserExists() {
+        assertClassExists(PATH + "User");
+    }
+
+    @Test
     public void checkEventManagerExists() {
         assertClassExists(PATH + "EventManager");
     }
@@ -25,7 +35,27 @@ public class TestExistence {
     }
 
     @Test
-    public void checkEventExists() {
-        assertClassExists(PATH + "Event");
+    public void checkGlobalEventManagerExists() {
+        assertClassExists(PATH + "GlobalEventManager");
+    }
+
+    @Test
+    public void checkDatabaseClassExists() {
+        assertClassExists(PATH + "Database");
+    }
+
+    @Test
+    public void checkEventDatabaseClassExists() {
+        assertClassExists(PATH + "EventDatabase");
+    }
+
+    @Test
+    public void checkUserDatabaseClassExists() {
+        assertClassExists(PATH + "UserDatabase");
+    }
+
+    @Test
+    public void checkDatabaseUtilitiesClassExists() {
+        assertClassExists(PATH + "DatabaseUtilities");
     }
 }

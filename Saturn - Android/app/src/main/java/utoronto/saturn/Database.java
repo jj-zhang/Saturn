@@ -9,17 +9,14 @@ import java.sql.*;
 import utoronto.saturn.UserDatabase;
 
 public class Database {
-    protected String userName;
-    protected String password;
-    protected String url;
+    private final static String url = "jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn";
+    private final static String username = "tjlevpcn";
+    private final static String password = "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu";
     // Setup for logging
     protected Logger log = Logger.getLogger(UserDatabase.class.getName());
     protected Connection connection;
 
-    public Database(String password, String userName, String url)  throws SQLException{
-        this.password = password;
-        this.userName = userName;
-        this.url = url;
+    public Database()  throws SQLException{
         try {
             Class.forName("org.postgresql.Driver");
             getConnection();
@@ -35,7 +32,7 @@ public class Database {
 
     protected Connection getConnection() throws SQLException {
 
-        Connection connection = DriverManager.getConnection(url, userName, password);
+        Connection connection = DriverManager.getConnection(url, username, password);
 
         this.connection = connection;
 

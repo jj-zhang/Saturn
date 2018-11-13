@@ -1,10 +1,8 @@
 package utoronto.saturn;
-
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,24 +10,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-
-public class AnimeScraper extends Scraper{
-    String url;
-    String desc;
-    String dir;
-    String date;
-
+public class AnimeScraper extends Scraper {
+    private String url;
+    private String desc;
+    private String dir;
+    private String date;
     @Override
     int scrape(String title) throws IOException, ParseException{
         int ret = requestHTTP(title);
         if(ret == 1)
             return 1;
-
         parseFeedBack();
+        DatabaseUtilities.addRowEvent(dir, title, desc, date, "anime", url, true);
         return 0;
     }
-
     @Override
     int requestHTTP(String title) throws IOException {
         String newTitle = title.replaceAll("\\s+", "_");
@@ -41,9 +35,7 @@ public class AnimeScraper extends Scraper{
             return 1;
         }
         return 0;
-
     }
-
     @Override
     void parseFeedBack() throws MalformedURLException, ParseException {
         //image url
@@ -53,16 +45,13 @@ public class AnimeScraper extends Scraper{
             url = "https:" + headline.attr("src");
             break;
         }
-
         element = doc.select("#mw-content-text p");
         for (Element line : element) {
             desc = line.text();
             break;
         }
-
         Element table = doc.select("table.infobox").get(0); //select the first table.
         Elements rows = table.select("tr");
-
         int indicator = 0;
         String in2 = "";
         for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
@@ -79,7 +68,7 @@ public class AnimeScraper extends Scraper{
             }
             for(int j = 0; j < cols.size(); j++){
                 if(in2.equals("date")) {
-                    System.out.printf("%s \n", cols.get(j).text());
+                    //System.out.printf("%s \n", cols.get(j).text());
                     SimpleDateFormat parser=new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
                     Date longDate = parser.parse(cols.get(j).text());
                     String date = new SimpleDateFormat("yyyy-MM-dd").format(longDate);
@@ -91,6 +80,9 @@ public class AnimeScraper extends Scraper{
                 in2 = "";
             }
         }
-
+    }
+    public static void main(String[] args) throws Exception {
+        AnimeScraper anime = new AnimeScraper();
+        anime.scrape("One Piece");
     }
 }

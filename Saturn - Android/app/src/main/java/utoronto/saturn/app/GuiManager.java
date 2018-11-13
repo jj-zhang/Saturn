@@ -1,7 +1,9 @@
 package utoronto.saturn.app;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import utoronto.saturn.Database;
 import utoronto.saturn.Event;
 import utoronto.saturn.User;
 
@@ -9,11 +11,13 @@ public class GuiManager {
     // This class is the connection between the front end and the back end
     // A singleton class accessed by the front end to query for info, etc.
 
-    private static final GuiManager instance = new GuiManager();
+    private static GuiManager instance;
     private User currentUser;
+    private Database database;
 
-    private GuiManager() {
-
+    private GuiManager() throws SQLException {
+        database = new Database();
+        instance = new GuiManager();
     }
 
     // Use this to get the current instance of this class
