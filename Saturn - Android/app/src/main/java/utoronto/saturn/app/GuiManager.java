@@ -1,11 +1,16 @@
 package utoronto.saturn.app;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import utoronto.saturn.Database;
+import utoronto.saturn.DatabaseUtilities;
 import utoronto.saturn.Event;
 import utoronto.saturn.User;
+import utoronto.saturn.UserDatabase;
 
 public class GuiManager {
     // This class is the connection between the front end and the back end
@@ -14,7 +19,7 @@ public class GuiManager {
     private static GuiManager instance;
     private User currentUser;
     private Database database;
-
+    private static Statement SQLStatement;
     private GuiManager() throws SQLException {
         database = new Database();
         instance = new GuiManager();
@@ -27,11 +32,57 @@ public class GuiManager {
 
     // sign up functions
     public boolean signUp(String email, String firstName, String lastName, String password) {
+        User loginUser = new User("username", email, password);
+        UserDatabase userDB = null;
+        try {
+            userDB = new UserDatabase(loginUser);
+        } catch (SQLException e) {
+            // TODO: Display error
+            e.printStackTrace();
+        }
+
+        // Get the resulting relations after selecting email
+        if (userDB.checkEmail("email")) {
+            return false;
+        }
+
+        userDB.openAccount();
         return true;
     }
 
     // log in functions
     public User logIn(String email, String password) {
+        // TODO: Implement login checking stuff
+        User loginUser = new User("username", email, password);
+        UserDatabase userDB = null;
+        try {
+            userDB = new UserDatabase(loginUser);
+        } catch (SQLException e){
+            // TODO: Display error
+            e.printStackTrace();
+        }
+
+        // Get the resulting relations after selecting email
+        if (userDB.checkEmail("email")) {
+            try {
+                // Check to see if the corresponding password matches
+                ResultSet set = SQLStatement.executeQuery("SELECT " + password + " FROM users WHERE email = " + email);
+                if (set.next()) {
+                    String correctPassword = set.getString(1);
+                    if (correctPassword.equals(password)) {
+                        return loginUser;
+                    }
+                    return null;
+                } else {
+                    throw new IllegalArgumentException("Current email does not have any saved passwords in the database -- This should never occur");
+                }
+
+            }
+            catch (java.sql.SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
         return null;
     }
 
