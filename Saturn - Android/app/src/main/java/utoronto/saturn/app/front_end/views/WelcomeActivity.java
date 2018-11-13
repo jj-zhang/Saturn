@@ -13,7 +13,7 @@ import utoronto.saturn.app.front_end.viewmodels.WelcomeViewModel;
 public class WelcomeActivity extends AppCompatActivity {
     private WelcomeViewModel mViewModel;
     private Button loginButton;
-
+    private Button signupButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,10 +22,18 @@ public class WelcomeActivity extends AppCompatActivity {
 
         loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(this::onLoginButtonClickAction);
+
+        signupButton = findViewById(R.id.signUpButton);
+        signupButton.setOnClickListener(this::onSignupButtonClickAction);
     }
 
     private void onLoginButtonClickAction(View v) {
         Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void onSignupButtonClickAction(View v) {
+        Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
     }
 }
