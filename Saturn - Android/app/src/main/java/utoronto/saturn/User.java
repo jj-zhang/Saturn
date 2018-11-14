@@ -23,7 +23,7 @@ public class User {
 
         // Zero Lengths
         if (username.length() == 0 || email.length() == 0 || password.length() < 8) {
-            throw new IllegalArgumentException("You passed an Argument of length 0!");
+            throw new IllegalArgumentException("You passed an Argument of invalid length!");
         }
         // No @ in email
         if (!email.contains("@")) {
