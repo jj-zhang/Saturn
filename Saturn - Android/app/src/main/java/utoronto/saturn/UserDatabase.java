@@ -110,6 +110,16 @@ public class UserDatabase extends Database {
     }
 
     /**
+     * Returns if input email in the users database
+     *
+     * @return true if input email is in the database
+     */
+    public boolean checkEmail(String email) {
+        ArrayList<String> lst = getAllEmail();
+        return lst.contains(email);
+    }
+
+    /**
      * Return info about a particular attribute in users table about user
      *
      * @return ResultSet that contains info about an attribute of user
