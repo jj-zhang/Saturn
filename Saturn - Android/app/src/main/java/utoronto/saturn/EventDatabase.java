@@ -1,6 +1,7 @@
 package utoronto.saturn;
 
 import android.annotation.SuppressLint;
+import android.provider.ContactsContract;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,6 +9,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -16,7 +18,9 @@ import java.util.logging.Logger;
 
 public class EventDatabase extends Database {
 
-    EventDatabase() throws SQLException {
+    private static final String table = "events";
+
+    EventDatabase() {
         super();
         log.setLevel(Level.FINE);
     }
@@ -25,9 +29,8 @@ public class EventDatabase extends Database {
         return DatabaseUtilities.addRowEvent(creator, name, description, date, type, url, isglobal);
     }
 
-    void deleteEvent(int id) throws SQLException {
-        Statement st = super.connection.createStatement();
-        st.executeUpdate("DELETE FROM events WHERE id=" + id);
+    boolean deleteEvent(int id) {
+        return DatabaseUtilities.deleteRow(table, "id", Integer.toString(id));
     }
 
     public List<Event> getPopular() throws SQLException, MalformedURLException, ParseException {
@@ -66,7 +69,10 @@ public class EventDatabase extends Database {
         while (rs.next()) {
             type = rs.getString(1);
         }
-        rs = st.executeQuery("SELECT id FROM events WHERE type = '" + type + "'");
+        rs = DatabaseUtilities.selectRow(table, "id", "type", type);
+        if(rs == null) {
+            return null;
+        }
         ArrayList<Event> eventLst = new ArrayList<>();
         ResultSetMetaData rsmd = rs.getMetaData();
         while (rs.next()) {
@@ -82,8 +88,10 @@ public class EventDatabase extends Database {
     }
 
     Event createEvent(int id) throws SQLException, ParseException, MalformedURLException {
-        Statement st = super.connection.createStatement();
-        ResultSet rs = st.executeQuery("SELECT name, url, date FROM events WHERE id = " + id);
+        ResultSet rs = DatabaseUtilities.selectRows(table, Arrays.asList("name", "url", "date"), "id", Integer.toString(id));
+        if(rs == null) {
+            return null;
+        }
         ResultSetMetaData rsmd = rs.getMetaData();
 
         String name = "";
@@ -110,7 +118,6 @@ public class EventDatabase extends Database {
 
         Event newEvent = new Event(Integer.toString(id), name, u, milliseconds);
         rs.close();
-        st.close();
         return newEvent;
     }
 }
