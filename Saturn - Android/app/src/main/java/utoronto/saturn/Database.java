@@ -15,11 +15,14 @@ public class Database {
     // Setup for logging
     protected Logger log = Logger.getLogger(UserDatabase.class.getName());
     protected Connection connection;
+    static Statement SQLStatement;
+
 
     public Database()  throws SQLException{
         try {
             Class.forName("org.postgresql.Driver");
             getConnection();
+
 
         }
         catch (java.lang.ClassNotFoundException e) {
@@ -35,6 +38,7 @@ public class Database {
         Connection connection = DriverManager.getConnection(url, username, password);
 
         this.connection = connection;
+        SQLStatement = connection.createStatement();
 
         return connection;
     }

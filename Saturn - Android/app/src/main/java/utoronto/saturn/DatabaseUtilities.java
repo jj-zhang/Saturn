@@ -220,7 +220,7 @@ public class DatabaseUtilities extends Database{
      * @return Query of selection
      * @throws IllegalArgumentException If values are not valid
      */
-    private static ResultSet selectColumn(String table, String column) throws IllegalArgumentException {
+    public static ResultSet selectColumn(String table, String column) throws IllegalArgumentException {
         if(!tryConnect()) {
             return null;
         }
@@ -478,5 +478,16 @@ public class DatabaseUtilities extends Database{
 
     public static void main(String a[]) {
         printTable("events", 5);
+        ArrayList<String> lst = new ArrayList<>();
+        ResultSet set = DatabaseUtilities.selectColumn("users", "email");
+        try {
+            while (set.next()) {
+                lst.add(set.getString(1));
+                System.out.print(set.getString(1));
+            }
+        }
+        catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

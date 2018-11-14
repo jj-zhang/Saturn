@@ -21,13 +21,8 @@ public class EventDatabase extends Database {
         log.setLevel(Level.FINE);
     }
 
-    void addEvent(String name, String genre, String url, String date, boolean isGlobal) throws SQLException {
-        String bool = "FALSE";
-        if (isGlobal)
-            bool = "TRUE";
-        Statement st = super.connection.createStatement();
-        st.executeUpdate("INSERT INTO events (id, name, type, isGlobal, url, date)" +
-                " VALUES (DEFAULT, '" + name + "','" + genre + "','" + bool + "', '" + url + "', '" + date + "')");
+    boolean addEvent(String creator, String name, String description, String date, String type, String url, boolean isglobal) throws SQLException, ParseException{
+        return DatabaseUtilities.addRowEvent(creator, name, description, date, type, url, isglobal);
     }
 
     void deleteEvent(int id) throws SQLException {

@@ -11,12 +11,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 public class AnimeScraper extends Scraper {
-    private String url;
-    private String desc;
-    private String dir;
-    private String date;
+
     @Override
     int scrape(String title) throws IOException, ParseException{
+        url = "";
+        desc = "";
+        dir = "";
+        date= "";
         int ret = requestHTTP(title);
         if(ret == 1)
             return 1;
@@ -48,7 +49,8 @@ public class AnimeScraper extends Scraper {
         element = doc.select("#mw-content-text p");
         for (Element line : element) {
             desc = line.text();
-            break;
+            if(! desc.equals(""))
+                break;
         }
         Element table = doc.select("table.infobox").get(0); //select the first table.
         Elements rows = table.select("tr");

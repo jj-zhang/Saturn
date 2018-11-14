@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class UserDatabase extends Database {
@@ -19,158 +21,112 @@ public class UserDatabase extends Database {
     private Logger log = Logger.getLogger(UserDatabase.class.getName());
     private Connection connection;
     private User user;
+    private final static String usersColumn = "(email, username, password, eventid)";
+    private final static ArrayList<String> usersValues = new ArrayList<String>(Arrays.asList("email", "username", "password", "eventid", "*"));
+
 
     public UserDatabase(User user) throws SQLException {
         super();
         this.user = user;
     }
 
-    // Public API
-    public void leaveGlobalEvent(String eventName) {
-        leaveGlobalEvent(user.getEmail(), eventName);
+    /**
+     * Deletes  an event of this user with eventId (from events table)
+     *
+     * @param eventId the eventId in events table
+     * @return true on success
+     */
+    public boolean leaveEvent(int eventId) {
+        return leaveEvent(user.getEmail(), eventId);
     }
 
-    private void leaveGlobalEvent(String userId, String eventName) {
-
-        String delete =
-                "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
-        Statement statement = null;
-
-        try {
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while creating a statement");
-            e.printStackTrace();
-        }
+    /**
+     * Deletes a row from users table with userId (email) and eventId (from events table)
+     *
+     * @param userId the user's email in users table
+     * @param eventId the eventId in events table
+     * @return true on success
+     */
+    private boolean leaveEvent(String userId, int eventId) {
 
         try {
-            assert statement != null;
-            statement.executeUpdate(delete);
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while executing a delete statement");
-            e.printStackTrace();
+            SQLStatement.executeUpdate("DELETE FROM users WHERE email = " + userId + "AND eventid = " + eventId);
+            return true;
         }
+        catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
-    public void joinGlobalEvent(int id) {
+    /**
+     * Adds a row in users to create an entry to associate the user to event
+     *
+     * @param eventId the eventId in events table
+     * @return true on success
+     */
+    public boolean joinEvent(int eventId) {
 
-        String insert =
-                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + id + "', '" + user.getUsername() + "')";
-        Statement statement = null;
-
-        try {
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while creating a statement");
-            e.printStackTrace();
-        }
-
-        try {
-            assert statement != null;
-            statement.executeUpdate(insert);
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while executing a insert statement");
-            e.printStackTrace();
-        }
+        return DatabaseUtilities.addRowUser(user.getEmail(), user.getUsername(), user.getPassword(), eventId);
     }
 
-    public void removeLocalEvent(String eventName) {
-        removeLocalEvent(user.getEmail(), eventName);
+    /**
+     * Adds a row in users to create an entry with no eventId
+     *
+     * @return true on success
+     */
+    public boolean openAccount() {
+
+        try {
+            SQLStatement.executeUpdate("INSERT INTO users " + usersColumn +
+                    " VALUES ('" + user.getEmail() + "','" + user.getUsername() + "', '" + user.getPassword() + "', '')");
+            return true;
+        }
+        catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+
     }
 
-
-    private void removeLocalEvent(String userId, String eventName) {
-
-        String delete =
-                "DELETE FROM user WHERE userId = '" + userId + "' AND eventName = '" + eventName + "';";
-        Statement statement = null;
-
+    /**
+     * Returns an arrayList of all emails in users table
+     *
+     * @return ArrayList<String> of all emails in users table
+     */
+    public ArrayList<String> getAllEmail() {
+        ArrayList<String> lst = new ArrayList<>();
+        ResultSet set = DatabaseUtilities.selectColumn("users", "email");
         try {
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while creating a statement");
-            e.printStackTrace();
+            while (set.next()) {
+                lst.add(set.getString(1));
+            }
+        }
+        catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
         }
 
-        try {
-            assert statement != null;
-            statement.executeUpdate(delete);
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while executing a delete statement");
-            e.printStackTrace();
-        }
+        return lst;
     }
 
-    public void addLocalEvent(int id) {
-
-        String insert =
-                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + id + "', '" + user.getUsername() + "')";
-        Statement statement = null;
-
-        try {
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while creating a statement");
-            e.printStackTrace();
-        }
-
-        try {
-            assert statement != null;
-            statement.execute(insert);
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while executing a insert statement");
-            e.printStackTrace();
-        }
-    }
-
-    public void openAccount() {
-
-        String insert =
-                "INSERT INTO users(password, email, eventid, username) VALUES ('" + user.getPassword() + "','" + user.getEmail() + "','" + null + "', '" + user.getUsername() + "')";
-        Statement statement = null;
-
-        try {
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while creating a statement");
-            e.printStackTrace();
-        }
-
-        try {
-            assert statement != null;
-            statement.executeUpdate(insert);
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while executing a insert statement");
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Return info about a particular attribute in users table about user
+     *
+     * @return ResultSet that contains info about an attribute of user
+     */
     public ResultSet getAttribute(String attribute) {
         return getAttribute(user.getEmail(), attribute);
     }
 
     private ResultSet getAttribute(String userID, String attribute) {
 
-        ResultSet resultSet = null;
-
-        String query = "SELECT " + attribute + " FROM user WHERE userId = '" + userID + "';";
-
-        Statement statement = null;
         try {
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while creating a statement");
-            e.printStackTrace();
+            return SQLStatement.executeQuery("SELECT " + attribute + " FROM users WHERE email = " + user.getEmail());
+        }
+        catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
         }
 
-        try {
-            assert statement != null;
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            log.severe("Had an SQL exception while trying to query an attribute");
-            e.printStackTrace();
-        }
-
-        return resultSet;
+        return null;
     }
 }
