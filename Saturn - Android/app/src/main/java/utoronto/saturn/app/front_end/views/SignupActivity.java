@@ -42,12 +42,16 @@ public class SignupActivity extends AppCompatActivity {
 
         // TODO: output a message if these are empty
         if (username == null || password == null || email == null) return;
-        User myUser = myViewModel.checkLogin(username.toString(), password.toString());
-        // TODO: output a message if the username exists is not found
 
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Intent.EXTRA_EMAIL, myUser.getEmail());
+        if (myViewModel.checkLogin(username.toString(), password.toString())) {
+            // TODO: output a message if the username exists is not found
+        }
+
+
+
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        //intent.putExtra(Intent.EXTRA_EMAIL, myUser.getEmail());
         startActivity(intent);
     }
 }

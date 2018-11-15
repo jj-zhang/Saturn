@@ -4,36 +4,20 @@ import android.arch.lifecycle.ViewModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import utoronto.saturn.*;
+import utoronto.saturn.app.GuiManager;
 
 public class LoginViewModel extends ViewModel{
     public User checkLogin(String email, String password) {
-        // TODO: Implement login checking stuff
-        User loginUser = new User(email, password);
-        UserDatabase userDB = null;
-        try {
-            userDB = new UserDatabase(loginUser);
-        } catch (SQLException e){
-            // TODO: Display error
-            e.printStackTrace();
-        }
+        GuiManager guiManager = GuiManager.getInstance();
 
-        // Get the resulting relations after selecting email
-        ResultSet validUser = userDB.getAttribute("email");
+        // If the input is valid
+        return guiManager.logIn(email, password);
+    }
 
-        try {
-            if (!validUser.next()) {
-                // TODO: Implement popup saying invalid user
-            } else {
-                // TODO: Display error
-                return loginUser;
-            }
-        } catch (SQLException e){
-
-            e.printStackTrace();
-        }
-        return null;
+    private void reinitializeUser(User user) {
 
     }
 
