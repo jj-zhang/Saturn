@@ -11,24 +11,27 @@ query {
     }
 }
 '''
-
-url = 'http://store.steampowered.com/api/appdetails?appids=879870'
+key = 'Dv4TzTBMtO5GJ57Dcrf0Jbxst8fEQHLx'
+secret = 'lgAN5MVcjmUM30rB'
+url = 'https://app.ticketmaster.com/discovery/v2/events.json?size=2&classificationName=concert&apikey=Dv4TzTBMtO5GJ57Dcrf0Jbxst8fEQHLx'
 import urllib2
 contents = urllib2.urlopen(url).read()
 data = json.loads(contents)
-print(data)
+#print(data)
+
+event = data["_embedded"]["events"]
+print(len(event))
 
 
+#start_node = data[str(879870)]["data"]
 
-start_node = data[str(879870)]["data"]
+#creator = data["promoter"]["name"]
+#date = data["dates"]["start"]["localDate"]
+#name = data["name"]
+#url =data["images"][0]["url"]
+#desc = data["url"]
 
-creator = start_node["developers"][0]
-date = str(start_node["release_date"]["date"])
-name = start_node["name"]
-url = start_node["header_image"]
-desc = start_node["short_description"]
-
-print(creator, date, name, url, desc)
+#print(creator, date, name, url, desc)
 	
 #conn = psycopg2.connect(host="tantor.db.elephantsql.com",database="tjlevpcn", user="tjlevpcn", password="SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu")
 

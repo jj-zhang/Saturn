@@ -1,3 +1,4 @@
+
 import requests
 import json
 import psycopg2
@@ -12,7 +13,7 @@ query {
 }
 '''
 
-url = 'http://store.steampowered.com/api/appdetails?appids=879870'
+url = 'http://www.omdbapi.com/?i=tt3896198&apikey=a5fcc20 '
 import urllib2
 contents = urllib2.urlopen(url).read()
 data = json.loads(contents)
@@ -20,15 +21,15 @@ print(data)
 
 
 
-start_node = data[str(879870)]["data"]
+#start_node = data[str(879870)]["data"]
 
-creator = start_node["developers"][0]
-date = str(start_node["release_date"]["date"])
-name = start_node["name"]
-url = start_node["header_image"]
-desc = start_node["short_description"]
+#creator = data["promoter"]["name"]
+#date = data["dates"]["start"]["localDate"]
+#name = data["name"]
+#url =data["images"][0]["url"]
+#desc = data["url"]
 
-print(creator, date, name, url, desc)
+#print(creator, date, name, url, desc)
 	
 #conn = psycopg2.connect(host="tantor.db.elephantsql.com",database="tjlevpcn", user="tjlevpcn", password="SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu")
 
