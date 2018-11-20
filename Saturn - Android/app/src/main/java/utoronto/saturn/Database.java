@@ -18,18 +18,17 @@ public class Database {
     static Statement SQLStatement;
 
 
-    public Database()  throws SQLException{
+    public Database() {
         try {
             Class.forName("org.postgresql.Driver");
             getConnection();
 
 
         }
-        catch (java.lang.ClassNotFoundException e) {
+        catch (ClassNotFoundException | SQLException e) {
             log.severe("Had an SQL Exception while trying to connect to the database");
             e.printStackTrace();
         }
-
     }
 
 

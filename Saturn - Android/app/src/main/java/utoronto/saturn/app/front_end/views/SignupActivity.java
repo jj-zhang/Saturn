@@ -1,12 +1,21 @@
 package utoronto.saturn.app.front_end.views;
 
 import android.arch.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
 import android.os.Bundle;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.View;
+
+
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
@@ -44,8 +53,18 @@ public class SignupActivity extends AppCompatActivity {
         if (username == null || password == null || email == null) return;
 
 
-        if (myViewModel.checkLogin(username.toString(), password.toString())) {
+
+        if (myViewModel.checkLogin(email.toString(), password.toString())) {
             // TODO: output a message if the username exists is not found
+            Snackbar error_message = Snackbar.make(v , "Email already exists. Please try again.",
+                    2000);
+            error_message.show();
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            return;
         }
 
 

@@ -12,11 +12,13 @@ public class MainViewModel extends ViewModel {
     URL jordanURL = null;
     Event jordans;
     String desc = "hello world";
-        public MainViewModel() {
+    public MainViewModel() {
         try {
 
             jordanURL = new URL("https://images.glaciermedia.ca/polopoly_fs/1.23435369.1537333511!/fileImage/httpImage/image.jpg_gen/derivatives/landscape_804/jenna-morland-empress-book-jpg.jpg");
+
             //jordans = new Event("Jays", "Jordans",  desc, 10.0, 9.0, jordanURL, 100);
+
 
         } catch (Exception exception) {
 

@@ -25,6 +25,7 @@ public class BaseView extends AppCompatActivity {
 
     // Referenced from https://awsrh.blogspot.com/2017/10/custom-pop-up-window-with-android-studio.html
     public void eventPopUp(View v) {
+
         // v.getParent();
         System.out.println("clicked pop up");
         myDialog.setContentView(R.layout.event_description_popup);

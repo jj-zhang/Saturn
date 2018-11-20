@@ -31,18 +31,14 @@ public class GuiManager {
     }
 
     // sign up functions
-    public boolean signUp(String email, String firstName, String lastName, String password) {
+    public static boolean signUp(String email, String firstName, String lastName, String password) {
         User loginUser = new User("username", email, password);
         UserDatabase userDB = null;
-        try {
-            userDB = new UserDatabase(loginUser);
-        } catch (SQLException e) {
-            // TODO: Display error
-            e.printStackTrace();
-        }
+
+        userDB = new UserDatabase(loginUser);
 
         // Get the resulting relations after selecting email
-        if (userDB.checkEmail("email")) {
+        if (userDB.doesEmailExist(email)) {
             return false;
         }
 
@@ -51,19 +47,15 @@ public class GuiManager {
     }
 
     // log in functions
-    public User logIn(String email, String password) {
+    public static User logIn(String email, String password) {
         // TODO: Implement login checking stuff
         User loginUser = new User("username", email, password);
         UserDatabase userDB = null;
-        try {
-            userDB = new UserDatabase(loginUser);
-        } catch (SQLException e){
-            // TODO: Display error
-            e.printStackTrace();
-        }
+
+        userDB = new UserDatabase(loginUser);
 
         // Get the resulting relations after selecting email
-        if (userDB.checkEmail("email")) {
+        if (userDB.doesEmailExist(email)) {
             try {
                 // Check to see if the corresponding password matches
                 ResultSet set = SQLStatement.executeQuery("SELECT " + password + " FROM users WHERE email = " + email);
