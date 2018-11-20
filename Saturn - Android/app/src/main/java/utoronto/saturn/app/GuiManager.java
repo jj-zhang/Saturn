@@ -30,29 +30,32 @@ public class GuiManager {
         return instance;
     }
 
-    // sign up functions
-    public static boolean signUp(String email, String firstName, String lastName, String password) {
+    /*
+        Checks to see if the given email, is already taken
+        Returns true if the sign up is successful and false otherwise
+     */
+    public static boolean signUp(String email, String password) {
         User loginUser = new User("username", email, password);
-        UserDatabase userDB = null;
-
-        userDB = new UserDatabase(loginUser);
+        UserDatabase userDB = new UserDatabase(loginUser);
 
         // Get the resulting relations after selecting email
         if (userDB.doesEmailExist(email)) {
             return false;
         }
 
+        // Create the new user account and add it to the users database
         userDB.openAccount();
         return true;
     }
 
-    // log in functions
+    /*
+        Checks to see if the given email, and password are valid
+        Returns true if the login is successful and false otherwise
+     */
     public static User logIn(String email, String password) {
         // TODO: Implement login checking stuff
         User loginUser = new User("username", email, password);
-        UserDatabase userDB = null;
-
-        userDB = new UserDatabase(loginUser);
+        UserDatabase userDB = new UserDatabase(loginUser);
 
         // Get the resulting relations after selecting email
         if (userDB.doesEmailExist(email)) {

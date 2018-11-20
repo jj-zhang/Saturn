@@ -11,14 +11,14 @@ import utoronto.saturn.app.GuiManager;
 public class SignupViewModel extends ViewModel {
 
     /*
-        Checks to see if the entered email already exists. Returns True or False
-        whether or not the email already exists in the database
+        Checks to see if the entered email already exists. Returns True if email exists and False
+        if the email doesn't exists in the database
      */
     public boolean checkLogin(String email, String password) {
         GuiManager guiManager = GuiManager.getInstance();
 
-        // If the input is valid
-        return guiManager.signUp(email, null, null, password);
+        // Checks to see if user is successful in sign up
+        return !guiManager.signUp(email, password);
 
     }
 }

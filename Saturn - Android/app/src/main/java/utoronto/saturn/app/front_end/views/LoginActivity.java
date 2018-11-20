@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -35,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
 
         button = findViewById(R.id.login_activity_button);
         button.setOnClickListener(this::onButtonClickAction);
-
         pgsqlcon pgcon = new pgsqlcon();
         pgcon.execute();
     }
@@ -48,22 +48,22 @@ public class LoginActivity extends AppCompatActivity {
         Editable password = passwordView.getText();
 
         // TODO: output a message if these are empty
-        if (username == null || password == null) return;
-        String username_string = username.toString();
-        String password_string = password.toString();
-        System.out.println(username_string + " " + password_string);
-        User user = mViewModel.checkLogin(username_string, password_string);
+        if (username == null || password == null) {
+            Snackbar error_message = Snackbar.make(v , "Please fill in all text boxes.",
+                    2000);
+            error_message.show();
+            removeKeyboard();
+            return;
+        }
+
+        User user = mViewModel.checkLogin(username.toString(), password.toString());
         // TODO: output a message if the user is not found
 
         if (user == null) {
             Snackbar error_message = Snackbar.make(v , "Invalid email. Please try again.",
                     2000);
             error_message.show();
-            View view = this.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
+            removeKeyboard();
             return;
         }
 
@@ -72,25 +72,27 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void removeKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     private class pgsqlcon extends AsyncTask<Void, Void, Void> {
-
         public pgsqlcon() {
             super();
         }
-
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(Void... params) {
             Connection conn = null;
             Statement st = null;
-
             try {
                 //STEP 2: Register JDBC driver
                 Class.forName("org.postgresql.Driver");
-
                 //STEP 3: Open a connection
                 Log.d("myTag", "Connecting to database...");
-
                 conn = DriverManager.getConnection("jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn"
                         , "tjlevpcn", "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu");
             } catch (Exception e){
@@ -98,6 +100,5 @@ public class LoginActivity extends AppCompatActivity {
             }
             return null;
         }
-
     }
 }
