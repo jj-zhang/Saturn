@@ -483,7 +483,7 @@ public class DatabaseUtilities extends Database{
     }
 
     public static void main(String a[]) {
-        printTable("events", 5);
+        printTable("users", 5);
         ArrayList<String> lst = new ArrayList<>();
         ResultSet set = DatabaseUtilities.selectColumn("users", "email");
         try {
