@@ -1,12 +1,14 @@
 import requests
 import json
 import psycopg2
+import sys
 def uni_to_str(unicode_input):
-    return unicode_input.encode('ascii','ignore')
+    if unicode_input is not None:
+        return unicode_input.encode('ascii','ignore')
 
 query = '''
-query {
-Media (search: "naruto", type: ANIME) {
+query ($id: Int){
+Media (id: $id, type: ANIME) {
     id
     description
     title {
@@ -37,14 +39,17 @@ Media (search: "naruto", type: ANIME) {
     }
 }
 '''
+#15125
 variables = {
-    'id': 15125
+    'id': sys.argv[1]
 }
 
 url = 'https://graphql.anilist.co'
 response = requests.post(url, json={'query': query, 'variables': variables})
 data = json.loads(response.text)
-#print(data["data"])
+if data.has_key("errors"):
+    exit(1)
+print(data)
 
 start_node = data["data"]["Media"]
 
@@ -62,14 +67,14 @@ desc =desc.replace("'", "")
 
 print(creator, date, name, url, desc)
 	
-conn = psycopg2.connect(host="tantor.db.elephantsql.com",database="tjlevpcn", user="tjlevpcn", password="SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu")
+#conn = psycopg2.connect(host="tantor.db.elephantsql.com",database="tjlevpcn", user="tjlevpcn", password="SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu")
 
-cur = conn.cursor()
-eventsColumn = "(id, creator, name, description, date, type, url, isglobal)";
-sql = "INSERT INTO events " + eventsColumn +" VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + desc + "', '" + date + "', 'anime', '" + url + "', 'TRUE')"
-cur.execute(sql)
+#cur = conn.cursor()
+#eventsColumn = "(id, creator, name, description, date, type, url, isglobal)";
+#sql = "INSERT INTO events " + eventsColumn +" VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + desc + "', '" + date + "', 'anime', '" + url + "', 'TRUE')"
+#cur.execute(sql)
 
-conn.commit()
-cur.close()
-conn.close()
+#conn.commit()
+#cur.close()
+#conn.close()
 

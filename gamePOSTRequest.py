@@ -1,6 +1,7 @@
 import requests
 import json
 import psycopg2
+import sys
 
 query = '''
 query {
@@ -12,15 +13,17 @@ query {
 }
 '''
 
-url = 'http://store.steampowered.com/api/appdetails?appids=879870'
+url = 'http://store.steampowered.com/api/appdetails?appids=' + sys.argv[1]
 import urllib2
 contents = urllib2.urlopen(url).read()
 data = json.loads(contents)
+if data[sys.argv[1]]["success"] == False:
+    exit(1)
 print(data)
 
 
-
-start_node = data[str(879870)]["data"]
+#879870
+start_node = data[sys.argv[1]]["data"]
 
 creator = start_node["developers"][0]
 date = str(start_node["release_date"]["date"])
@@ -34,7 +37,7 @@ print(creator, date, name, url, desc)
 
 #cur = conn.cursor()
 #eventsColumn = "(id, creator, name, description, date, type, url, isglobal)";
-#sql = "INSERT INTO events " + eventsColumn +" VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + desc + "', '" + date + "', 'anime', '" + url + "', 'TRUE')"
+#sql = "INSERT INTO events " + eventsColumn +" VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + desc + "', '" + date + "', 'game', '" + url + "', 'TRUE')"
 #cur.execute(sql)
 
 #conn.commit()
