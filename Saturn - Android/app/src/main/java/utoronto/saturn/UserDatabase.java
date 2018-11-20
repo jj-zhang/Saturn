@@ -16,6 +16,7 @@ public class UserDatabase extends Database {
     private String serverName;
     private String portNumber;
     private String dbName;
+    private static final String table = "users";
 
     // Setup for logging
     private Logger log = Logger.getLogger(UserDatabase.class.getName());
@@ -25,7 +26,7 @@ public class UserDatabase extends Database {
     private final static ArrayList<String> usersValues = new ArrayList<String>(Arrays.asList("email", "username", "password", "eventid", "*"));
 
 
-    public UserDatabase(User user) throws SQLException {
+    public UserDatabase(User user) {
         super();
         this.user = user;
     }
@@ -48,15 +49,7 @@ public class UserDatabase extends Database {
      * @return true on success
      */
     private boolean leaveEvent(String userId, int eventId) {
-
-        try {
-            SQLStatement.executeUpdate("DELETE FROM users WHERE email = " + userId + "AND eventid = " + eventId);
-            return true;
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
+        return DatabaseUtilities.deleteRow(table, "eventid", userId);
     }
 
     /**
@@ -66,7 +59,6 @@ public class UserDatabase extends Database {
      * @return true on success
      */
     public boolean joinEvent(int eventId) {
-
         return DatabaseUtilities.addRowUser(user.getEmail(), user.getUsername(), user.getPassword(), eventId);
     }
 
@@ -76,37 +68,12 @@ public class UserDatabase extends Database {
      * @return true on success
      */
     public boolean openAccount() {
-
-        try {
-            SQLStatement.executeUpdate("INSERT INTO users " + usersColumn +
-                    " VALUES ('" + user.getEmail() + "','" + user.getUsername() + "', '" + user.getPassword() + "', '')");
-            return true;
+        // New account -> EventID == -1
+        if(!doesEmailExist(user.getEmail())) {
+            return DatabaseUtilities.addRowUser(user.getEmail(), user.getUsername(), user.getPassword(), -1);
+        } else {
+            return false;
         }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
-
-    }
-
-    /**
-     * Returns an arrayList of all emails in users table
-     *
-     * @return ArrayList<String> of all emails in users table
-     */
-    public ArrayList<String> getAllEmail() {
-        ArrayList<String> lst = new ArrayList<>();
-        ResultSet set = DatabaseUtilities.selectColumn("users", "email");
-        try {
-            while (set.next()) {
-                lst.add(set.getString(1));
-            }
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return lst;
     }
 
     /**
@@ -114,9 +81,8 @@ public class UserDatabase extends Database {
      *
      * @return true if input email is in the database
      */
-    public boolean checkEmail(String email) {
-        ArrayList<String> lst = getAllEmail();
-        return lst.contains(email);
+    private boolean doesEmailExist(String email) {
+        return DatabaseUtilities.selectRow(table, "email", "email", email) != null;
     }
 
     /**
@@ -129,14 +95,6 @@ public class UserDatabase extends Database {
     }
 
     private ResultSet getAttribute(String userID, String attribute) {
-
-        try {
-            return SQLStatement.executeQuery("SELECT " + attribute + " FROM users WHERE email = " + user.getEmail());
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return null;
+        return DatabaseUtilities.selectRow(table, attribute, "email", user.getEmail());
     }
 }
