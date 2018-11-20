@@ -77,11 +77,41 @@ public class UserDatabase extends Database {
     }
 
     /**
+     * Returns an arrayList of all emails in users table
+     *
+     * @return ArrayList<String> of all emails in users table
+     */
+    public ArrayList<String> getAllEmail() {
+        ArrayList<String> lst = new ArrayList<>();
+        ResultSet set = DatabaseUtilities.selectColumn("users", "email");
+        try {
+            while (set.next()) {
+                lst.add(set.getString(1));
+            }
+        }
+        catch (java.sql.SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return lst;
+    }
+
+    /**
      * Returns if input email in the users database
      *
      * @return true if input email is in the database
      */
-    private boolean doesEmailExist(String email) {
+    public boolean checkEmail(String email) {
+        ArrayList<String> lst = getAllEmail();
+        return lst.contains(email);
+    }
+
+    /**
+     * Returns if input email in the users database
+     *
+     * @return true if input email is in the database
+     */
+    public boolean doesEmailExist(String email) {
         return DatabaseUtilities.selectRow(table, "email", "email", email) != null;
     }
 
@@ -98,3 +128,6 @@ public class UserDatabase extends Database {
         return DatabaseUtilities.selectRow(table, attribute, "email", user.getEmail());
     }
 }
+
+
+
