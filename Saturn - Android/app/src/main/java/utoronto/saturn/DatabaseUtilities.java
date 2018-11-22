@@ -349,11 +349,9 @@ public class DatabaseUtilities extends Database {
 
     public static void main(String a[]) {
         printTable("users", 5);
-        ArrayList<String> lst = new ArrayList<>();
         ResultSet set = DatabaseUtilities.selectColumn("users", "email");
-        try {
+                try {
             while (set.next()) {
-                lst.add(set.getString(1));
                 System.out.print(set.getString(1));
             }
         } catch (java.sql.SQLException e) {
