@@ -8,15 +8,9 @@ Saturn would be free to use with profit coming from partnerships. Companies coul
 
 # The Development Team
 Saturn has been developed by five University of Toronto students for their Introduction to Software Engineering (CSC301) class.
-
-Ellen Chen - Frontend and Design
-
-Reece Martin - Backend, Database Management and Quality Assurance/Testing
-
-Ray Kwan - Frontend and Design
-
-Tiffany Ng - Backend, Web Scraping and Database Management
-
-Tim Cosby - Backend, Web Scraping and Database Management
-
-Darren - Backend and Notification Feature
+* Ellen Chen - Frontend and Design
+* Reece Martin - Backend, Database Management and Quality Assurance/Testing
+* Ray Kwan - Frontend and Design
+* Tiffany Ng - Backend, Web Scraping and Database Management
+* Tim Cosby - Backend, Web Scraping and Database Management
+* Darren Zhang - Backend and Notification Feature
