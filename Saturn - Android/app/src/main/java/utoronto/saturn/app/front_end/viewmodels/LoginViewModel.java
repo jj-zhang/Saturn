@@ -10,7 +10,7 @@ import utoronto.saturn.*;
 import utoronto.saturn.app.GuiManager;
 
 public class LoginViewModel extends ViewModel{
-    public User checkLogin(String email, String password) {
+    public boolean checkLogin(String email, String password) {
         GuiManager guiManager = GuiManager.getInstance();
 
         // If the input is valid

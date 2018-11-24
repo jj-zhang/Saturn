@@ -25,9 +25,16 @@ public class UserDatabase extends Database {
     private final static String usersColumn = "(email, username, password, eventid)";
     private final static ArrayList<String> usersValues = new ArrayList<String>(Arrays.asList("email", "username", "password", "eventid", "*"));
 
+    public UserDatabase() {
+        super();
+    }
 
     public UserDatabase(User user) {
         super();
+        this.user = user;
+    }
+
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -67,7 +74,7 @@ public class UserDatabase extends Database {
      *
      * @return true on success
      */
-    public boolean openAccount() {
+    public static boolean openAccount(User user) {
         // New account -> EventID == -1
         if(!doesEmailExist(user.getEmail())) {
             return DatabaseUtilities.addRowUser(user.getEmail(), user.getUsername(), user.getPassword(), -1);
@@ -81,7 +88,7 @@ public class UserDatabase extends Database {
      *
      * @return ArrayList<String> of all emails in users table
      */
-    public ArrayList<String> getAllEmail() {
+    public static ArrayList<String> getAllEmail() {
         ArrayList<String> lst = new ArrayList<>();
         ResultSet set = DatabaseUtilities.selectColumn("users", "email");
         try {
@@ -101,7 +108,7 @@ public class UserDatabase extends Database {
      *
      * @return true if input email is in the database
      */
-    public boolean checkEmail(String email) {
+    public static boolean checkEmail(String email) {
         ArrayList<String> lst = getAllEmail();
         return lst.contains(email);
     }
@@ -111,7 +118,7 @@ public class UserDatabase extends Database {
      *
      * @return true if input email is in the database
      */
-    public boolean doesEmailExist(String email) {
+    public static boolean doesEmailExist(String email) {
         return DatabaseUtilities.selectRow(table, "email", "email", email) != null;
     }
 

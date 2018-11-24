@@ -1,28 +1,28 @@
 package utoronto.saturn.app.front_end.views;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import utoronto.saturn.app.GuiManager;
 import utoronto.saturn.app.R;
+import utoronto.saturn.app.front_end.adapters.CategoryItemAdapter;
+import utoronto.saturn.app.front_end.listeners.OnCategoryItemClickListener;
+import utoronto.saturn.app.front_end.listeners.OnItemClickListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DiscoverFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-     public class DiscoverFragment extends Fragment {
-     // TODO: Rename parameter arguments, choose names that match
-     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-     private static final String ARG_PARAM1 = "param1";
-     private static final String ARG_PARAM2 = "param2";
 
-     public DiscoverFragment() {
-     // Required empty public constructor
-     }
+public class DiscoverFragment extends Fragment {
+    private OnCategoryItemClickListener mListener;
+
+    public DiscoverFragment() {
+    // Required empty public constructor
+    }
 
      /**
      * Use this factory method to create a new instance of
@@ -47,7 +47,30 @@ import utoronto.saturn.app.R;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        View view = inflater.inflate(R.layout.fragment_discover, container, false);
+
+        RecyclerView rvCategories = view.findViewById(R.id.rv_categories);
+        CategoryItemAdapter adapter = new CategoryItemAdapter(GuiManager.getCategories(), mListener);
+        rvCategories.setAdapter(adapter);
+        rvCategories.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+
+        return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnCategoryItemClickListener) {
+            mListener = (OnCategoryItemClickListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                + " must implement OnCategoryItemClickListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 }

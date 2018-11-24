@@ -4,6 +4,6 @@
     <color name="black">#000000</color>
     <color name="darkgray">#969696</color>
     <color name="colorPrimary">#969696</color>
-    <color name="colorPrimaryDark">#AAAAAA</color>
+    <color name="colorPrimaryDark">#cacaca</color>
     <color name="colorAccent">#FFFFFF</color>
 </resources>

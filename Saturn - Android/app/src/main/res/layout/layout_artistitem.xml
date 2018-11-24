@@ -17,17 +17,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:layout_weight="4"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_weight="5"
+            app:srcCompat="@drawable/gorillaz" />
 
         <TextView
             android:id="@+id/text_artist_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_thin"
             android:padding="10dp"
             android:text="@string/event_default_artist"
-            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="#000000"
             android:textSize="20sp" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

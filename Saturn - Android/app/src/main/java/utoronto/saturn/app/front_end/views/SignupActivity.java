@@ -13,9 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
-import utoronto.saturn.User;
 import utoronto.saturn.app.R;
-import utoronto.saturn.app.front_end.viewmodels.LoginViewModel;
 import utoronto.saturn.app.front_end.viewmodels.SignupViewModel;
 
 public class SignupActivity extends AppCompatActivity {
@@ -47,7 +45,7 @@ public class SignupActivity extends AppCompatActivity {
         if (username == null || password == null || email == null) return;
 
 
-        if (myViewModel.checkLogin(email.toString(), password.toString())) {
+        if (!myViewModel.signUp(username.toString(), email.toString(), password.toString())) {
             // TODO: output a message if the username exists is not found
             Snackbar error_message = Snackbar.make(v , "Email already exists. Please try again.",
                     2000);
@@ -60,10 +58,7 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-
-
-        Intent intent = new Intent(this, WelcomeActivity.class);
-        //intent.putExtra(Intent.EXTRA_EMAIL, myUser.getEmail());
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

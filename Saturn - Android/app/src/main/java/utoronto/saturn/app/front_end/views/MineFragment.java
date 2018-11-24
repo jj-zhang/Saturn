@@ -1,6 +1,8 @@
 package utoronto.saturn.app.front_end.views;
 
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,8 @@ import utoronto.saturn.User;
 import utoronto.saturn.app.GuiManager;
 import utoronto.saturn.app.R;
 import utoronto.saturn.app.front_end.adapters.EventItemFullAdapter;
+import utoronto.saturn.app.front_end.listeners.OnItemClickListener;
+import utoronto.saturn.app.front_end.viewmodels.MineViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +24,11 @@ import utoronto.saturn.app.front_end.adapters.EventItemFullAdapter;
  */
 public class MineFragment extends Fragment {
     private User user;
+
+    private OnItemClickListener mListener;
+
+    private MineViewModel mViewModel;
+
     public MineFragment() {
         // Required empty public constructor
     }
@@ -49,14 +58,30 @@ public class MineFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
 
+        mViewModel = ViewModelProviders.of(this).get(MineViewModel.class);
+
         // Setup RecyclerView
         RecyclerView rvEvents = view.findViewById(R.id.rv_events);
         // EventItemFullAdapter adapter = new EventItemFullAdapter(GuiManager.getInstance().getCurrentUser().getAllEvents());
-        EventItemFullAdapter adapter = new EventItemFullAdapter(null);
+        EventItemFullAdapter adapter = new EventItemFullAdapter(mViewModel.getEvents(), mListener);
         rvEvents.setAdapter(adapter);
         rvEvents.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return view;
     }
 
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnItemClickListener) {
+            mListener = (OnItemClickListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnItemClickListener");
+        }
+    }
+
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 }

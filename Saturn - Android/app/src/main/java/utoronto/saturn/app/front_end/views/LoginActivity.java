@@ -18,9 +18,13 @@ import android.widget.Button;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import utoronto.saturn.*;
+import utoronto.saturn.app.GuiManager;
 import utoronto.saturn.app.R;
 import utoronto.saturn.app.front_end.viewmodels.LoginViewModel;
 
@@ -36,8 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
         button = findViewById(R.id.login_activity_button);
         button.setOnClickListener(this::onButtonClickAction);
-        pgsqlcon pgcon = new pgsqlcon();
-        pgcon.execute();
     }
 
     private void onButtonClickAction(View v) {
@@ -48,27 +50,27 @@ public class LoginActivity extends AppCompatActivity {
         Editable password = passwordView.getText();
 
         // TODO: output a message if these are empty
-        if (username == null || password == null) {
+        if (username.toString().equals("") || password.toString().equals("")) {
+            removeKeyboard();
             Snackbar error_message = Snackbar.make(v , "Please fill in all text boxes.",
                     2000);
             error_message.show();
-            removeKeyboard();
             return;
         }
 
-        User user = mViewModel.checkLogin(username.toString(), password.toString());
+        boolean res = GuiManager.getInstance().checkEmail(username.toString());
+
         // TODO: output a message if the user is not found
 
-        if (user == null) {
+        if (!res) {
+            removeKeyboard();
             Snackbar error_message = Snackbar.make(v , "Invalid email. Please try again.",
                     2000);
             error_message.show();
-            removeKeyboard();
             return;
         }
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Intent.EXTRA_EMAIL, user.getEmail());
         startActivity(intent);
     }
 
@@ -80,25 +82,32 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private class pgsqlcon extends AsyncTask<Void, Void, Void> {
+    private class pgsqlcon extends AsyncTask<String, Void, Boolean> {
+        Connection conn;
+        PreparedStatement st;
         public pgsqlcon() {
             super();
         }
+
         @Override
-        protected Void doInBackground(Void... params) {
-            Connection conn = null;
-            Statement st = null;
+        protected Boolean doInBackground(String... strings) {
+            // check if username is good
             try {
-                //STEP 2: Register JDBC driver
                 Class.forName("org.postgresql.Driver");
                 //STEP 3: Open a connection
                 Log.d("myTag", "Connecting to database...");
                 conn = DriverManager.getConnection("jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn"
                         , "tjlevpcn", "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu");
-            } catch (Exception e){
-                System.out.println(e.getStackTrace());
+                st = conn.prepareStatement("SELECT * FROM Users WHERE username = ?");
+                st.setString(1, strings[0]);
+                ResultSet result = st.executeQuery();
+                if (result.next()) {
+                    return true;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            return null;
+            return false;
         }
     }
 }

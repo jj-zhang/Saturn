@@ -1,5 +1,7 @@
 package utoronto.saturn.app.front_end.views;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,22 +13,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import utoronto.saturn.Event;
 import utoronto.saturn.app.R;
 import utoronto.saturn.app.front_end.adapters.EventItemFullAdapter;
+import utoronto.saturn.app.front_end.listeners.OnItemClickListener;
+import utoronto.saturn.app.front_end.viewmodels.HomeViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-    ArrayList<Object> events;
+    List<Object> events;
 
-    private OnFragmentInteractionListener mListener;
+    private HomeViewModel mViewModel;
+
+    private OnItemClickListener mListener;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,13 +64,15 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+
         // Set up recycler views
         RecyclerView rvEventsComingUp = view.findViewById(R.id.rv_events_coming_up);
-        EventItemFullAdapter adapter = new EventItemFullAdapter(null);
+        EventItemFullAdapter adapter = new EventItemFullAdapter(mViewModel.getMyEvents(), mListener);
         rvEventsComingUp.setAdapter(adapter);
         rvEventsComingUp.setLayoutManager(new LinearLayoutManager(this.getContext()));
         RecyclerView rvSuggestions = view.findViewById(R.id.rv_suggestions);
-        adapter = new EventItemFullAdapter(null);
+        adapter = new EventItemFullAdapter(mViewModel.getSuggestedEvents(), mListener);
         rvSuggestions.setAdapter(adapter);
         rvSuggestions.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -71,41 +80,26 @@ public class HomeFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
+    public void onEventClicked(Event event) {
+        if (mListener != null) {
+            mListener.onItemClick(event);
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        if (context instanceof OnItemClickListener) {
+            mListener = (OnItemClickListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnItemClickListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

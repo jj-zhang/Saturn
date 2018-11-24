@@ -14,11 +14,8 @@ public class SignupViewModel extends ViewModel {
         Checks to see if the entered email already exists. Returns True if email exists and False
         if the email doesn't exists in the database
      */
-    public boolean checkLogin(String email, String password) {
-        GuiManager guiManager = GuiManager.getInstance();
-
+    public boolean signUp(String username, String email, String password) {
         // Checks to see if user is successful in sign up
-        return !guiManager.signUp(email, password);
-
+        return GuiManager.getInstance().signUp(username, email, password);
     }
 }

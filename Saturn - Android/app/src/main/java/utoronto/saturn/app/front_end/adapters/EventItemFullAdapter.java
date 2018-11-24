@@ -12,13 +12,16 @@ import java.util.List;
 
 import utoronto.saturn.Event;
 import utoronto.saturn.app.R;
+import utoronto.saturn.app.front_end.listeners.OnItemClickListener;
 
 public class EventItemFullAdapter extends
         RecyclerView.Adapter<EventItemFullAdapter.ViewHolder>{
     private List<Event> mEvents;
+    private final OnItemClickListener listener;
 
-    public EventItemFullAdapter(List<Event> events) {
+    public EventItemFullAdapter(List<Event> events, OnItemClickListener listener) {
         mEvents = events;
+        this.listener = listener;
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -41,6 +44,10 @@ public class EventItemFullAdapter extends
             eventNameTextView = itemView.findViewById(R.id.text_event_name);
             locationTextView = itemView.findViewById(R.id.text_location);
         }
+
+        public void bind(final Event event, final OnItemClickListener listener) {
+            itemView.setOnClickListener(v -> listener.onItemClick(event));
+        }
     }
 
     @NonNull
@@ -50,8 +57,7 @@ public class EventItemFullAdapter extends
 
         View eventItemView = inflater.inflate(R.layout.layout_eventitem_full, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(eventItemView);
-        return viewHolder;
+        return new ViewHolder(eventItemView);
     }
 
     // Involves populating data into the item through holder
@@ -79,7 +85,7 @@ public class EventItemFullAdapter extends
            // locationTextView.setText(event.getDescription());
 
             locationTextView.setText(event.getDescription());
-
+            viewHolder.bind(event, listener);
         }
     }
 

@@ -6,7 +6,7 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in </string>
-    <string name="action_sign_up">Create</string>
+    <string name="action_sign_up">Sign up</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -35,4 +35,6 @@
     <string name="event_noevents_message">No events found.</string>
 
     <string name="artist_noartists_message">No artists found.</string>
+    <string name="category_name_default" >Category</string>
+    <string name="category_title">Browse %1$s Events</string>
 </resources>

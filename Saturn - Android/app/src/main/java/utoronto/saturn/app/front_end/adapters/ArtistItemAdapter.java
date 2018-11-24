@@ -13,13 +13,16 @@ import java.util.List;
 
 import utoronto.saturn.User;
 import utoronto.saturn.app.R;
+import utoronto.saturn.app.front_end.listeners.OnItemClickListener;
 
 public class ArtistItemAdapter extends
         RecyclerView.Adapter<ArtistItemAdapter.ViewHolder>{
     private List<User> mArtists;
+    private OnItemClickListener mListener;
 
-    public ArtistItemAdapter(List<User> artists) {
+    public ArtistItemAdapter(List<User> artists, OnItemClickListener listener) {
         mArtists = artists;
+        mListener = listener;
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -37,6 +40,10 @@ public class ArtistItemAdapter extends
             super(itemView);
 
             artistNameTextView = itemView.findViewById(R.id.text_artist_name);
+        }
+
+        public void bind(final User user, final OnItemClickListener listener) {
+            itemView.setOnClickListener(v -> listener.onItemClick(user));
         }
     }
 
@@ -68,6 +75,7 @@ public class ArtistItemAdapter extends
             TextView artistNameTextView = viewHolder.artistNameTextView;
             artistNameTextView.setText(artist.getUsername());
             artistNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
+            viewHolder.bind(artist, mListener);
         }
     }
 
