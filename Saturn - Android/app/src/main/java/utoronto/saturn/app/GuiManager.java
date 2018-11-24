@@ -1,13 +1,9 @@
 package utoronto.saturn.app;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.InputMismatchException;
 import java.util.List;
 
-import utoronto.saturn.Database;
-import utoronto.saturn.DatabaseUtilities;
 import utoronto.saturn.Event;
 import utoronto.saturn.User;
 import utoronto.saturn.UserDatabase;
@@ -26,7 +22,7 @@ public class GuiManager {
     }
 
     // Use this to get the current instance of this class
-    public static GuiManager getInstance(){
+    public static GuiManager getInstance() {
         return instance;
     }
 
@@ -73,8 +69,7 @@ public class GuiManager {
                     throw new IllegalArgumentException("Current email does not have any saved passwords in the database -- This should never occur");
                 }
 
-            }
-            catch (java.sql.SQLException e) {
+            } catch (java.sql.SQLException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -82,25 +77,26 @@ public class GuiManager {
         return false;
     }
 
-    // TODO: Make use of this in log in and sign up
-    public Boolean checkEmail(String email) {
-        SQLConnection sqlConnection = new SQLConnection();
-        sqlConnection.execute(String.format("SELECT * FROM Users WHERE email = '%s'", email));
-        boolean res = false;
-        try {
-            res = sqlConnection.get();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return res;
-    }
+//    // TODO: Make use of this in log in and sign up
+//    public boolean checkEmail(String email) {
+//        SQLBackgroundQuery sqlBackgroundQuery = new SQLBackgroundQuery();
+//        sqlBackgroundQuery.execute(String.format("SELECT * FROM Users WHERE email = '%s'", email));
+//        ResultSet res;
+//        try {
+//            res = sqlBackgroundQuery.get();
+//            return res.next();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return false;
+//    }
 
     // get event functions
     public List<Event> getEventsByCategory(String category) {
         return null;
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         return currentUser;
     }
 

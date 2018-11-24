@@ -1,5 +1,7 @@
 package utoronto.saturn;
 
+import android.annotation.SuppressLint;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,9 +14,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
-public class DatabaseUtilities extends Database{
+public class DatabaseUtilities extends Database {
 
     private final static ArrayList<String> tables = new ArrayList<String>(Arrays.asList("events", "users"));
     private final static ArrayList<String> eventsValues = new ArrayList<String>(Arrays.asList("id", "creator", "name", "description", "date", "type", "url", "isglobal", "*"));
@@ -32,14 +35,14 @@ public class DatabaseUtilities extends Database{
     public DatabaseUtilities() throws SQLException {
         super();
     }
+
     /**
      * Check if sql library exists
      */
     private static void testForJar() {
         try {
             Class.forName(driver);
-        }
-        catch (java.lang.ClassNotFoundException e) {
+        } catch (java.lang.ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -63,7 +66,7 @@ public class DatabaseUtilities extends Database{
      * @return True if connected, else false
      */
     private static boolean isConnected() {
-        return SQLConnection != null;
+        return SQLConnection == null;
     }
 
     /**
@@ -71,9 +74,9 @@ public class DatabaseUtilities extends Database{
      *
      * @return True if connected, else false
      */
-    public static boolean tryConnect() {
+    private static boolean tryConnect() {
         // Runs if any request fails and in main
-        if(!isConnected()) {
+        if (isConnected()) {
             testForJar();
             requestHTTP();
         }
@@ -84,159 +87,130 @@ public class DatabaseUtilities extends Database{
     /**
      * Deletes a row from table with Column equal to Value
      *
-     * @param table Table in database
+     * @param table  Table in database
      * @param Column Column in database
-     * @param Value Row in column in database
+     * @param Value  Row in column in database
      * @return Return whether the query successfully executed
      */
-    public static boolean deleteRow(String table, String Column, String Value) throws IllegalArgumentException {
-        if(!tryConnect()) {
-            return false;
-        }
-
-        if(!tables.contains(table)) {
+    static boolean deleteRow(String table, String Column, String Value) throws IllegalArgumentException {
+        if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         }
 
-        try {
-            SQLStatement.executeUpdate("DELETE FROM " + table + " WHERE " + Column + "=" + Value);
-            return true;
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
-        }
-        return false;
+        String st = "DELETE FROM " + table + " WHERE " + Column + "=" + Value;
+        SQLBackgroundUpdate sbu = new SQLBackgroundUpdate();
+        sbu.execute(st);
+
+        // TODO repair this by removing the return
+        return true;
     }
 
     /**
      * Add a row in users
      *
-     * @param email User's email
+     * @param email    User's email
      * @param username User's username
      * @param password User's password
-     * @param eventid A user event's ID
+     * @param eventid  A user event's ID
      * @return Return whether the query successfully executed
      */
-    public static boolean addRowUser(String email, String username, String password, int eventid){
-        if(!tryConnect()) {
-            return false;
-        }
+    static boolean addRowUser(String email, String username, String password, int eventid) {
+        String st = "INSERT INTO users " + usersColumn +
+                " VALUES ('" + email + "','" + username + "', '" + password + "', '" + eventid + "')";
+        SQLBackgroundUpdate sbu = new SQLBackgroundUpdate();
+        sbu.execute(st);
 
-        try {
-            SQLStatement.executeUpdate("INSERT INTO users " + usersColumn +
-                    " VALUES ('" + email + "','" + username + "', '" + password + "', '" + eventid + "')");
-            return true;
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
-        }
-        return false;
+        // TODO repair this by removing the return
+        return true;
     }
 
     /**
      * Add a row in events
      *
-     * @param creator Creator of the event
-     * @param name Name of event
+     * @param creator     Creator of the event
+     * @param name        Name of event
      * @param description Description of event
-     * @param type Type of event ie. Anime
-     * @param url Image url
+     * @param type        Type of event ie. Anime
+     * @param url         Image url
      * @return Return whether the query successfully executed
      */
-    public static boolean addRowEvent(String creator, String name, String description, String date, String type, String url, boolean isglobal) throws ParseException {
-        if(!tryConnect()) {
-            return false;
-        }
+    static boolean addRowEvent(String creator, String name, String description, String date, String type, String url, boolean isglobal) throws ParseException {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date properDate = dateFormat.parse(date);
 
-        try {
-            SQLStatement.executeUpdate("INSERT INTO events " + eventsColumn +
-                    " VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + description + "', '" + properDate + "', '" + type + "', '" + url + "', '" + isglobal + "')");
-            return true;
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
-        }
-        return false;
+        String st = "INSERT INTO events " + eventsColumn +
+                " VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + description + "', '" + properDate + "', '" + type + "', '" + url + "', '" + isglobal + "')";
+        SQLBackgroundUpdate sbu = new SQLBackgroundUpdate();
+        sbu.execute(st);
+
+        // TODO repair this by removing the return
+        return true;
     }
 
     /**
      * Add a column in table
      *
-     * @param table Table to add column to
+     * @param table     Table to add column to
      * @param valueName Name of column
      * @param valueType Type of column
      * @return Return whether the query successfully executed
      */
-    private static boolean addColumn(String table, String valueName, String valueType){
-        if(!tryConnect()) {
-            return false;
-        }
+    private static boolean addColumn(String table, String valueName, String valueType) {
 
-        try {
-            SQLStatement.executeUpdate("ALTER TABLE " + table + " ADD " + valueName + " " + valueType);
-            return true;
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
-        }
-        return false;
+        String st = "ALTER TABLE " + table + " ADD " + valueName + " " + valueType;
+        SQLBackgroundUpdate sbu = new SQLBackgroundUpdate();
+        sbu.execute(st);
+
+        // TODO repair this by removing the return
+        return true;
     }
 
     /**
      * Remove a column in table
      *
-     * @param table Table to add column to
+     * @param table     Table to add column to
      * @param valueName Name of column
      * @return Return whether the query successfully executed
      */
-    private static boolean removeColumn(String table, String valueName){
-        if(!tryConnect()) {
+    private static boolean removeColumn(String table, String valueName) {
+        if (tryConnect()) {
             return false;
         }
 
-        try {
-            SQLStatement.executeUpdate("ALTER TABLE " + table + " DROP " + valueName);
-            return true;
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
-        }
-        return false;
+        String st = "ALTER TABLE " + table + " DROP " + valueName;
+        SQLBackgroundUpdate sbu = new SQLBackgroundUpdate();
+        sbu.execute(st);
+
+        // TODO repair this by removing the return
+        return true;
     }
 
     /**
      * Return the query after selecting a column
      *
-     * @param table Table to select from
+     * @param table  Table to select from
      * @param column Column to select
      * @return Query of selection
      * @throws IllegalArgumentException If values are not valid
      */
-    public static ResultSet selectColumn(String table, String column) throws IllegalArgumentException {
-        if(!tryConnect()) {
+    static ResultSet selectColumn(String table, String column) throws IllegalArgumentException {
+        if (tryConnect()) {
             return null;
         }
 
-        if(!tables.contains(table)) {
+        if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if ((table.equals("events") && !eventsValues.contains(column)) || (table.equals("users") && !usersValues.contains(column))) {
             throw new IllegalArgumentException("Column is not valid!");
         }
 
         try {
-            return SQLStatement.executeQuery("SELECT " + column + " FROM " + table);
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
+            SQLBackgroundQuery sbq = new SQLBackgroundQuery();
+            sbq.execute("SELECT " + column + " FROM " + table);
+            return sbq.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -244,17 +218,17 @@ public class DatabaseUtilities extends Database{
     /**
      * Return the query after selecting columns
      *
-     * @param table Table to select from
+     * @param table   Table to select from
      * @param columns Columns to select
      * @return Query of selection
      * @throws IllegalArgumentException If values are not valid
      */
     private static ResultSet selectColumns(String table, List<String> columns) throws IllegalArgumentException {
-        if(!tryConnect()) {
+        if (tryConnect()) {
             return null;
         }
 
-        if(!tables.contains(table)) {
+        if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if (table.equals("events")) {
             for (String column : columns) {
@@ -271,16 +245,16 @@ public class DatabaseUtilities extends Database{
         }
 
         try {
-            String query = "SELECT ";
-            for(String column : columns) {
-                query += column + ", ";
+            StringBuilder query = new StringBuilder("SELECT ");
+            for (String column : columns) {
+                query.append(column).append(", ");
             }
-            query = query.substring(0, query.length() - 2) + " FROM " + table;
-            return SQLStatement.executeQuery(query);
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
+            query = new StringBuilder(query.substring(0, query.length() - 2) + " FROM " + table);
+            SQLBackgroundQuery sbq = new SQLBackgroundQuery();
+            sbq.execute(query.toString());
+            return sbq.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -288,18 +262,18 @@ public class DatabaseUtilities extends Database{
     /**
      * Return the query after selecting a column
      *
-     * @param table Table to select from
+     * @param table  Table to select from
      * @param column Column to select from
-     * @param value Value to select in the column
+     * @param value  Value to select in the column
      * @return Query of selection
      * @throws IllegalArgumentException If values are not valid
      */
-    public static ResultSet selectRow(String table, String column, String conditionColumn, String value) throws IllegalArgumentException {
-        if(!tryConnect()) {
+    static ResultSet selectRow(String table, String column, String conditionColumn, String value) throws IllegalArgumentException {
+        if (tryConnect()) {
             return null;
         }
 
-        if(!tables.contains(table)) {
+        if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if ((table.equals("events") && !eventsValues.contains(column) && !eventsValues.contains(conditionColumn)) || (table.equals("users") && !usersValues.contains(column) && !usersValues.contains(conditionColumn))) {
             throw new IllegalArgumentException("Column is not valid!");
@@ -308,21 +282,21 @@ public class DatabaseUtilities extends Database{
         }
 
         try {
-            return SQLStatement.executeQuery("SELECT " + column + " FROM " + table + " WHERE " + conditionColumn + "=" + value);
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
+            SQLBackgroundQuery sbq = new SQLBackgroundQuery();
+            sbq.execute("SELECT " + column + " FROM " + table + " WHERE " + conditionColumn + "=" + value);
+            return sbq.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    public static ResultSet selectRows(String table, List<String> columns, String conditionColumn, String value) throws IllegalArgumentException {
-        if(!tryConnect()) {
+    static ResultSet selectRows(String table, List<String> columns, String conditionColumn, String value) throws IllegalArgumentException {
+        if (tryConnect()) {
             return null;
         }
 
-        if(!tables.contains(table)) {
+        if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if (table.equals("events")) {
             for (String column : columns) {
@@ -330,7 +304,7 @@ public class DatabaseUtilities extends Database{
                     throw new IllegalArgumentException("Column " + column + " is not valid!");
                 }
             }
-            if(!eventsValues.contains(conditionColumn)) {
+            if (!eventsValues.contains(conditionColumn)) {
                 throw new IllegalArgumentException("Column " + conditionColumn + " is not valid!");
             }
         } else if (table.equals("users")) {
@@ -339,7 +313,7 @@ public class DatabaseUtilities extends Database{
                     throw new IllegalArgumentException("Column " + column + " is not valid!");
                 }
             }
-            if(!usersValues.contains(conditionColumn)) {
+            if (!usersValues.contains(conditionColumn)) {
                 throw new IllegalArgumentException("Column " + conditionColumn + " is not valid!");
             }
         } else if (value.contains(" ")) {
@@ -347,111 +321,39 @@ public class DatabaseUtilities extends Database{
         }
 
         try {
-            String query = "SELECT ";
-            for(String column : columns) {
-                query += column + ", ";
-            }
-            query = query.substring(0, query.length() - 2) + " FROM " + table + " WHERE " + conditionColumn + "=" + value;
-            return SQLStatement.executeQuery(query);
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
-        }
-        return null;
-    }
-
-    /* Need to implement conditioncolumn
-    public static ResultSet selectRows(String table, String column, List<String> values) throws IllegalArgumentException {
-        if(!tryConnect()) {
-            return null;
-        }
-
-        if(!tables.contains(table)) {
-            throw new IllegalArgumentException("Table is not valid!");
-        } else if ((table.equals("events") && !eventsValues.contains(column)) || (table.equals("users") && !usersValues.contains(column))) {
-            throw new IllegalArgumentException("Column is not valid!");
-        } else
-            for(String value : values)
-                if(value.contains(" "))
-                    throw new IllegalArgumentException("Value is trying to exploit SQL query!");
-
-        try {
-            String query = "SELECT " + column + " FROM " + table + " WHERE ";
-                for(String value : values)
-                    query += column + "=" + value + " OR ";
-
-            return SQLStatement.executeQuery(query.substring(0, query.length() - 4));
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
-        }
-        return null;
-    }
-
-    public static ResultSet selectRows(String table, List<String> columns, List<String> values) throws IllegalArgumentException {
-        if(!tryConnect()) {
-            return null;
-        }
-
-        if(!tables.contains(table)) {
-            throw new IllegalArgumentException("Table is not valid!");
-        } else if (table.equals("events")) {
+            StringBuilder query = new StringBuilder("SELECT ");
             for (String column : columns) {
-                if (!eventsValues.contains(column)) {
-                    throw new IllegalArgumentException("Column " + column + " is not valid!");
-                }
+                query.append(column).append(", ");
             }
-        } else if (table.equals("users")) {
-            for (String column : columns) {
-                if (!usersValues.contains(column)) {
-                    throw new IllegalArgumentException("Column " + column + " is not valid!");
-                }
-            }
-        } else
-            for(String value : values)
-                if(value.contains(" "))
-                    throw new IllegalArgumentException("Value is trying to exploit SQL query!");
-
-        try {
-            String query = "SELECT ";
-            String laterQuery = "";
-            for(String column : columns) {
-                query += column + ", ";
-                for(String value : values)
-                    laterQuery += column + "=" + value + " OR ";
-            }
-            query = query.substring(0, query.length() - 2) + " FROM " + table + " WHERE " + laterQuery.substring(0, laterQuery.length() - 4);
-            return SQLStatement.executeQuery(query);
-        }
-        catch (java.sql.SQLException e) {
-            System.out.println(e.getMessage());
-            SQLConnection = null;
+            query = new StringBuilder(query.substring(0, query.length() - 2) + " FROM " + table + " WHERE " + conditionColumn + "=" + value);
+            SQLBackgroundQuery sbq = new SQLBackgroundQuery();
+            sbq.execute(query.toString());
+            return sbq.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
         return null;
     }
-    */
 
     /**
      * Prints out the entirety of the table
      *
      * @param table Table to print
-     * @param rows Number of rows to print
+     * @param rows  Number of rows to print
      */
-    private static boolean printTable(String table, int rows) throws IllegalArgumentException {
-        if(!tryConnect()) {
-            return false;
+    private static void printTable(String table, int rows) throws IllegalArgumentException {
+        if (tryConnect()) {
+            return;
         }
 
-        if(!tables.contains(table)) {
+        if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         }
 
         // Cycle through everything from select column
         ResultSet set = selectColumn(table, "*");
-        if(set == null)
-            return false;
+        if (set == null)
+            return;
 
         ResultSetMetaData metaSet;
 
@@ -460,26 +362,24 @@ public class DatabaseUtilities extends Database{
 
             ArrayList<String> columns = new ArrayList<>();
 
-            for(int column = 1; column <= metaSet.getColumnCount(); column++) {
+            for (int column = 1; column <= metaSet.getColumnCount(); column++) {
                 columns.add(metaSet.getColumnLabel(column));
             }
 
             String rowString;
-            while(set.next() && rows != 0) {
+            while (set.next() && rows != 0) {
                 rowString = "";
-                for(int i = 0; i < columns.size(); i++) {
+                for (int i = 0; i < columns.size(); i++) {
                     rowString += columns.get(i) + ": " + set.getString(columns.get(i)) + ", ";
                 }
 
                 System.out.println(rowString.substring(0, rowString.length() - 2));
                 rows -= 1;
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;
         }
 
-        return true;
     }
 
     public static void main(String a[]) {
@@ -491,8 +391,7 @@ public class DatabaseUtilities extends Database{
                 lst.add(set.getString(1));
                 System.out.print(set.getString(1));
             }
-        }
-        catch (java.sql.SQLException e) {
+        } catch (java.sql.SQLException e) {
             System.out.println(e.getMessage());
         }
     }
