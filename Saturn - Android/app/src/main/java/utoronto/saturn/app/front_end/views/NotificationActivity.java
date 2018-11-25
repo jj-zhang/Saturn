@@ -8,6 +8,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.view.View;
 
+import utoronto.saturn.app.R;
+
 public class NotificationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
