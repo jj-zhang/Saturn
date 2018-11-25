@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        boolean res = GuiManager.getInstance().checkEmail(username.toString());
+        boolean res = GuiManager.getInstance().logIn(username.toString(), password.toString());
 
         // TODO: output a message if the user is not found
 
