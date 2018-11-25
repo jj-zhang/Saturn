@@ -29,7 +29,7 @@ List the most significant changes you made to your process (if any).
  * Backend / QA: Reece
    * Set up of the backend databases as well as JDBC interface with the database
    * Writing tests for the backend classes
- * Feature Impl / Frontend: Darren
+ * Feature Impl / Backend: Darren
    * Implementation of the notifications feature
    * Integration of frontend to backend
 
