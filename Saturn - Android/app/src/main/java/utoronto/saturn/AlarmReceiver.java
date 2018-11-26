@@ -14,6 +14,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         //Trigger the notification
         Log.d("Label", "Alarm Receive:");
 
+        // Should be at some activity.
         NotificationScheduler.showNotification(context, MainActivity.class,
                 "You have 5 subscribed unwatched videos", "Watch them now?");
     }
