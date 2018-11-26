@@ -1,4 +1,4 @@
-# YOUR PRODUCT/TEAM NAME
+# Saturn - Group 1
 
  > _Note:_ This document is meant to be written during (or shortly after) your review meeting, which should happen fairly close to the due date.      
  >      
