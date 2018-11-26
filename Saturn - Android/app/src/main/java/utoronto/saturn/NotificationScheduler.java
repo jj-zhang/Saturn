@@ -19,7 +19,7 @@ public class NotificationScheduler {
     public static final int DAILY_REMINDER_REQUEST_CODE=100;
     public static final String TAG="NotificationScheduler";
 
-    public static void setReminder(Context context, Class<?> cls, int hour, int min) {
+    public static void setReminder(Context context, Class<?> generic_class, int hour, int min) {
         // Get the current time(hour, min, sec).
         Calendar calendar = Calendar.getInstance();
 
@@ -33,31 +33,22 @@ public class NotificationScheduler {
         if(setCalendar.before(calendar))
             setCalendar.add(Calendar.DATE,1);
 
-        // Enable a receiver
-
-//        ComponentName receiver = new ComponentName(context, cls);
-//        PackageManager pm = context.getPackageManager();
-//
-//        pm.setComponentEnabledSetting(receiver,
-//                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-//                PackageManager.DONT_KILL_APP);
-
-        Intent intent1 = new Intent(context, cls);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent new_intent = new Intent(context, generic_class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, new_intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         //set repeating every 24 hours
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, setCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
-    public static void showNotification(Context context,Class<?> cls,String title,String content)
+    public static void showNotification(Context context,Class<?> generic_class,String title,String content)
     {
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        Intent notificationIntent = new Intent(context, cls);
+        Intent notificationIntent = new Intent(context, generic_class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(cls);
+        stackBuilder.addParentStack(generic_class);
         stackBuilder.addNextIntent(notificationIntent);
 
         // PendingIntent fires when the alarm is triggered.
