@@ -7,17 +7,17 @@ def uni_to_str(unicode_input):
     
 # insert data into database
 def scrape(creator, name, desc, date, media_type, url):
-    conn = psycopg2.connect(host="tantor.db.elephantsql.com",database="tjlevpcn", user="tjlevpcn", password="SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu")
+    connection = psycopg2.connect(host="tantor.db.elephantsql.com",database="tjlevpcn", user="tjlevpcn", password="SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu")
     
-    cur = conn.cursor()
+    cursor = connection.cursor()
     eventsColumn = "(id, creator, name, description, date, type, url, isglobal)";
     sql = "INSERT INTO events " + eventsColumn +" VALUES (NEXTVAL('event_id'), '" + creator + "','" + name + "', '" + desc + "', '" + date +"', '" + media_type + "', '"+ url + "', 'TRUE')"
     
     try:
-        cur.execute(sql)
-        conn.commit()
+        cursor.execute(sql)
+        connection.commit()
     except:
         pass
     
-    cur.close()
-    conn.close()    
+    cursor.close()
+    connection.close()    

@@ -2,14 +2,14 @@ import requests
 import json
 import psycopg2
 import scraper
+import urllib2
 
 key = 'Dv4TzTBMtO5GJ57Dcrf0Jbxst8fEQHLx'
 secret = 'lgAN5MVcjmUM30rB'
 url = 'https://app.ticketmaster.com/discovery/v2/events.json?size=2&classificationName=concert&apikey=Dv4TzTBMtO5GJ57Dcrf0Jbxst8fEQHLx'
-import urllib2
+
 contents = urllib2.urlopen(url).read()
 data = json.loads(contents)
-#print(data)
 
 for i in range(len(data["_embedded"]["events"])):
     event = data["_embedded"]["events"][0]

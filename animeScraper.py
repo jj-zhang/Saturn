@@ -47,7 +47,6 @@ response = requests.post(url, json={'query': query, 'variables': variables})
 data = json.loads(response.text)
 if data.has_key("errors"):
     exit(1)
-#print(data)
 
 start_node = data["data"]["Media"]
 
@@ -62,8 +61,7 @@ desc = start_node["description"]
 creator = scraper.uni_to_str(creator)
 name = scraper.uni_to_str(name)
 url= scraper.uni_to_str(url)
-desc = scraper.uni_to_str(desc)
-desc = scraper.desc.replace("'", "")
+desc = scraper.uni_to_str(scraper.desc.replace("'", ""))
 
 print(creator, date, name, url, desc)
 	

@@ -8,7 +8,6 @@ contents = urllib2.urlopen(url).read()
 data = json.loads(contents)
 if data[sys.argv[1]]["success"] == False:
     exit(1)
-#print(data)
 
 # example id: 879870
 start_node = data[sys.argv[1]]["data"]
@@ -18,8 +17,7 @@ creator = start_node["developers"][0]
 date = str(start_node["release_date"]["date"])
 name = start_node["name"]
 url = start_node["header_image"]
-desc = start_node["short_description"]
-desc =desc.replace("'", "")
+desc = start_node["short_description"].replace("'", "")
 
 date_format = datetime.datetime.strptime(date, "%d %b, %Y")
 date_format = date_format.strftime("%Y-%m-%d")

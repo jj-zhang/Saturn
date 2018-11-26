@@ -20,7 +20,6 @@ url = 'http://www.omdbapi.com/?i=tt' + sys.argv[1] + '&apikey=a5fcc20'
 import urllib2
 contents = urllib2.urlopen(url).read()
 data = json.loads(contents)
-#print(data)
 
 creator = data["Director"]
 date = data["Released"]
