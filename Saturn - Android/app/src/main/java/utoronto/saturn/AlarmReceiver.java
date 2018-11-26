@@ -15,8 +15,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.d("Label", "Alarm Receive:");
 
         // Should be at some activity.
-        NotificationScheduler.showNotification(context, MainActivity.class,
-                "You have 5 subscribed unwatched videos", "Watch them now?");
+        String title = "You have 5 subscribed unwatched videos";
+        String content = "Watch them now?";
+
+        // Waiting to assign an activity.
+//        NotificationScheduler.showNotification(context, MainActivity.class, content, title);
     }
 }
 
