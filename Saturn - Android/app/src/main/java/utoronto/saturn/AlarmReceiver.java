@@ -5,30 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-
 public class AlarmReceiver extends BroadcastReceiver {
 
-        String TAG = "AlarmReceiver";
+    String TAG = "AlarmReceiver";
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null && context != null) {
-                if (intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)) {
-                    // Set the alarm here.
-                    Log.d(TAG, "onReceive: BOOT_COMPLETED");
-                    int hour = 8;
-                    int min = 30;
-                    NotificationScheduler.setReminder(context, AlarmReceiver.class, hour, min);
-                    return;
-                }
-            }
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        //Trigger the notification
+        Log.d("Label", "Alarm Receive:");
 
-            Log.d(TAG, "onReceive: ");
-
-            //Trigger the notification
-            NotificationScheduler.showNotification(context, MainActivity.class,
-                    "You have 5 new subscribed videos", "Watch them now?");
-
-        }
+        NotificationScheduler.showNotification(context, MainActivity.class,
+                "You have 5 subscribed unwatched videos", "Watch them now?");
+    }
 }
 
