@@ -13,4 +13,4 @@ Saturn has been developed by five University of Toronto students for their Intro
 * Ray Kwan - Frontend and Design
 * Tiffany Ng - Backend, Web Scraping and Database Management
 * Tim Cosby - Backend, Web Scraping and Database Management
-* Darren Zhang - Backend and Notification Feature
+* Darren Zhang - Notification Functionality
