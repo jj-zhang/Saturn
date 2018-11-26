@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Strings related to login -->
-    <string name="app_name">=S@turn"</string>
+    <string name="app_name">S@turn"</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in </string>
