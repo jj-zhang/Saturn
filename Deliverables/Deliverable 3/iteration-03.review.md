@@ -18,6 +18,8 @@ List process-related (i.e. team organization) decisions that, in retrospect, tur
  * Ordered from most to least important.
  * Explain why (i.e. give a supporting argument) you consider a decision to be successful.
  * Feel free to refer/link to process artifact(s).
+ 
+ * 
 
 #### Decisions that did not turn out as well as we hoped
 
@@ -26,6 +28,14 @@ List process-related (i.e. team organization) decisions that, in retrospect, wer
  * 2 - 4 decisions.
  * Ordered from most to least important.
  * Feel free to refer/link to process artifact(s).
+ 
+ * Using Elephant PostgresSQL as our database
+   * We found out that the integration of database with the Android app requires any internet connection needs to be put in background (work that we did not expect)
+   * Should have used cloud service such as AWS, GCP, etc.
+ * Should have organized database to only contain id and type of media in order to fit in more information
+   * Currently scrape a lot of information (takes a lot of space)
+   * Could have stored id and type, then we can call the API within the app (using the type to query the specific API with id) to get the most updated information
+   
 
 
 #### Planned changes
