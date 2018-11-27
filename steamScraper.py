@@ -45,7 +45,10 @@ def scrapeSteam(limitOfNew = 1):
         # Get release date
         date = game['release_date']
 
-        if date['coming_soon'] is 'true' or date['date'].isnumeric() or date['date'] is '':
+        if game['name'] == "Negative Type":
+            print(date)
+
+        if date['coming_soon'] is 'true' or date['date'].isnumeric() or len(date['date'].split(" ")) != 3:
             # If no set release date is made
             date = "0-0-0"
         else:
@@ -79,4 +82,4 @@ def scrapeSteam(limitOfNew = 1):
 
 
 if __name__ == "__main__":
-    scrapeSteam(1)
+    scrapeSteam(100)
