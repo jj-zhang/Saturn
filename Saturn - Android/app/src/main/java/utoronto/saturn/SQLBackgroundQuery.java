@@ -7,12 +7,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
-class SQLBackgroundQuery extends AsyncTask<String, Void, ResultSet> {
+public class SQLBackgroundQuery extends AsyncTask<String, Void, ResultSet> {
     Connection conn;
     PreparedStatement st;
 
-    SQLBackgroundQuery() {
+    public SQLBackgroundQuery() {
         super();
     }
 
@@ -26,11 +27,12 @@ class SQLBackgroundQuery extends AsyncTask<String, Void, ResultSet> {
             conn = DriverManager.getConnection("jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn"
                     , "tjlevpcn", "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu");
             st = conn.prepareStatement(strings[0]);
-            ResultSet result = st.executeQuery();
-            return result;
-        } catch (Exception ex) {
+            ResultSet s = st.executeQuery();
+            conn.close();
+            return s;
+        } catch (SQLException | ClassNotFoundException ex) {
             ex.printStackTrace();
+            throw new IllegalStateException("Invalid Query!");
         }
-        throw new IllegalStateException("Invalid Query");
     }
 }

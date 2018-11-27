@@ -1,7 +1,6 @@
 package utoronto.saturn;
 
 import android.annotation.SuppressLint;
-import android.provider.ContactsContract;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,13 +11,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 public class EventDatabase extends Database {
 
     private static final String table = "events";
+
+    protected static Logger log = Logger.getLogger(EventDatabase.class.getName());
 
     EventDatabase() {
         super();
@@ -33,25 +34,43 @@ public class EventDatabase extends Database {
         return DatabaseUtilities.deleteRow(table, "id", Integer.toString(id));
     }
 
-    public List<Event> getPopular() throws SQLException, MalformedURLException, ParseException {
-        Statement st = super.connection.createStatement();
-        ResultSet rs = st.executeQuery("SELECT eventID, COUNT(*) AS count FROM users GROUP BY eventId ORDER BY count(*) DESC");
+    public static List<Event> getUserFollowedEvents(String email) throws SQLException, MalformedURLException, ParseException {
+        ResultSet rs = DatabaseUtilities.executeQuery(String.format("SELECT eventID FROM users WHERE email = '%s' AND eventId != -1", email));
+        List<Event> result = new ArrayList<>();
+
+        while (rs != null && rs.next()) {
+            result.add(createEvent(rs.getInt("eventID")));
+        }
+        return result;
+    }
+
+    public static List<Event> getEventsByType(String type) throws SQLException, MalformedURLException, ParseException {
+        ResultSet rs = DatabaseUtilities.executeQuery(String.format("SELECT DISTINCT id FROM events WHERE type = '%s'", type));
+        List<Event> result = new ArrayList<>();
+
+        while (rs != null && rs.next()){
+            result.add(createEvent(rs.getInt("id")));
+            log.info(String.format("Received event type = %s, id = %d", type, rs.getInt("id")));
+        }
+
+        return result;
+    }
+
+    public static List<Event> getPopular() throws SQLException, MalformedURLException, ParseException {
+        ResultSet rs = DatabaseUtilities.executeQuery("SELECT eventID, COUNT(*) AS count FROM users GROUP BY eventId ORDER BY count(*) DESC");
         ArrayList<Event> eventLst = new ArrayList<>();
-        ResultSetMetaData rsmd = rs.getMetaData();
         while (rs.next()) {
             eventLst.add(createEvent(rs.getInt(1)));
             if (eventLst.size() > 5)
                 break;
         }
         rs.close();
-        st.close();
 
         return eventLst;
 
     }
-    public List<Event> getTrending() throws SQLException, MalformedURLException, ParseException{
-        Statement st = super.connection.createStatement();
-        ResultSet rs = st.executeQuery("SELECT id FROM events ORDER BY date ORDER BY count(*) DESC");
+    public static List<Event> getTrending() throws SQLException, MalformedURLException, ParseException{
+        ResultSet rs = DatabaseUtilities.executeQuery("SELECT id FROM events ORDER BY date ORDER BY count(*) DESC");
         ArrayList<Event> eventLst = new ArrayList<>();
         while (rs.next()) {
             eventLst.add(createEvent(rs.getInt(1)));
@@ -59,12 +78,11 @@ public class EventDatabase extends Database {
                 break;
         }
         rs.close();
-        st.close();
         return eventLst;
     }
-    public List<Event> getSuggested() throws SQLException, MalformedURLException, ParseException{
-        Statement st = super.connection.createStatement();
-        ResultSet rs = st.executeQuery("SELECT type, COUNT(*) FROM events GROUP BY type ORDER BY count(*) DESC");
+
+    public static List<Event> getSuggested() throws SQLException, MalformedURLException, ParseException{
+        ResultSet rs = DatabaseUtilities.executeQuery("SELECT type, COUNT(*) FROM events GROUP BY type ORDER BY count(*) DESC");
         String type = "";
         while (rs.next()) {
             type = rs.getString(1);
@@ -81,39 +99,33 @@ public class EventDatabase extends Database {
                 break;
         }
         rs.close();
-        st.close();
 
         return eventLst;
 
     }
 
-    Event createEvent(int id) throws SQLException, ParseException, MalformedURLException {
+    public static Event createEvent(int id) throws SQLException, ParseException, MalformedURLException {
         ResultSet rs = DatabaseUtilities.selectRows(table, Arrays.asList("name", "url", "date"), "id", Integer.toString(id));
         if(rs == null) {
             return null;
         }
         ResultSetMetaData rsmd = rs.getMetaData();
 
-        String name = "";
-        String url = "";
-        String date = "";
+        String name;
+        String url;
+        String date;
 
-        while (rs.next()) {
-            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                if (i == 1)
-                    name = rs.getString(i);
-                if (i == 2)
-                    url = rs.getString(i);
-                if (i == 3)
-                    date = rs.getString(i);
-            }
+        if (rs.next()) {
+            name = rs.getString("name");
+            url = rs.getString("url");
+            date = rs.getString("date");
+        } else {
+            return null;
         }
-
         //https://stackoverflow.com/questions/12473550/how-to-convert-a-string-date-to-long-millseconds
         @SuppressLint("SimpleDateFormat") SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         Date parseDate = f.parse(date);
         long milliseconds = parseDate.getTime();
-
         URL u = new URL(url);
 
         Event newEvent = new Event(Integer.toString(id), name, u, milliseconds);

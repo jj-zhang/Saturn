@@ -47,7 +47,7 @@ public class TestDatabase {
 
     @Test()
     public void testAddEvent() throws SQLException {
-        db.addEvent("Yuri On Ice", "anime", "Sampleurl", "2019-02-04", true);
+        db.addEvent("Weeb guy", "Yuri On Ice", "Description", "2019-02-04", "anime", "SampleURL", true);
 
         Statement st = db.connection.createStatement();
         ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM events WHERE name = 'Yuri On Ice'");

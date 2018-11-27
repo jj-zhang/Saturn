@@ -12,7 +12,6 @@ public class FollowingViewModel extends ViewModel {
 
     public FollowingViewModel(){
         artists = new ArrayList<>();
-        artists.add(new User("Gorillaz", " ", "ladygaga@gmail.com"));
     }
 
     public List<User> getArtists(){
