@@ -1,14 +1,9 @@
-# YOUR PRODUCT/TEAM NAME
+# Saturn / Group 1
 
- > _Note:_ This document is meant to be written during (or shortly after) your review meeting, which should happen fairly close to the due date.      
- >      
- > _Suggestion:_ Have your review meeting a day or two before the due date. This way you will have some time to go over (and edit) this document, and all team members should have a chance to make their contribution.
-
-
-## Iteration XX - Review & Retrospect
+## Iteration 3 - Review & Retrospect
 
  * When: November 26 
- * Where: PHYSICAL LOCATION AND/OR ONLINE
+ * Where: Online
 
 ## Process - Reflection
 
@@ -42,6 +37,18 @@ List any process-related changes you are planning to make (if there are any)
 
 
 ## Product - Review
+
+Goals from Planning
+
+Integrate backend with frontend fully and make sure databases are connected properly
+Mainly, frontend needs to call backend functions to get/change information from/to the database
+Develop the notifications feature
+Notify the user if a upcoming release date is approaching
+Clean up any leftover UI work
+Notification feature, some spelling mistakes
+Finish off all scrapers
+Finish all scrapers (movie/TV shows, anime, games, and concerts) using various APIs
+Python scripts
 
 #### Goals and/or tasks that were met/completed:
 
