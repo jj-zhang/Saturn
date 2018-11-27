@@ -38,6 +38,18 @@ List any process-related changes you are planning to make (if there are any)
 
 ## Product - Review
 
+Goals from Planning
+
+Integrate backend with frontend fully and make sure databases are connected properly
+Mainly, frontend needs to call backend functions to get/change information from/to the database
+Develop the notifications feature
+Notify the user if a upcoming release date is approaching
+Clean up any leftover UI work
+Notification feature, some spelling mistakes
+Finish off all scrapers
+Finish all scrapers (movie/TV shows, anime, games, and concerts) using various APIs
+Python scripts
+
 #### Goals and/or tasks that were met/completed:
 
  * From most to least important.
