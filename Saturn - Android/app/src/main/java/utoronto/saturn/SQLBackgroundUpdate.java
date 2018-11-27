@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class SQLBackgroundUpdate extends AsyncTask<String, Void, Void> {
     SQLBackgroundUpdate() {
@@ -24,9 +25,14 @@ public class SQLBackgroundUpdate extends AsyncTask<String, Void, Void> {
                     , "tjlevpcn", "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu");
             PreparedStatement st = conn.prepareStatement(strings[0]);
             st.executeUpdate();
-        } catch (Exception ex) {
+            conn.close();
+        } catch (SQLException ex) {
             ex.printStackTrace();
+            throw new IllegalStateException("Invalid Query");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("SQL class not found");
         }
-        throw new IllegalStateException("Invalid Query");
+        return null;
     }
 }

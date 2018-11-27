@@ -12,33 +12,14 @@ public class Database {
     private final static String url = "jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn";
     private final static String username = "tjlevpcn";
     private final static String password = "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu";
-    // Setup for logging
-    protected Logger log = Logger.getLogger(UserDatabase.class.getName());
-    protected Connection connection;
-    static Statement SQLStatement;
 
 
     public Database() {
         try {
             Class.forName("org.postgresql.Driver");
-            getConnection();
-
-
         }
-        catch (ClassNotFoundException | SQLException e) {
-            log.severe("Had an SQL Exception while trying to connect to the database");
+        catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-
-    protected Connection getConnection() throws SQLException {
-
-        Connection connection = DriverManager.getConnection(url, username, password);
-
-        this.connection = connection;
-        SQLStatement = connection.createStatement();
-
-        return connection;
     }
 }

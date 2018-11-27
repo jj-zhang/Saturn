@@ -6,17 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utoronto.saturn.Event;
+import utoronto.saturn.app.GuiManager;
 
 public class MineViewModel extends ViewModel {
     private List<Event> mEvents;
 
     public MineViewModel(){
         // TODO: remove hardcoded data
-
-        mEvents = new ArrayList<> ();
-//        Event event = new Event("0", "Gorillaz The Now Now Tour", "Tour of Gorillaz",
-//                1, 1, null, 1007);
-//        mEvents.add(event);
+        mEvents = GuiManager.getInstance().getUserFollowedEvents();
     }
 
     public List<Event> getEvents() {
