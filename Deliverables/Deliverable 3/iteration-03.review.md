@@ -52,6 +52,11 @@ Python scripts
 
 #### Goals and/or tasks that were met/completed:
 
+* Integration between backend and frontend as well as final work on the database was completed, as evidenced by our app / issues.
+
+* Notification Functionality works on a basic level.
+
+
  * From most to least important.
  * Refer/link to artifact(s) that show that a goal/task was met/completed.
  * If a goal/task was not part of the original iteration plan, please mention it.
