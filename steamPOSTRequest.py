@@ -1,13 +1,16 @@
-import requests
 import psycopg2
+import urllib3
+import json
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 generalDataURL = "https://api.steampowered.com/ISteamApps/GetAppList/v0002/"
 specificDataURL = "https://store.steampowered.com/api/appdetails/?appids="
 sqlQuery = """INSERT INTO events (id, name, type, date, url, isglobal, description, creator) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
 
 # Grab general data from steam API
-response = requests.get(generalDataURL)
-generalData = eval(response.text)['applist']['apps']
+http = urllib3.PoolManager()
+response = http.request("GET", generalDataURL)
+generalData = json.loads(response.data)['applist']['apps']
 
 # Connect to SQL database
 conn = psycopg2.connect(host="tantor.db.elephantsql.com",database="tjlevpcn", user="tjlevpcn", password="SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu")
@@ -26,10 +29,10 @@ def scrapeSteam(limitOfNew = 1):
     for game in generalData:
         # Get app-specific details
         print(game['name'])
-        response = requests.get(specificDataURL + str(game['appid']))
+        response = http.request("GET", specificDataURL + str(game['appid']))
 
         # Convert JSON to Python
-        game = eval(response.text.replace("false", "False").replace("null", "None").replace("true", "True"))[str(game['appid'])]
+        game = json.loads(response.data)[str(game['appid'])]
 
         if game['success'] is True:
             # If game exists
