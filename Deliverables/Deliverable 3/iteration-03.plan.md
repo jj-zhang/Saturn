@@ -7,8 +7,6 @@
 
 ## Process
 
-(Optional:) Quick introduction
-
 #### Changes from previous iteration
 
 List the most significant changes you made to your process (if any).
@@ -25,7 +23,7 @@ List the most significant changes you made to your process (if any).
  * Backend / QA: Reece
    * Set up of the backend databases as well as JDBC interface with the database
    * Writing tests for the backend classes
- * Feature Impl / Backend: Darren
+ * Feature Impl / Frontend / Jack of All Trades: Darren
    * Implementation of the notifications feature
    * Integration of frontend to backend
 
