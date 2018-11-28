@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.xml.transform.Result;
+
 public class SQLBackgroundUpdate extends AsyncTask<String, Void, Void> {
     SQLBackgroundUpdate() {
         super();
@@ -23,7 +25,7 @@ public class SQLBackgroundUpdate extends AsyncTask<String, Void, Void> {
             Log.d("myTag", "Connecting to database...");
             Connection conn = DriverManager.getConnection("jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn"
                     , "tjlevpcn", "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu");
-            PreparedStatement st = conn.prepareStatement(strings[0]);
+            PreparedStatement st = conn.prepareStatement(strings[0], ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             st.executeUpdate();
             conn.close();
         } catch (SQLException ex) {

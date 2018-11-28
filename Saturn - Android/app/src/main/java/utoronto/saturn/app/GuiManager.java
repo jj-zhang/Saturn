@@ -1,7 +1,5 @@
 package utoronto.saturn.app;
 
-import android.app.job.JobParameters;
-import android.app.job.JobService;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,7 +18,6 @@ import java.util.logging.Logger;
 
 import utoronto.saturn.Event;
 import utoronto.saturn.EventDatabase;
-import utoronto.saturn.SQLBackgroundQuery;
 import utoronto.saturn.User;
 import utoronto.saturn.UserDatabase;
 
@@ -34,19 +31,26 @@ public class GuiManager {
     private static String[] types;
     private static Map<String, List<Event>> allEvents;
     private static final Logger log = Logger.getLogger(GuiManager.class.getName());
+    private static List<LoadingListener> listeners = new ArrayList<>();
 
     private GuiManager() {
         allEvents = new HashMap<>();
         types = new String[]{"anime", "concert", "movie", "game"};
-        for (String type : types) {
-            BackgroundQuery query = new BackgroundQuery();
-            query.execute(type);
-        }
     }
 
     // Use this to get the current instance of this class
     public static GuiManager getInstance() {
         return instance;
+    }
+
+    public static void getAllEventsFromDb(){
+        if (!allEvents.keySet().isEmpty()) return;
+        notifyLoadingStarted();
+        for (String type : types) {
+            BackgroundQuery query = new BackgroundQuery();
+            // query.execute(type);
+            query.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, type);
+        }
     }
 
     /*
@@ -108,6 +112,23 @@ public class GuiManager {
         }
         return null;
     }
+
+    public static void addListener(LoadingListener listener) {
+        listeners.add(listener);
+    }
+
+    private static void notifyLoadingStarted() {
+        for (LoadingListener listener : listeners) {
+            listener.notifyLoadingStarted();
+        }
+    }
+
+    private static void notifyLoadingFinished() {
+        for (LoadingListener listener : listeners) {
+            listener.notifyLoadingFinished();
+        }
+    }
+
     private static class BackgroundQuery extends AsyncTask<String, Void, ResultSet> {
         Connection conn;
         PreparedStatement st;
@@ -115,23 +136,28 @@ public class GuiManager {
 
         @Override
         protected ResultSet doInBackground(String... strings) {
+            ResultSet result;
             try {
                 Class.forName("org.postgresql.Driver");
                 //STEP 3: Open a connection
-                Log.d("myTag", "Connecting to database...");
+                Log.d("database", "Connecting to database...");
                 conn = DriverManager.getConnection("jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn"
                         , "tjlevpcn", "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu");
+                conn.setAutoCommit(false);
                 type = strings[0];
-                st = conn.prepareStatement(String.format("SELECT DISTINCT id FROM events WHERE type = '%s'", type));
-                ResultSet s = st.executeQuery();
+                st = conn.prepareStatement(String.format("SELECT DISTINCT id FROM events WHERE type = '%s' LIMIT 10", type), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                result = st.executeQuery();
+                conn.setAutoCommit(true);
                 conn.close();
-                return s;
             } catch (SQLException | ClassNotFoundException ex) {
                 ex.printStackTrace();
                 throw new IllegalStateException("Invalid Query!");
             }
+
+            return result;
         }
-            @Override
+
+        @Override
         protected void onPostExecute(ResultSet result) {
             log.info("onPostExecute");
             List<Event> events = allEvents.get(type);
@@ -142,11 +168,15 @@ public class GuiManager {
             try {
                 while (result != null && result.next()) {
                     assert events != null;
+                    Log.d("database", "Fetching next...");
                     events.add(EventDatabase.createEvent(result.getInt("id")));
                 }
             } catch (SQLException | ParseException | MalformedURLException e) {
                 e.printStackTrace();
             }
+            notifyLoadingFinished();
         }
     }
+
+
 }

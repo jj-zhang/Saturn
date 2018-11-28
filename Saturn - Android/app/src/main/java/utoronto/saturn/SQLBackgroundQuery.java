@@ -26,7 +26,7 @@ public class SQLBackgroundQuery extends AsyncTask<String, Void, ResultSet> {
             Log.d("myTag", "Connecting to database...");
             conn = DriverManager.getConnection("jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn"
                     , "tjlevpcn", "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu");
-            st = conn.prepareStatement(strings[0]);
+            st = conn.prepareStatement(strings[0], ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             ResultSet s = st.executeQuery();
             conn.close();
             return s;
