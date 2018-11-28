@@ -24,7 +24,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("before set Content View");
-        setContentView(R.layout.signup_activity);
+        setContentView(R.layout.activity_signup);
         System.out.println("set Content View");
         myViewModel = ViewModelProviders.of(this).get(SignupViewModel.class);
         button = findViewById(R.id.signup_activity_button);
