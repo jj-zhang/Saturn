@@ -25,6 +25,7 @@ public class LoadingScreenActivity extends AppCompatActivity implements LoadingL
 
     @Override
     public void notifyLoadingFinished() {
+        GuiManager.removeListener(this);
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
     }

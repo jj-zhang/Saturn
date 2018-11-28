@@ -1,7 +1,10 @@
 package utoronto.saturn.app.front_end.views;
 
 import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import android.graphics.Color;
 
 import utoronto.saturn.Event;
 import utoronto.saturn.User;
+import utoronto.saturn.app.GuiManager;
 import utoronto.saturn.app.R;
 import utoronto.saturn.app.front_end.adapters.EventItemFullAdapter;
 
@@ -34,26 +38,44 @@ public class BaseView extends AppCompatActivity {
         Dialog myDialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         System.out.println("clicked pop up");
         myDialog.setContentView(R.layout.event_description_popup);
-        TextView close_popup = (TextView) myDialog.findViewById(R.id.close_event_popup);
+        TextView close_popup = myDialog.findViewById(R.id.close_event_popup);
         close_popup.setText("X");
-        Button register_event = (Button) myDialog.findViewById(R.id.register_button);
+        Button register_event = myDialog.findViewById(R.id.register_button);
 
-        close_popup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Closes the pop up if the user clicks the X
-                myDialog.dismiss();
-            }
+        boolean registered = false;
+        if (GuiManager.getInstance().getUserFollowedEvents().contains(event)) {
+            registered = true;
+        }
+
+        close_popup.setOnClickListener(v -> {
+            // Closes the pop up if the user clicks the X
+            myDialog.dismiss();
         });
 
-        register_event.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TO DO
-                // Add the user to the list of people registered for this event
-            }
-        });
-
+        if (registered) {
+            register_event.setText("Remove");
+            register_event.setOnClickListener(v -> {
+                boolean res = GuiManager.getInstance().leaveEvent(event);
+                if (res) {
+                    Snackbar message = Snackbar.make(v, "Event removed successfully!", 2000);
+                    message.show();
+                } else {
+                    Snackbar message = Snackbar.make(v, "Cannot remove event!", 2000);
+                    message.show();
+                }
+            });
+        } else {
+            register_event.setOnClickListener(v -> {
+                boolean res = GuiManager.getInstance().joinEvent(event);
+                if (res) {
+                    Snackbar message = Snackbar.make(v, "Event added successfully!", 2000);
+                    message.show();
+                } else {
+                    Snackbar message = Snackbar.make(v, "Cannot add event!", 2000);
+                    message.show();
+                }
+            });
+        }
         updateEventPopUpInfo(myDialog, event);
 
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -80,35 +102,65 @@ public class BaseView extends AppCompatActivity {
         myDialog.show();
     }
 
-    // Referenced from https://stackoverflow.com/questions/6407324/how-to-display-image-from-url-on-android
-    // Used to draw an image onto the image view in the events popup
-//    public void LoadImageFromWebOperations(URL url) {
-//        try {
-//            InputStream is = (InputStream) url.getContent();
-//            Drawable image = Drawable.createFromStream(is, "src name");
-//            ImageView imgview_event_image = myDialog.findViewById(R.id.event_image);
-//            imgview_event_image.setImageDrawable(image);
-//        } catch (Exception e) {
-//            // TO DO: Need to print the exception where the URL is invalid
-//            System.out.println("Invalid ");
-//        }
-//    }
-
     private void updateEventPopUpInfo(Dialog dialog, Event event) {
         // TODO: update text boxes with event info
         TextView textView_description = dialog.findViewById(R.id.event_description);
         textView_description.setText(event.getDescription());
 
-        TextView textView_location = dialog.findViewById(R.id.event_location);
-        textView_location.setText("Scotiabank Arena");
-
         TextView textView_date = dialog.findViewById(R.id.event_date);
-        textView_date.setText(String.valueOf(event.getReleaseDate()));
+        textView_date.setText(event.getLongDate());
 
-        TextView textView_event = dialog.findViewById(R.id.event_artist);
-        textView_event.setText("Drake");
+        TextView textView_artist = dialog.findViewById(R.id.event_artist);
+        textView_artist.setText(event.getArtist());
 
         TextView textView_name = dialog.findViewById(R.id.event_name);
         textView_name.setText(event.getName());
+
+        ImageLoaderPackage pkg = new ImageLoaderPackage(event.getImageURL(), dialog);
+        ImageLoader loader = new ImageLoader();
+        loader.execute(pkg);
+    }
+
+    private static class ImageLoader extends AsyncTask<ImageLoaderPackage, Void, Drawable> {
+        private ImageLoaderPackage pkg;
+
+        @Override
+        protected Drawable doInBackground(ImageLoaderPackage... loaderPackages) {
+            try {
+                ImageLoaderPackage loaderPackage = loaderPackages[0];
+                pkg = loaderPackage;
+                URL url = loaderPackage.getUrl();
+                InputStream is = (InputStream) url.getContent();
+                return Drawable.createFromStream(is, "src name");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Drawable image){
+            Dialog dialog = pkg.getDialog();
+            ImageView event_image = dialog.findViewById(R.id.event_image);
+            event_image.setImageDrawable(image);
+        }
+    }
+
+    static class ImageLoaderPackage{
+        private URL url;
+        private Dialog dialog;
+
+        ImageLoaderPackage (URL url, Dialog dialog) {
+            this.url = url;
+            this.dialog = dialog;
+        }
+
+        URL getUrl() {
+            return url;
+        }
+
+        Dialog getDialog() {
+            return dialog;
+        }
     }
 }

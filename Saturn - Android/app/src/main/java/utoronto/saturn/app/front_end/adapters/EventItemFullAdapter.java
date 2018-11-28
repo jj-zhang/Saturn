@@ -1,6 +1,7 @@
 package utoronto.saturn.app.front_end.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import utoronto.saturn.Event;
@@ -77,14 +83,13 @@ public class EventItemFullAdapter extends
 
             // Set item views based on your views and data model
             TextView dateTextView = viewHolder.dateTextView;
-            dateTextView.setText(String.valueOf(event.getReleaseDate()));
+
+            dateTextView.setText(event.getShortDate());
             TextView eventNameTextView = viewHolder.eventNameTextView;
             eventNameTextView.setText(event.getName());
             TextView locationTextView = viewHolder.locationTextView;
 
-           // locationTextView.setText(event.getDescription());
-
-            locationTextView.setText(event.getDescription());
+            locationTextView.setText(event.getArtist());
             viewHolder.bind(event, listener);
         }
     }

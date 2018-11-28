@@ -1,5 +1,7 @@
 package utoronto.saturn;
 
+import android.provider.ContactsContract;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,24 +28,14 @@ public class UserDatabase extends Database {
     }
 
     /**
-     * Deletes  an event of this user with eventId (from events table)
-     *
-     * @param eventId the eventId in events table
-     * @return true on success
-     */
-    public static boolean leaveEvent(int eventId) {
-        return leaveEvent(GuiManager.getInstance().getCurrentUser().getEmail(), eventId);
-    }
-
-    /**
      * Deletes a row from users table with userId (email) and eventId (from events table)
      *
-     * @param userId the user's email in users table
+     * @param email the user's email in users table
      * @param eventId the eventId in events table
      * @return true on success
      */
-    private static boolean leaveEvent(String userId, int eventId) {
-        return DatabaseUtilities.deleteRow(table, "eventid", userId);
+    public static boolean leaveEvent(String email, int eventId) {
+        return DatabaseUtilities.deleteRowUser(email, eventId);
     }
 
     /**

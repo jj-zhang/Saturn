@@ -68,22 +68,29 @@ public class HomeFragment extends Fragment {
 
         // Set up recycler views
         RecyclerView rvEventsComingUp = view.findViewById(R.id.rv_events_coming_up);
-        EventItemFullAdapter adapter = new EventItemFullAdapter(mViewModel.getMyEvents(), mListener);
+        EventItemFullAdapter adapter = new EventItemFullAdapter(mViewModel.getMyEvents(), mListener) {
+            @Override
+            public int getItemCount(){
+                List<Event> events = mViewModel.getMyEvents();
+                if (events == null || events.size() == 0) return 1;
+                return Math.min(3, events.size());
+            }
+        };
         rvEventsComingUp.setAdapter(adapter);
         rvEventsComingUp.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        rvEventsComingUp.setNestedScrollingEnabled(false);
         RecyclerView rvSuggestions = view.findViewById(R.id.rv_suggestions);
         adapter = new EventItemFullAdapter(mViewModel.getSuggestedEvents(), mListener);
         rvSuggestions.setAdapter(adapter);
         rvSuggestions.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        rvSuggestions.setNestedScrollingEnabled(false);
+        RecyclerView rvPopular = view.findViewById(R.id.rv_popular);
+        adapter = new EventItemFullAdapter(mViewModel.getPopularEvents(), mListener);
+        rvPopular.setAdapter(adapter);
+        rvPopular.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        rvPopular.setNestedScrollingEnabled(false);
 
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onEventClicked(Event event) {
-        if (mListener != null) {
-            mListener.onItemClick(event);
-        }
     }
 
     @Override
