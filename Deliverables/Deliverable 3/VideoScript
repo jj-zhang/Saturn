@@ -30,9 +30,15 @@ concerts. Even focusing on a fraction of the population like Bob, it is clear to
 (Walkthrough time)
 When a user first opens Saturn, the user may login with an existing account or create a new one. (show)
 Inside the app, one can view his or her upcoming events that they've favorited and view recommendations from the app.
-One can even browse the events from the database with different categories.
+One can even browse the events from the database with different categories. We have four different categories: movie/TV, anime, 
+concerts, and games. (Insert screen and memes)
+Also, the user can view the calendar of their events (show) and even...
 
-Next step, we shall make Saturn a global success by filling it with more features (show list)
+Our app get all the information with different apis by scraping using python scripts. As you can see here, we're scraping a list of
+movies (show vid). The information is stored within our database and can be viewed within the app.
+
+Next step, we shall refactor our code to make it more readable and efficient and add more comments for documentation.
+We may also add more features to the app. (show list)
 
 
 
