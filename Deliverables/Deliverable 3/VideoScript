@@ -5,54 +5,47 @@ cutting-edge all new innovative app that tracks release dates of your hopes and 
 release dates of your favorite upcoming media and remind you when it's coming up. Let's see how Saturn can change the lives of its 
 users by looking at an example. (Insert "consider the following" clip)
 
-Look at Bob, the lifeless, in-dept university student, like us. His favorite things in life are memes and anime. His favorite anime: Mob
+Look at Bob, the lifeless, in-debt university student, like us. His favorite things in life are memes and anime. His favorite anime: Mob
 Psycho 100 ended last year. After this tragic end to his favourite anime, his life has descended into a meaningless wreck. But hope arises
-after Bob logs in, as he was searching through the popular tab, he recieves a recommendation notification from the Saturn app, MOB PSYCHO 100 II is airing next winter. 
+after Bob logs in, as he was searching through the popular tab, he recieves a recommendation notification from the Saturn app, MOB PSYCHO 100 Season 2 is airing next winter. 
 (Show mod psycho 100 II being recommended)
 
 Bob's heart cries out in joy as his finger taps the "register button" (Bob adds Mob into fav in app)
 
 His life is rejuvinated, and his girlfriend returned to him.
 
-However, his happiness was not meant to last. Mod psycho 100 II was still 
-forty-two million, sixty-nine thousand, six hundred ninety milliseconds away. As time passes, his heart crushes and his girlfriend 
+However, his happiness was not meant to last. Mod psycho 100 Season 2 was still exactly...
+forty-two million, sixty-nine thousand, six hundred and ninety milliseconds away. As the milliseconds pass, his heart cruslhes and his girlfriend 
 (anime pillow) leaves him once again.
 
 His life is once again.... in disarray. (black out and leave 2 second space)
 
-Bob life is in black and white, his soul cries out as a beam of light from phone entered his souless eyes. It's from Saturn. 
-His spirits rise, as he sees... a notification that Mob Psycho 100 II is now airing. He immediately ran for the computer to watch the
-newest episode, his girlfriend came back to join him, and he lived happily ever after. (fade out)
+Bob's life has once again become monotone... his soul cries out just as a beam of light from phone entered his souless eyes. It's from Saturn. 
+His spirits instantly rise, as he sees... a notification that Mob Psycho 100 Season 2 has started airing. He immediately runs for the computer to watch the
+newest episode. His girlfriend came back to join him, and he lived happily ever after. (fade out)
 
 (serious time)
-Just now we saw a render of how Bob's life improved once everytime he interacted with Saturn. Before Saturn, Bob was unaware or 
-missed many of his favourite animes' release dates. However, with Saturn, Bob is made aware of all upcoming animes, games, movies, tv shows, and
+We just had a glimpse into Bob's life and how it had inmeasurably improved everytime he interacted with the Saturn app. Before Saturn, Bob was unaware or even 
+missed many of his favourite animes' release dates. However, WITH Saturn, Bob is made aware of all upcoming animes, games, movies, tv shows, and
 concerts. Even focusing on a fraction of the population like Bob, it is clear to see that Saturn is a utilitarian's dream.
 
 (Walkthrough time)
 When a user first opens Saturn, the user may login with an existing account or create a new one. (show)
-Inside the app, one can view his or her upcoming events that they've favorited and view recommendations from the app.
-One can even browse the events from the database with different categories. We have four different categories: movie/TV, anime, 
-concerts, and games. (Insert screen and memes) By tapping on an item, one can view the title, release date, creator, description, and 
+Once inside the app, you can view your upcoming, favorited, or recommendations events straight from the app.
+You can even browse the seemingly endless number of events from the database by category. 
+Currently, we have four different categories, consisting of: TV/movies, anime, concerts, and games. 
+(Insert screen and memes) By tapping on an event, you can view the title, release date, creator, description, and 
 a picture of the selected media.
-If it is to the user's liking, he or she can simply click the register button to favorite it. Our app will record this detail
-within our database.
+If you would like to pin the event for easy access later, simply click the register button to favorite it.
 
 Also, the user can view the calendar of their events in the "Mine" tab (show).
 
-Our app get all the information with different apis by scraping using python scripts. As you can see here, we're scraping a list of
-movies (show vid). The information is stored within our database and can be viewed within the app.
+Our app obtains up-to-date information using the various appropriate apis using python scripts to scrape the information. 
+As you can see here, we're scraping a list of movies (show vid). The information is stored within our database and can be viewed within the app.
 
-Next step, we shall refactor our code to make it more readable and efficient and add more comments for documentation.
-Also, we'd like to find a way for the app to load faster. Currently, we are using asynctask for fetching information from the database,
-we'd like to improve on that.
+In our next step, we will refactor our code to make it more readable and efficient and add more comments for documentation.
+Also, we'd like to implement a web server to be able to update the events automatically; allowing for continuous and frequently added events to be added.
 
-Then, we'd want to make a custom notification for each event so that the user have more details to look at.
+Then, we'd want to expand to more categories while making a custom notification for each category of event so that the user has more specific details they can look at.
 
-we may even make Saturn a global success by filling it with more features (show list, maybe lol)
-
-
-
-
-
-
+We may even make Saturn a global success by filling it with more features (show list, maybe lol)

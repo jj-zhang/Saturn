@@ -19,9 +19,9 @@ class EventManager {
         Requests an updated version of this Event from database
      */
     public void updateEvent(Event event) {
-        if(isEventIn(event.getID())) {
-            eventList.remove(event.getID());
-        }
+//        if(isEventIn(event.getID())) {
+//            eventList.remove(event.getID());
+//        }
 
         // get info from database
     }

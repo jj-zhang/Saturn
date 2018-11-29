@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import utoronto.saturn.Event;
 import utoronto.saturn.app.GuiManager;

@@ -44,14 +44,14 @@ List the most significant changes you made to your process (if any).
  * Project board on GitHub keeps track of project completion status
    * Any issues/work that comes up get turned into an issue on Github and are assigned to specific members
  * After each sprint planning meeting, each person makes a to-do list on what they need to get done, and ensure that it is updated
-   * This can be done verbally or recorded ditially
+   * This can be done verbally or recorded initially
 
 #### Git / GitHub workflow
  * Each person either works on their own branch, or on a new branch stemmed out from the master branch for each feature
  * After a feature is complete, make sure the changes do not break the build, and send in a pull request to master
  * After at least one person has reviewed the changes and approved them, the pull request is merged into master 
    * People who review are usually those who are closely related to the changes (eg. scrapers, frontend, backend, etc.)
-   * This can be done during the weekly meetings or online, after throughly discussing with the appropriate team members (front/backend)
+   * This can be done during the weekly meetings or online, after thoroughly discussing with the appropriate team members (front/backend)
  * We chose this workflow for it is the easiest way to maintain a clean master branch while letting others work on different issues at the same time. Other members can also checkout an issue branch and work the an issue that other member have started to work on. 
 
 ## Product
@@ -72,7 +72,7 @@ List the most significant changes you made to your process (if any).
    * Important for linking the whole app together
  * Screencaps showing the latest changes so that we can compare this iteration's changes with the last
    * Shows progress throughout this iteration
-   * Will show linking between frontend and backend - important for not all members are familiar with both (a chance to see whaat others have worked on)
+   * Will show linking between frontend and backend - important for not all members are familiar with both (a chance to see what others have worked on)
  * Video demo presenting our progress
      * Provide context of our project
      * Show progress from last iteration

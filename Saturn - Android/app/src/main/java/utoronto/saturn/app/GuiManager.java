@@ -12,8 +12,10 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import utoronto.saturn.Event;
@@ -32,6 +34,8 @@ public class GuiManager {
     private static Map<String, List<Event>> allEvents;
     private static final Logger log = Logger.getLogger(GuiManager.class.getName());
     private static List<LoadingListener> listeners = new ArrayList<>();
+    private static List<Event> userEvents;
+    private static boolean userEventsDirty = true;
 
     private GuiManager() {
         allEvents = new HashMap<>();
@@ -51,6 +55,30 @@ public class GuiManager {
             // query.execute(type);
             query.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, type);
         }
+    }
+
+    public static Map<String, List<Event>> getAllEventsInTypes(){
+        return allEvents;
+    }
+
+    public static Set<Event> getAllEvents(){
+        Set<Event> res = new HashSet<>();
+        for (String type : types) {
+            List<Event> events = allEvents.get(type);
+            if (events != null)
+                res.addAll(events);
+        }
+        return res;
+    }
+
+    // Return event if it exists in database(which it should)
+    public static Event getEvent(int eventId){
+        Set<Event> events = getAllEvents();
+        for (Event event : events) {
+            if (event.getID() == eventId)
+                return event;
+        }
+        return null;
     }
 
     /*
@@ -93,18 +121,42 @@ public class GuiManager {
 
     private void setCurrentUser(User user) {
         currentUser = user;
+        userEvents = getUserFollowedEventsFromDb();
     }
 
     // get suggestions based on the current user
-    public List<Event> getSuggestions() {
-        return null;
+    public List<Event> getSuggested() {
+        try {
+            return EventDatabase.getSuggested();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Event> getPopular() {
+        try {
+            return EventDatabase.getPopular();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Event> getTrending() {
+        try {
+            return EventDatabase.getTrending();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     public static String[] getCategories() {
         return categories;
     }
 
-    public List<Event> getUserFollowedEvents() {
+    private List<Event> getUserFollowedEventsFromDb() {
         try {
             return EventDatabase.getUserFollowedEvents(currentUser.getEmail());
         } catch (ParseException | SQLException | MalformedURLException e) {
@@ -113,8 +165,33 @@ public class GuiManager {
         return null;
     }
 
+    public List<Event> getUserFollowedEvents() {
+        return userEvents;
+    }
+
+    public boolean joinEvent(Event event) {
+        if (UserDatabase.joinEvent(event.getID())) {
+            userEvents.add(event);
+            userEventsDirty = true;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean leaveEvent(Event event) {
+        if (UserDatabase.leaveEvent(currentUser.getEmail(), event.getID())) {
+            userEvents.remove(event);
+            userEventsDirty = true;
+            return true;
+        }
+        return false;
+    }
+
     public static void addListener(LoadingListener listener) {
         listeners.add(listener);
+    }
+    public static void removeListener(LoadingListener listener) {
+        listeners.remove(listener);
     }
 
     private static void notifyLoadingStarted() {
@@ -125,6 +202,7 @@ public class GuiManager {
 
     private static void notifyLoadingFinished() {
         for (LoadingListener listener : listeners) {
+            log.info("Notifying listener");
             listener.notifyLoadingFinished();
         }
     }
@@ -145,7 +223,7 @@ public class GuiManager {
                         , "tjlevpcn", "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu");
                 conn.setAutoCommit(false);
                 type = strings[0];
-                st = conn.prepareStatement(String.format("SELECT DISTINCT id FROM events WHERE type = '%s' LIMIT 10", type), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                st = conn.prepareStatement(String.format("SELECT id, name, date, url, description, creator FROM events WHERE type = '%s' ORDER BY date", type), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 result = st.executeQuery();
                 conn.setAutoCommit(true);
                 conn.close();
@@ -165,11 +243,20 @@ public class GuiManager {
                 allEvents.put(type, new ArrayList<>());
                 events = allEvents.get(type);
             }
+            long currentTime = System.currentTimeMillis();
             try {
                 while (result != null && result.next()) {
                     assert events != null;
                     Log.d("database", "Fetching next...");
-                    events.add(EventDatabase.createEvent(result.getInt("id")));
+                    int id = result.getInt("ID");
+                    String name = result.getString("name");
+                    String date = result.getString("date");
+                    String url = result.getString("url");
+                    String description = result.getString("description");
+                    String creator = result.getString("creator");
+
+                    Event newEvent = EventDatabase.createEvent(id, name, date, url, description, creator);
+                    events.add(newEvent);
                 }
             } catch (SQLException | ParseException | MalformedURLException e) {
                 e.printStackTrace();
