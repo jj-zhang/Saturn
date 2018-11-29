@@ -37,54 +37,6 @@ public class DatabaseUtilities extends Database {
     }
 
     /**
-     * Check if sql library exists
-     */
-    private static void testForJar() {
-        try {
-            Class.forName(driver);
-        } catch (java.lang.ClassNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /**
-     * Requests connection to database through HTTP request
-     */
-    private static void requestHTTP() {
-        try {
-            SQLConnection = DriverManager.getConnection(url, username, password);
-            SQLStatement = SQLConnection.createStatement();
-        } catch (SQLException e) {
-            System.out.println("Unable to connect to Database!");
-            SQLConnection = null;
-        }
-    }
-
-    /**
-     * Return whether or not we're currently connected to the database
-     *
-     * @return True if connected, else false
-     */
-    private static boolean isConnected() {
-        return SQLConnection == null;
-    }
-
-    /**
-     * Return whether or not the attempt to connect was successful
-     *
-     * @return True if connected, else false
-     */
-    private static boolean tryConnect() {
-        // Runs if any request fails and in main
-        if (isConnected()) {
-            testForJar();
-            requestHTTP();
-        }
-
-        return isConnected();
-    }
-
-    /**
      * Deletes a row from table with Column equal to Value
      *
      * @param table  Table in database
@@ -174,9 +126,6 @@ public class DatabaseUtilities extends Database {
      * @return Return whether the query successfully executed
      */
     private static boolean removeColumn(String table, String valueName) {
-        if (tryConnect()) {
-            return false;
-        }
 
         String st = "ALTER TABLE " + table + " DROP " + valueName;
         SQLBackgroundUpdate sbu = new SQLBackgroundUpdate();
@@ -184,6 +133,22 @@ public class DatabaseUtilities extends Database {
 
         // TODO repair this by removing the return
         return true;
+    }
+
+    /**
+     * Return the result of executing query on the database
+     * @param query A *****VALID***** query
+     * @return Result of query
+     */
+    static ResultSet executeQuery(String query){
+        try {
+            SQLBackgroundQuery sbq = new SQLBackgroundQuery();
+            sbq.execute(query);
+            return sbq.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -195,10 +160,6 @@ public class DatabaseUtilities extends Database {
      * @throws IllegalArgumentException If values are not valid
      */
     static ResultSet selectColumn(String table, String column) throws IllegalArgumentException {
-        if (tryConnect()) {
-            return null;
-        }
-
         if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if ((table.equals("events") && !eventsValues.contains(column)) || (table.equals("users") && !usersValues.contains(column))) {
@@ -224,10 +185,6 @@ public class DatabaseUtilities extends Database {
      * @throws IllegalArgumentException If values are not valid
      */
     private static ResultSet selectColumns(String table, List<String> columns) throws IllegalArgumentException {
-        if (tryConnect()) {
-            return null;
-        }
-
         if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if (table.equals("events")) {
@@ -269,10 +226,6 @@ public class DatabaseUtilities extends Database {
      * @throws IllegalArgumentException If values are not valid
      */
     static ResultSet selectRow(String table, String column, String conditionColumn, String value) throws IllegalArgumentException {
-        if (tryConnect()) {
-            return null;
-        }
-
         if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if ((table.equals("events") && !eventsValues.contains(column) && !eventsValues.contains(conditionColumn)) || (table.equals("users") && !usersValues.contains(column) && !usersValues.contains(conditionColumn))) {
@@ -283,7 +236,7 @@ public class DatabaseUtilities extends Database {
 
         try {
             SQLBackgroundQuery sbq = new SQLBackgroundQuery();
-            sbq.execute("SELECT " + column + " FROM " + table + " WHERE " + conditionColumn + "=" + value);
+            sbq.execute("SELECT " + column + " FROM " + table + " WHERE " + conditionColumn + "= '" + value + "'");
             return sbq.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -292,10 +245,6 @@ public class DatabaseUtilities extends Database {
     }
 
     static ResultSet selectRows(String table, List<String> columns, String conditionColumn, String value) throws IllegalArgumentException {
-        if (tryConnect()) {
-            return null;
-        }
-
         if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         } else if (table.equals("events")) {
@@ -342,10 +291,6 @@ public class DatabaseUtilities extends Database {
      * @param rows  Number of rows to print
      */
     private static void printTable(String table, int rows) throws IllegalArgumentException {
-        if (tryConnect()) {
-            return;
-        }
-
         if (!tables.contains(table)) {
             throw new IllegalArgumentException("Table is not valid!");
         }

@@ -6,24 +6,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
-public class UserDatabase extends Database {
+import utoronto.saturn.app.GuiManager;
 
-    private Object userName;
-    private Object password;
-    private String dbms;
-    private String serverName;
-    private String portNumber;
-    private String dbName;
+public class UserDatabase extends Database {
     private static final String table = "users";
 
     // Setup for logging
     private Logger log = Logger.getLogger(UserDatabase.class.getName());
-    private Connection connection;
-    private User user;
-    private final static String usersColumn = "(email, username, password, eventid)";
-    private final static ArrayList<String> usersValues = new ArrayList<String>(Arrays.asList("email", "username", "password", "eventid", "*"));
 
     public UserDatabase() {
         super();
@@ -31,11 +23,6 @@ public class UserDatabase extends Database {
 
     public UserDatabase(User user) {
         super();
-        this.user = user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     /**
@@ -44,8 +31,8 @@ public class UserDatabase extends Database {
      * @param eventId the eventId in events table
      * @return true on success
      */
-    public boolean leaveEvent(int eventId) {
-        return leaveEvent(user.getEmail(), eventId);
+    public static boolean leaveEvent(int eventId) {
+        return leaveEvent(GuiManager.getInstance().getCurrentUser().getEmail(), eventId);
     }
 
     /**
@@ -55,7 +42,7 @@ public class UserDatabase extends Database {
      * @param eventId the eventId in events table
      * @return true on success
      */
-    private boolean leaveEvent(String userId, int eventId) {
+    private static boolean leaveEvent(String userId, int eventId) {
         return DatabaseUtilities.deleteRow(table, "eventid", userId);
     }
 
@@ -65,7 +52,8 @@ public class UserDatabase extends Database {
      * @param eventId the eventId in events table
      * @return true on success
      */
-    public boolean joinEvent(int eventId) {
+    public static boolean joinEvent(int eventId) {
+        User user = GuiManager.getInstance().getCurrentUser();
         return DatabaseUtilities.addRowUser(user.getEmail(), user.getUsername(), user.getPassword(), eventId);
     }
 
@@ -76,7 +64,7 @@ public class UserDatabase extends Database {
      */
     public static boolean openAccount(User user) {
         // New account -> EventID == -1
-        if(!doesEmailExist(user.getEmail())) {
+        if(!checkEmailExists(user.getEmail())) {
             return DatabaseUtilities.addRowUser(user.getEmail(), user.getUsername(), user.getPassword(), -1);
         } else {
             return false;
@@ -108,18 +96,9 @@ public class UserDatabase extends Database {
      *
      * @return true if input email is in the database
      */
-    public static boolean checkEmail(String email) {
+    public static boolean checkEmailExists(String email) {
         ArrayList<String> lst = getAllEmail();
         return lst.contains(email);
-    }
-
-    /**
-     * Returns if input email in the users database
-     *
-     * @return true if input email is in the database
-     */
-    public static boolean doesEmailExist(String email) {
-        return DatabaseUtilities.selectRow(table, "email", "email", email) != null;
     }
 
     /**
@@ -127,12 +106,37 @@ public class UserDatabase extends Database {
      *
      * @return ResultSet that contains info about an attribute of user
      */
-    public ResultSet getAttribute(String attribute) {
+    public static ResultSet getAttribute(String attribute) {
+        User user = GuiManager.getInstance().getCurrentUser();
         return getAttribute(user.getEmail(), attribute);
     }
 
-    private ResultSet getAttribute(String userID, String attribute) {
-        return DatabaseUtilities.selectRow(table, attribute, "email", user.getEmail());
+    private static ResultSet getAttribute(String email, String attribute) {
+        return DatabaseUtilities.selectRow(table, attribute, "email", email);
+    }
+
+    public static boolean checkUserCredentials(String email, String password){
+        ResultSet result = DatabaseUtilities.executeQuery("SELECT email FROM " + table + " WHERE email = '" + email + "' AND password = '" + password + "'");
+        try {
+            if (result != null && result.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public static String getUsername(String email) {
+        ResultSet username = getAttribute(email, "username");
+        try {
+            if (username.next()) {
+                return username.getString("username");
+            }
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
 

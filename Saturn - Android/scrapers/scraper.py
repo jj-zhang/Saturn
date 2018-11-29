@@ -7,6 +7,8 @@ def uni_to_str(unicode_input):
     
 # insert data into database
 def scrape(creator, name, desc, date, media_type, url):
+    if creator is None or name is None or desc is None or date is None or url is None:
+        return 1
     connection = psycopg2.connect(host="tantor.db.elephantsql.com",database="tjlevpcn", user="tjlevpcn", password="SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu")
     
     cursor = connection.cursor()
@@ -17,7 +19,9 @@ def scrape(creator, name, desc, date, media_type, url):
         cursor.execute(sql)
         connection.commit()
     except:
-        pass
+        connection.rollback()
+        return 1
     
     cursor.close()
     connection.close()    
+    return 0
