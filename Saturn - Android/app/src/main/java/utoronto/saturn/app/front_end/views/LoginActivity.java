@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!res) {
             removeKeyboard();
-            Snackbar error_message = Snackbar.make(v , "Invalid email. Please try again.",
+            Snackbar error_message = Snackbar.make(v , "Invalid login. Please try again.",
                     2000);
             error_message.show();
             return;

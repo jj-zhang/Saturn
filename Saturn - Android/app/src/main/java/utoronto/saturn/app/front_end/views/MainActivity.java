@@ -24,7 +24,6 @@ public class MainActivity extends BaseView implements OnItemClickListener, OnCat
     private Fragment curFragment;
     private HomeFragment homeFragment;
     private DiscoverFragment discoverFragment;
-    private FollowingFragment followingFragment;
     private MineFragment mineFragment;
     private Map<String, CategoryFragment> categoryFragments;
     private FragmentManager fragmentManager;
@@ -37,7 +36,6 @@ public class MainActivity extends BaseView implements OnItemClickListener, OnCat
 
         homeFragment = HomeFragment.newInstance();
         discoverFragment = DiscoverFragment.newInstance();
-        followingFragment = FollowingFragment.newInstance();
         mineFragment = MineFragment.newInstance();
 
         categoryFragments = new HashMap<>();
@@ -80,9 +78,6 @@ public class MainActivity extends BaseView implements OnItemClickListener, OnCat
                             break;
                         case R.id.menu_discover:
                             replaceFragment(discoverFragment);
-                            break;
-                        case R.id.menu_following:
-                            replaceFragment(followingFragment);
                             break;
                         case R.id.menu_mine:
                             replaceFragment(mineFragment);

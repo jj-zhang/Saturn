@@ -62,7 +62,6 @@ public class MineFragment extends Fragment {
 
         // Setup RecyclerView
         RecyclerView rvEvents = view.findViewById(R.id.rv_events);
-        // EventItemFullAdapter adapter = new EventItemFullAdapter(GuiManager.getInstance().getCurrentUser().getAllEvents());
         EventItemFullAdapter adapter = new EventItemFullAdapter(mViewModel.getEvents(), mListener);
         rvEvents.setAdapter(adapter);
         rvEvents.setLayoutManager(new LinearLayoutManager(this.getContext()));

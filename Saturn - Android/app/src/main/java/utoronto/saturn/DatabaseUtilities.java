@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 
@@ -57,6 +58,13 @@ public class DatabaseUtilities extends Database {
         return true;
     }
 
+    static boolean deleteRowUser(String email, int eventid) {
+        String st = String.format(Locale.getDefault(), "DELETE FROM users WHERE email = '%s' AND eventid = %d", email, eventid);
+        SQLBackgroundUpdate sbu = new SQLBackgroundUpdate();
+        sbu.execute(st);
+        return true;
+    }
+
     /**
      * Add a row in users
      *
@@ -67,12 +75,24 @@ public class DatabaseUtilities extends Database {
      * @return Return whether the query successfully executed
      */
     static boolean addRowUser(String email, String username, String password, int eventid) {
-        String st = "INSERT INTO users " + usersColumn +
-                " VALUES ('" + email + "','" + username + "', '" + password + "', '" + eventid + "')";
+        // check whether the event has already been added
+        String s = String.format(Locale.getDefault(), "SELECT * FROM users WHERE email = '%s' AND eventid = %d", email, eventid);
+        SQLBackgroundQuery sbq = new SQLBackgroundQuery();
+        sbq.execute(s);
+        try {
+            ResultSet res = sbq.get();
+            if (res.next()) return false;
+        } catch (ExecutionException | InterruptedException | SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        // add if not
+        String st = String.format(Locale.getDefault(), "INSERT INTO users %s VALUES ('%s', '%s', '%s', %d)", usersColumn, email, username, password, eventid);
+
         SQLBackgroundUpdate sbu = new SQLBackgroundUpdate();
         sbu.execute(st);
 
-        // TODO repair this by removing the return
         return true;
     }
 
