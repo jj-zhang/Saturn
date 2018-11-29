@@ -46,7 +46,6 @@ def animeScrape(limitOfNew):
     id_count = 1
     
     while limitOfNew > 0:
-        print(limitOfNew)
         #15125
         variables = {
             'id': id_count
