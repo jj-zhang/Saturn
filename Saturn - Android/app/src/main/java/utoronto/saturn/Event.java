@@ -73,6 +73,9 @@ public class Event {
         }
     }
 
+    /*
+    Get date by converting milliseconds to month and day.
+    */
     public String getShortDate(){
         long milliseconds = releaseDate;
         int month, day;
@@ -116,6 +119,9 @@ public class Event {
         return String.valueOf(month) + " " + String.valueOf(day);
     }
 
+    /*
+    Get date by converting milliseconds to month, day, and year.
+    */
     public String getLongDate(){
         long milliseconds = releaseDate;
         int month, day, year;

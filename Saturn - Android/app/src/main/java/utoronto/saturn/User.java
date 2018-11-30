@@ -94,15 +94,4 @@ public class User {
         return Objects.hash(username, email, password, followedCreatorList, events, localEvents, globalEvents, interestedEvents, attendingEvents);
     }
 
-    private void setUsername(String username) {
-        this.username = username;
-    }
-
-    private void setEmail(String email) {
-        this.email = email;
-    }
-
-    void setPassword(String password) {
-        this.password = password;
-    }
 }
