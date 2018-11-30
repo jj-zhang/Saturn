@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -48,10 +49,9 @@ public class MyNewIntentService extends IntentService {
             builder  = new Notification.Builder(this);
         }
 
-
-        builder.setSmallIcon(R.drawable.reminder_icon)
+        builder.setSmallIcon(R.drawable.ic_reminder)
                 .setContentTitle("Event Reminder")
-                .setContentText("You have Bat Out of Hell The Musical(Touring) tomorrow")
+                .setContentText("You have 'Mob psycho 100 II' tomorrow")
                 .setSound(alarmSound)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)

@@ -13,7 +13,7 @@ public class NotificationScheduler {
     public static final int DAILY_REMINDER_REQUEST_CODE=100;
     public static final String TAG = "NotificationScheduler";
 
-    public static void setReminder(Context context, Class<?> cls, int hour, int min) {
+    public static void setReminder(Context context, Class<?> cls, String event_name, int hour, int min) {
         // Get the current time(hour, min, sec).
         Calendar calendar = Calendar.getInstance();
 
