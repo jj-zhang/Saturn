@@ -61,10 +61,12 @@ Goals from Planning
  * Integration between backend and frontend as well as final work on the database was completed, as evidenced by our app / issues.
 
  * Notification Functionality works on a basic level.
+   * Please look at the screenshot images in the Screenshots and Images folder
    * Pull request #151
 
  * Finish off all scrapers
    * Please see our python scripts in scrapers folder
+   * Working example of scraper at work inside the video
  
 
 #### Goals and/or tasks that were planned but not met/completed:
