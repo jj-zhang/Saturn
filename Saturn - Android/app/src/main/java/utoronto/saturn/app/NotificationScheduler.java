@@ -12,6 +12,7 @@ import static android.content.Context.ALARM_SERVICE;
 public class NotificationScheduler {
     public static final int DAILY_REMINDER_REQUEST_CODE=100;
     public static final String TAG = "NotificationScheduler";
+    private static String eventName;
 
     public static void setReminder(Context context, Class<?> cls, String event_name, int hour, int min) {
         // Get the current time(hour, min, sec).
@@ -23,6 +24,7 @@ public class NotificationScheduler {
         setCalendar.set(Calendar.MINUTE, min);
         setCalendar.set(Calendar.SECOND, 0);
 
+        eventName = event_name;
         // If the setting time is already before the current time, then cancel it.
         if(setCalendar.before(calendar))
             setCalendar.add(Calendar.DATE,1);
@@ -31,5 +33,9 @@ public class NotificationScheduler {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, setCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
+    public static String getContent() {
+        return eventName;
     }
 }

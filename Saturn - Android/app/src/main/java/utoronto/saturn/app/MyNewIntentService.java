@@ -49,9 +49,13 @@ public class MyNewIntentService extends IntentService {
             builder  = new Notification.Builder(this);
         }
 
+        String content = NotificationScheduler.getContent();
+        System.out.println(content);
+
         builder.setSmallIcon(R.drawable.ic_reminder)
                 .setContentTitle("Event Reminder")
-                .setContentText("You have 'Mob psycho 100 II' tomorrow")
+                .setContentText(content)
+//                .setContentText("You have 'Mob psycho 100 II' tomorrow")
                 .setSound(alarmSound)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)

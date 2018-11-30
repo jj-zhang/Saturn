@@ -72,7 +72,7 @@ public class BaseView extends AppCompatActivity {
                 if (res) {
                     // Set up the notification;
                     String event_name = event.getName();
-                    NotificationScheduler.setReminder(BaseView.this, AlarmReceiver.class, event_name,01, 29);
+                    NotificationScheduler.setReminder(BaseView.this, AlarmReceiver.class, event_name,8, 0);
 
                     Snackbar message = Snackbar.make(v, "Event added successfully!", 2000);
                     message.show();
