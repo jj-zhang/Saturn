@@ -41,24 +41,35 @@ public class SignupActivity extends AppCompatActivity {
         TextInputEditText passwordView = findViewById(R.id.txt_password);
         Editable password = passwordView.getText();
 
-        // TODO: output a message if these are empty
-        if (username == null || password == null || email == null) return;
+        // If the user does not fill in any of the textboxes prompt an error for 2 sec
+        if (username.toString().equals("") || password.toString().equals("") || email.toString().equals("")) {
+            removeKeyboard();
+            Snackbar error_message = Snackbar.make(v , "Please fill in all text boxes.",
+                    2000);
+            error_message.show();
+            return;
+        }
 
-
+        // Output a message if the username exists is not found
         if (!myViewModel.signUp(username.toString(), email.toString(), password.toString())) {
-            // TODO: output a message if the username exists is not found
+
+            removeKeyboard();
             Snackbar error_message = Snackbar.make(v , "Email already exists. Please try again.",
                     2000);
             error_message.show();
-            View view = this.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
             return;
         }
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    // Removes the keyboard to display the error message
+    private void removeKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

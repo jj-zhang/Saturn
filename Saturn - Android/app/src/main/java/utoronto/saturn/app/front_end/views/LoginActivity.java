@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         TextInputEditText passwordView = findViewById(R.id.txt_password);
         Editable password = passwordView.getText();
 
-        // TODO: output a message if these are empty
+        // If the user does not fill in any of the textboxes prompt an error for 2 sec
         if (username.toString().equals("") || password.toString().equals("")) {
             removeKeyboard();
             Snackbar error_message = Snackbar.make(v , "Please fill in all text boxes.",
@@ -50,8 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
         boolean res = GuiManager.getInstance().logIn(username.toString(), password.toString());
 
-        // TODO: output a message if the user is not found
-
+        // If the user is not found then prompt user to enter a correct email and password
         if (!res) {
             removeKeyboard();
             Snackbar error_message = Snackbar.make(v , "Invalid login. Please try again.",
@@ -64,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Removes the keyboard to display the error message
     private void removeKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
