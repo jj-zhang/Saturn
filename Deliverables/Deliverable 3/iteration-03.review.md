@@ -82,3 +82,6 @@ Going into the next iteration, our main insights are:
    * For example, provide link to stores that have more information about the event
  * Write more tests for backend
    * Ensure the correctness of the methods so the app will run smoothly
+
+
+Note: Please note that Tiffany-Ng and Prynciss Ng is the same person (when looking at commits), the commits by'Prynciss Ng' and another 'Tiffany-Ng' are done by the same person but on another computer.
