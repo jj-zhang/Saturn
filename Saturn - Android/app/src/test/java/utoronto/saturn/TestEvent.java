@@ -28,31 +28,6 @@ public class TestEvent {
         assertThatThrownBy(() -> new Event(1, "", null, 0, "c", "d")).isInstanceOf(IllegalArgumentException.class);
     }
 
-//    @Test
-//    public void testDescIsCorrect() {
-//        assertThat(correctEvent.getDescription()).isEqualTo(desc);
-//    }
-//
-//    @Test
-//    public void testRatingIsCorrect() {
-//        assertThat(correctEvent.getRating()).isEqualTo(rating);
-//    }
-//
-//    @Test
-//    public void testRatingIsNegative() {
-//        assertThatThrownBy(() -> new Event("a", "a", "a", -2, 0, null, 0)).isInstanceOf(IllegalArgumentException.class);
-//    }
-
-//    @Test
-//    public void testUserRatingIsCorrect() {
-//        assertThat(correctEvent.getUserRating()).isEqualTo(userRating);
-//    }
-//
-//    @Test
-//    public void testUserRatingIsNegative() {
-//        assertThatThrownBy(() -> new Event("a", "a", "a", 0, -2, null, 0)).isInstanceOf(IllegalArgumentException.class);
-    //}
-
     @Test
     public void testReleaseDateIsCorrect() {
         assertThat(correctEvent.getReleaseDate()).isEqualTo(releaseDate);
