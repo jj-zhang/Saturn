@@ -6,9 +6,9 @@ import static org.assertj.core.api.Assertions.*;
 
 public class TestUser {
 
-    // TestUSerExists
-    // Test Email Exists
-
+    /*
+    * Prevents Registering with an Empty Username.
+    */
     @Test
     public void TestEmptyUsername() {
         Throwable thrown = catchThrowable(() -> {
@@ -17,6 +17,9 @@ public class TestUser {
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
+    /*
+    * Prevents Registering with an Empty Email.
+    */
     @Test
     public void TestEmptyEmail() {
         Throwable thrown = catchThrowable(() -> {
@@ -25,6 +28,9 @@ public class TestUser {
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
+    /*
+    * Prevents Registering with an Empty Password.
+    */
     @Test
     public void TestEmptyPassword() {
         Throwable thrown = catchThrowable(() -> {
@@ -33,6 +39,9 @@ public class TestUser {
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
+    /*
+    * Ensures Minimum Password Length.
+    */
     @Test
     public void TestPasswordTooShort() {
         Throwable thrown = catchThrowable(() -> {
@@ -41,6 +50,9 @@ public class TestUser {
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
+    /*
+    * Prevents Entering an Email without At.
+    */
     @Test
     public void TestEmailWithoutAt() {
         Throwable thrown = catchThrowable(() -> {
@@ -49,6 +61,9 @@ public class TestUser {
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
 
+    /*
+    * Prevents following the same user twice.
+    */
     @Test(expected = IllegalStateException.class)
     public void TestDuplicateFollow() {
         User A = new User("magic", "a@a", "aefaefaef");
