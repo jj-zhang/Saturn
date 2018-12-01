@@ -17,7 +17,9 @@ import android.graphics.Color;
 
 import utoronto.saturn.Event;
 import utoronto.saturn.User;
+import utoronto.saturn.app.AlarmReceiver;
 import utoronto.saturn.app.GuiManager;
+import utoronto.saturn.app.NotificationScheduler;
 import utoronto.saturn.app.R;
 import utoronto.saturn.app.front_end.adapters.EventItemFullAdapter;
 
@@ -68,6 +70,10 @@ public class BaseView extends AppCompatActivity {
             register_event.setOnClickListener(v -> {
                 boolean res = GuiManager.getInstance().joinEvent(event);
                 if (res) {
+                    // Set up the notification;
+                    String event_name = event.getName();
+                    NotificationScheduler.setReminder(BaseView.this, AlarmReceiver.class, event_name,8, 0);
+
                     Snackbar message = Snackbar.make(v, "Event added successfully!", 2000);
                     message.show();
                 } else {

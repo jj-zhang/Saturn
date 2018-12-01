@@ -40,6 +40,17 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
+
+        <service
+            android:name=".MyNewIntentService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
