@@ -1,31 +1,13 @@
 package utoronto.saturn;
 
-import android.provider.ContactsContract;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
 import utoronto.saturn.app.GuiManager;
 
 public class UserDatabase extends Database {
     private static final String table = "users";
-
-    // Setup for logging
-    private Logger log = Logger.getLogger(UserDatabase.class.getName());
-
-    public UserDatabase() {
-        super();
-    }
-
-    public UserDatabase(User user) {
-        super();
-    }
 
     /**
      * Deletes a row from users table with userId (email) and eventId (from events table)

@@ -23,17 +23,12 @@ public class DatabaseUtilities extends Database {
     private final static ArrayList<String> tables = new ArrayList<String>(Arrays.asList("events", "users"));
     private final static ArrayList<String> eventsValues = new ArrayList<String>(Arrays.asList("id", "creator", "name", "description", "date", "type", "url", "isglobal", "*"));
     private final static ArrayList<String> usersValues = new ArrayList<String>(Arrays.asList("email", "username", "password", "eventid", "*"));
-    private final static String driver = "org.postgresql.Driver";
-    private final static String url = "jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn";
-    private final static String username = "tjlevpcn";
-    private final static String password = "SlQEEkbB5hwPHBQxbyrEziDv7w5ozmUu";
     private final static String eventsColumn = "(id, creator, name, description, date, type, url, isglobal)";
     private final static String usersColumn = "(email, username, password, eventid)";
-    private static Connection SQLConnection;
-    private static Statement SQLStatement;
 
 
-    public DatabaseUtilities() throws SQLException {
+
+    public DatabaseUtilities() {
         super();
     }
 

@@ -159,7 +159,7 @@ public class GuiManager {
     private List<Event> getUserFollowedEventsFromDb() {
         try {
             return EventDatabase.getUserFollowedEvents(currentUser.getEmail());
-        } catch (ParseException | SQLException | MalformedURLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;

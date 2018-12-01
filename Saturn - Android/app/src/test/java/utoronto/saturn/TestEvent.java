@@ -2,29 +2,20 @@ package utoronto.saturn;
 
 import org.junit.Test;
 
-import java.net.URL;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class TestEvent {
-    private static final String id = "a";
+    private static final int id = 1;
     private static final String name = "b";
+    private static final String creator = "creator";
     private static final String desc = "c";
-    private static final double rating = 1;
-    private static final double userRating = 2;
     private static final long releaseDate = System.currentTimeMillis();
-    private static final Event correctEvent = new Event(id, name, null, releaseDate);
+    private static final Event correctEvent = new Event(id, name, null, releaseDate, creator, desc);
 
     @Test
     public void testIDIsCorrect() {
         assertThat(correctEvent.getID()).isEqualTo(id);
-    }
-
-    @Test
-    public void testIDIsEmpty() {
-        String id = "";
-
-        assertThatThrownBy(() -> new Event(id, "a", null, 0)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -34,9 +25,7 @@ public class TestEvent {
 
     @Test
     public void testNameIsEmpty() {
-        String name = "";
-
-        assertThatThrownBy(() -> new Event("a", name, null, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Event(1, "", null, 0, "c", "d")).isInstanceOf(IllegalArgumentException.class);
     }
 
 //    @Test
@@ -69,10 +58,6 @@ public class TestEvent {
         assertThat(correctEvent.getReleaseDate()).isEqualTo(releaseDate);
     }
 
-    @Test
-    public void testReleaseDateIsNegative() {
-        assertThatThrownBy(() -> new Event("a", "a", null, -2)).isInstanceOf(IllegalArgumentException.class);
-    }
 
     @Test
     public void testTimeTillReleaseIsCorrect() {

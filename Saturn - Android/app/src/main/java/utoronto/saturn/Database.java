@@ -1,13 +1,5 @@
 package utoronto.saturn;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
-import java.util.logging.Logger;
-import java.sql.*;
-import utoronto.saturn.UserDatabase;
-
 public class Database {
     private final static String url = "jdbc:postgresql://tantor.db.elephantsql.com:5432/tjlevpcn";
     private final static String username = "tjlevpcn";
