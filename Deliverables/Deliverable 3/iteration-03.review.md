@@ -84,4 +84,4 @@ Going into the next iteration, our main insights are:
    * Ensure the correctness of the methods so the app will run smoothly
 
 
-Note: Please note that Tiffany-Ng and Prynciss Ng is the same person (when looking at commits), the commits by'Prynciss Ng' and another 'Tiffany-Ng' are done by the same person but on another computer.
+Note: Please note that Tiffany-Ng and Prynciss Ng are the same person (when looking at commits), the commits by'Prynciss Ng' and another 'Tiffany-Ng' are done by the same person but on a different computer.
