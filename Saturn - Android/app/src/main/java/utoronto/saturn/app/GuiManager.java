@@ -24,9 +24,11 @@ import utoronto.saturn.User;
 import utoronto.saturn.UserDatabase;
 
 public class GuiManager {
-    // This class is the connection between the front end and the back end
-    // A singleton class accessed by the front end to query for info, etc.
-
+    
+    /*
+    * This class handles the connection between the front end and the back end.
+    * A singleton class accessed by the front end to query for info, etc.
+    */
     private static GuiManager instance = new GuiManager();
     private User currentUser;
     private static final String[] categories = new String[]{"Anime", "Concerts", "Movies", "Games"};
@@ -124,7 +126,9 @@ public class GuiManager {
         userEvents = getUserFollowedEventsFromDb();
     }
 
-    // get suggestions based on the current user
+    /* 
+    * Get suggestions based on the current users preferences.
+    */
     public List<Event> getSuggested() {
         try {
             return EventDatabase.getSuggested();
@@ -169,6 +173,9 @@ public class GuiManager {
         return userEvents;
     }
 
+    /*
+    * Handles joining event with current user in backend.
+    */
     public boolean joinEvent(Event event) {
         if (UserDatabase.joinEvent(event.getID())) {
             userEvents.add(event);
@@ -178,6 +185,9 @@ public class GuiManager {
         return false;
     }
 
+    /*
+    * Handles leaving event with current user in backend.
+    */
     public boolean leaveEvent(Event event) {
         if (UserDatabase.leaveEvent(currentUser.getEmail(), event.getID())) {
             userEvents.remove(event);
@@ -190,16 +200,23 @@ public class GuiManager {
     public static void addListener(LoadingListener listener) {
         listeners.add(listener);
     }
+    
     public static void removeListener(LoadingListener listener) {
         listeners.remove(listener);
     }
 
+    /* 
+    * Notifies listeners that event loading has begun.
+    */
     private static void notifyLoadingStarted() {
         for (LoadingListener listener : listeners) {
             listener.notifyLoadingStarted();
         }
     }
 
+    /*
+    * Tells the UI to move past loading screen.
+    */
     private static void notifyLoadingFinished() {
         for (LoadingListener listener : listeners) {
             log.info("Notifying listener");
@@ -207,11 +224,17 @@ public class GuiManager {
         }
     }
 
+    /*
+    * Helper class for fetching data upon app launch.
+    */
     private static class BackgroundQuery extends AsyncTask<String, Void, ResultSet> {
         Connection conn;
         PreparedStatement st;
         String type;
 
+        /*
+        * Fetch events in background and unsure duplicate events are not present.
+        */
         @Override
         protected ResultSet doInBackground(String... strings) {
             ResultSet result;
@@ -235,6 +258,9 @@ public class GuiManager {
             return result;
         }
 
+        /*
+        * Adds events from database into users application.
+        */
         @Override
         protected void onPostExecute(ResultSet result) {
             log.info("onPostExecute");
