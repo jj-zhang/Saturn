@@ -14,6 +14,9 @@ public class NotificationScheduler {
     public static final String TAG = "NotificationScheduler";
     private static String eventName;
 
+    /**
+     * Set up the notificaiton trigger that would triggered at some specific time.
+     */
     public static void setReminder(Context context, Class<?> cls, String event_name, int hour, int min) {
         // Get the current time(hour, min, sec).
         Calendar calendar = Calendar.getInstance();
@@ -25,16 +28,22 @@ public class NotificationScheduler {
         setCalendar.set(Calendar.SECOND, 0);
 
         eventName = event_name;
-        // If the setting time is already before the current time, then cancel it.
+
+        // If the setting time is already before the current time, then add one more day.
         if(setCalendar.before(calendar))
             setCalendar.add(Calendar.DATE,1);
 
+        // Set up the pendintIntent event to trigger the event.
+        // Set up the AlarmManager to alarm the users after some days.
         Intent intent1 = new Intent(context, cls);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, setCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
+    /**
+     * Return  the name of the event.
+     */
     public static String getContent() {
         return eventName;
     }

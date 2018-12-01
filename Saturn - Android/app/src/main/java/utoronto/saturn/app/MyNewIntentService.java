@@ -25,8 +25,12 @@ public class MyNewIntentService extends IntentService {
     }
 
 
+    /**
+     * Set up the notification content and push the notification to the app.
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
+        // Set up the alarm sound and notifyIntent.
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Intent notifyIntent = new Intent(this, BaseView.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -34,7 +38,10 @@ public class MyNewIntentService extends IntentService {
         NotificationManager notification_manager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         Notification.Builder builder;
+
+        // If SDK version is bigger than API 26, then set up a notification channel.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Set up the basic information of the channel.
             String chanel_id = "3000";
             CharSequence name = "Channel Name";
             String description = "Chanel Description";
@@ -49,17 +56,16 @@ public class MyNewIntentService extends IntentService {
             builder  = new Notification.Builder(this);
         }
 
-        String content = NotificationScheduler.getContent();
-        System.out.println(content);
-
+        // Prepare for the content to be sent.
+        String content = "You have " + NotificationScheduler.getContent() + " tomorrow.";
         builder.setSmallIcon(R.drawable.ic_reminder)
                 .setContentTitle("Event Reminder")
                 .setContentText(content)
-//                .setContentText("You have 'Mob psycho 100 II' tomorrow")
                 .setSound(alarmSound)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
+        // Send the notifications.
         Notification notificationCompat = builder.build();
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
         managerCompat.notify(NOTIFICATION_ID, notificationCompat);
