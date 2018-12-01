@@ -8,38 +8,47 @@
 ## Process - Reflection
 
 #### Decisions that turned out well
-
-List process-related (i.e. team organization) decisions that, in retrospect, turned out to be successful.
  
  * Using API for scraping instead of using jSoup and scrape from Wikipedia
    * Much less code in python, easy to call, easy to access the information we want
    * Using jSoup requires the code to be inside the app - not what we want
    * Please see our scraper scripts in the scraper folder
+   
  * To meet up accordingly in terms of different areas of the project (eg. scraper, frontend, etc.) and do pair coding
    * Speeds up work process (more focused)
    * Members know what is going on exactly by getting instant replies from another member
    * Easier to discuss minor details
+   
+ * Refactoring and Commenting Code Extensively 
+   * Code is significantly cleaner
+   * Team was able to efficiently onboard a new member due to the fairly high quality documentation
 
 #### Decisions that did not turn out as well as we hoped
-
-List process-related (i.e. team organization) decisions that, in retrospect, were not as successful as you thought they would be.
  
  * Using Elephant PostgresSQL as our database
    * We found out that the integration of database with the Android app requires any internet connection needs to be put in background (work that we did not expect)
    * Should have used cloud service such as AWS, GCP, etc.
+   * Still works well enough for our purposes but, could be further optimized
+   
  * Should have organized database to only contain id and type of media in order to fit in more information
    * Currently, our database only has 10 mb
    * Currently scrape a lot of information (takes a lot of space)
    * Could have stored id and type, then we can call the API within the app (using the type to query the specific API with id) to get the most updated information
    
-
+ * Current Database Schema is Weak
+   * Schema is sufficient for small scale operation but if the project were to continue would need to be reworked and broken up into more tables for greater efficiency and ease of use
+   
+ * Processes were Abused towards the end of the Cycle  
+   * As integration work picked up steam important procedures such as rebasing were not done as they should have been
+   * Somewhat necessitated due to some friction created by processes
 
 #### Planned changes
 
-List any process-related changes you are planning to make (if there are any)
- 
- * No changes
-
+ * If anything the most fundamental thing the team needs to reform on is better organization. 
+   * Stricter following prescribed process / workflow.
+   * Better documenting code *from the outset*
+   * Tighter adherence to marking issues etc.
+   * Improving communication further particularily with regard to work done at night etc.
 
 ## Product - Review
 
