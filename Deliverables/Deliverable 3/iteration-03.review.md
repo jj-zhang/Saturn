@@ -80,7 +80,7 @@ Goals from Planning
 
 #### Goals and/or tasks that were planned but not met/completed:
 
- * None
+ * The artist following feature was unfortunately scrapped as we did not have enough time to finish the feature. However this was supposed to be an add-on functionality that would have been nice to have but not necessary, so it was not a huge blow to our product. 
 
 ## Meeting Highlights
 
